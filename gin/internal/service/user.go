@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
-	"strings"
+	"regexp"
 	"sync"
 
 	"github.com/yizhinailong/demo/gin/internal/model"
@@ -86,8 +86,15 @@ func validateEmail(email string) error {
 		return fmt.Errorf("邮箱不能为空")
 	}
 
-	if !strings.Contains(email, "@") {
-		return fmt.Errorf("邮箱格式不正确：缺少 @ 符号")
+	// 使用正则表达式验证邮箱格式
+	pattern := `^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$`
+	matched, err := regexp.MatchString(pattern, email)
+	if err != nil {
+		return fmt.Errorf("邮箱验证出错: %v", err)
+	}
+
+	if !matched {
+		return fmt.Errorf("邮箱格式不正确")
 	}
 
 	return nil
