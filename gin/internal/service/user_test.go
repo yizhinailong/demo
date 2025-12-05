@@ -81,9 +81,9 @@ func TestUserService_GetUser(t *testing.T) {
 	t.Run("get user from cache", func(t *testing.T) {
 		ctx := context.Background()
 		expectedUser := &model.User{
-			ID:       1,
-			Username: "testuser",
-			Email:    "test@example.com",
+			ID:    1,
+			Name:  "testuser",
+			Email: "test@example.com",
 		}
 
 		// Pre-populate cache
@@ -102,9 +102,9 @@ func TestUserService_GetUser(t *testing.T) {
 	t.Run("get user from database", func(t *testing.T) {
 		ctx := context.Background()
 		expectedUser := &model.User{
-			ID:       2,
-			Username: "testuser2",
-			Email:    "test2@example.com",
+			ID:    2,
+			Name:  "testuser2",
+			Email: "test2@example.com",
 		}
 
 		mockRepo.On("GetByID", ctx, int64(2)).Return(expectedUser, nil)
@@ -175,7 +175,7 @@ func TestUserService_CreateUser(t *testing.T) {
 		user, err := service.CreateUser(ctx, input)
 		assert.NoError(t, err)
 		assert.NotNil(t, user)
-		assert.Equal(t, input.Username, user.Username)
+		assert.Equal(t, input.Username, user.Name)
 		assert.Equal(t, input.Email, user.Email)
 		mockRepo.AssertExpectations(t)
 	})

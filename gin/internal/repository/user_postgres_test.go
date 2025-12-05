@@ -21,8 +21,8 @@ func TestUserPostgresRepo_Create(t *testing.T) {
 	t.Run("successful creation", func(t *testing.T) {
 		ctx := context.Background()
 		user := &model.User{
-			Username: "testuser",
-			Email:    "test@example.com",
+			Name:  "testuser",
+			Email: "test@example.com",
 		}
 
 		// This test would require a real database connection or more complex mocking
@@ -55,9 +55,9 @@ func TestUserPostgresRepo_Update(t *testing.T) {
 	t.Run("update non-existent user", func(t *testing.T) {
 		ctx := context.Background()
 		user := &model.User{
-			ID:       999,
-			Username: "updateduser",
-			Email:    "updated@example.com",
+			ID:    999,
+			Name:  "updateduser",
+			Email: "updated@example.com",
 		}
 
 		err := repo.Update(ctx, user)

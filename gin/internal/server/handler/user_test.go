@@ -60,9 +60,9 @@ func TestUserHandler_CreateUser(t *testing.T) {
 		}
 
 		expectedUser := &model.User{
-			ID:       1,
-			Username: "testuser",
-			Email:    "test@example.com",
+			ID:    1,
+			Name:  "testuser",
+			Email: "test@example.com",
 		}
 
 		mockService.On("CreateUser", mock.Anything, &input).Return(expectedUser, nil)
@@ -139,7 +139,7 @@ func TestUserHandler_GetUser(t *testing.T) {
 
 		expectedUser := &model.User{
 			ID:        1,
-			Username:  "testuser",
+			Name:      "testuser",
 			Email:     "test@example.com",
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
@@ -160,7 +160,7 @@ func TestUserHandler_GetUser(t *testing.T) {
 		err := json.Unmarshal(w.Body.Bytes(), &response)
 		assert.NoError(t, err)
 		assert.Equal(t, expectedUser.ID, response.ID)
-		assert.Equal(t, expectedUser.Username, response.Username)
+		assert.Equal(t, expectedUser.Name, response.Name)
 		assert.Equal(t, expectedUser.Email, response.Email)
 
 		mockService.AssertExpectations(t)

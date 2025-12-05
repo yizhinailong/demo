@@ -118,8 +118,8 @@ func (s *UserService) CreateUser(ctx context.Context, input *CreateUserInput) (*
 
 	// 2. 构造模型
 	user := &model.User{
-		Username: input.Username,
-		Email:    input.Email,
+		Name:  input.Username,
+		Email: input.Email,
 	}
 
 	// 3. 调用 Repository 持久化
