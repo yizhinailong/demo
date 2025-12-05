@@ -48,12 +48,11 @@ type CreateUserResponse struct {
 func (h *UserHandler) CreateUser(c *gin.Context) {
 	var resquest CreateUserRequest
 	if err := c.ShouldBindJSON(&resquest); err != nil {
-		response := CreateUserResponse{
+		c.JSON(http.StatusBadRequest, CreateUserResponse{
 			Status:  http.StatusBadRequest,
 			Message: err.Error(),
 			ID:      -1,
-		}
-		c.JSON(int(response.Status), response)
+		})
 		return
 	}
 
@@ -64,19 +63,17 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 	}
 
 	if user, err := h.userService.CreateUser(c, input); err != nil {
-		response := CreateUserResponse{
+		c.JSON(http.StatusInternalServerError, CreateUserResponse{
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
 			ID:      -1,
-		}
-		c.JSON(int(response.Status), response)
+		})
 	} else {
-		response := CreateUserResponse{
+		c.JSON(http.StatusOK, CreateUserResponse{
 			Status:  http.StatusOK,
 			Message: "user successfully created",
 			ID:      user.ID,
-		}
-		c.JSON(int(response.Status), response)
+		})
 	}
 }
 
@@ -94,12 +91,11 @@ type GetUserResponse struct {
 func (h *UserHandler) GetUser(c *gin.Context) {
 	var resquest GetUserRequest
 	if err := c.ShouldBindJSON(&resquest); err != nil {
-		response := GetUserResponse{
+		c.JSON(http.StatusBadRequest, GetUserResponse{
 			Status:  http.StatusBadRequest,
 			Message: err.Error(),
 			User:    nil,
-		}
-		c.JSON(int(response.Status), response)
+		})
 		return
 	}
 
@@ -109,18 +105,16 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 	}
 
 	if user, err := h.userService.GetUser(c, input); err != nil {
-		response := GetUserResponse{
+		c.JSON(http.StatusInternalServerError, GetUserResponse{
 			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
 			User:    nil,
-		}
-		c.JSON(int(response.Status), response)
+		})
 	} else {
-		response := GetUserResponse{
+		c.JSON(http.StatusOK, GetUserResponse{
 			Status:  http.StatusOK,
 			Message: "user found",
 			User:    user,
-		}
-		c.JSON(int(response.Status), response)
+		})
 	}
 }
