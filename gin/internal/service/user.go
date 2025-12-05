@@ -24,14 +24,14 @@ type UserService struct {
 
 // CreateUserInput 创建用户输入（与 model 分离）
 type CreateUserInput struct {
-	Username string `json:"username"`
-	Email    string `json:"email"`
-	Database string `json:"database"`
+	Username string
+	Email    string
+	Database string
 }
 
 type GetUserInput struct {
-	ID       int64  `json:"id"`
-	Database string `json:"database"`
+	ID       int64
+	Database string
 }
 
 func NewUserService() *UserService {

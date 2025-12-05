@@ -12,16 +12,27 @@ import (
 	router "github.com/yizhinailong/demo/gin/internal/server"
 )
 
+type UserHandler struct {
+	userService service.UserServiceInterface
+}
+
+type CreateUserRequest struct {
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Database string `json:"database"`
+}
+
+type GetUserRequest struct {
+	ID       int64  `json:"id"`
+	Database string `json:"database"`
+}
+
 func init() {
 	// Initialize repository and service
 	userService := service.NewUserService()
 
 	// Register handler with initialized service
 	router.Register(&UserHandler{userService: userService})
-}
-
-type UserHandler struct {
-	userService service.UserServiceInterface
 }
 
 func (h *UserHandler) RegisterRoutes(r *gin.Engine) {
@@ -33,13 +44,19 @@ func (h *UserHandler) RegisterRoutes(r *gin.Engine) {
 }
 
 func (h *UserHandler) CreateUser(c *gin.Context) {
-	var input service.CreateUserInput
-	if err := c.ShouldBindJSON(&input); err != nil {
+	var resquest CreateUserRequest
+	if err := c.ShouldBindJSON(&resquest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if user, err := h.userService.CreateUser(c, &input); err != nil {
+	input := &service.CreateUserInput{
+		Username: resquest.Username,
+		Email:    resquest.Email,
+		Database: resquest.Database,
+	}
+
+	if user, err := h.userService.CreateUser(c, input); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"status": "user created", "userID": user.ID})
@@ -47,13 +64,18 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 }
 
 func (h *UserHandler) GetUser(c *gin.Context) {
-	var input service.GetUserInput
-	if err := c.ShouldBindJSON(&input); err != nil {
+	var resquest GetUserRequest
+	if err := c.ShouldBindJSON(&resquest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if user, err := h.userService.GetUser(c, &input); err != nil {
+	input := &service.GetUserInput{
+		ID:       resquest.ID,
+		Database: resquest.Database,
+	}
+
+	if user, err := h.userService.GetUser(c, input); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(http.StatusOK, user)
