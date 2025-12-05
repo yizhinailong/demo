@@ -24,7 +24,7 @@ type UserService struct {
 
 // CreateUserInput 创建用户输入（与 model 分离）
 type CreateUserInput struct {
-	Username string
+	Name     string
 	Email    string
 	Database string
 }
@@ -112,13 +112,13 @@ func (s *UserService) CreateUser(ctx context.Context, input *CreateUserInput) (*
 		return nil, fmt.Errorf("邮箱验证失败: %w", err)
 	}
 
-	if len(input.Username) < 3 {
+	if len(input.Name) < 3 {
 		return nil, fmt.Errorf("用户名长度至少3个字符")
 	}
 
 	// 2. 构造模型
 	user := &model.User{
-		Name:  input.Username,
+		Name:  input.Name,
 		Email: input.Email,
 	}
 

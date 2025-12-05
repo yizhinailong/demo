@@ -34,28 +34,49 @@ func (h *UserHandler) RegisterRoutes(r *gin.Engine) {
 }
 
 type CreateUserRequest struct {
-	Username string `json:"username"`
+	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Database string `json:"database"`
+}
+
+type CreateUserResponse struct {
+	Status  int    `json:"status"`
+	Message string `json:"message"`
+	ID      int64  `json:"id"`
 }
 
 func (h *UserHandler) CreateUser(c *gin.Context) {
 	var resquest CreateUserRequest
 	if err := c.ShouldBindJSON(&resquest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		response := CreateUserResponse{
+			Status:  http.StatusBadRequest,
+			Message: err.Error(),
+			ID:      -1,
+		}
+		c.JSON(int(response.Status), response)
 		return
 	}
 
 	input := &service.CreateUserInput{
-		Username: resquest.Username,
+		Name:     resquest.Name,
 		Email:    resquest.Email,
 		Database: resquest.Database,
 	}
 
 	if user, err := h.userService.CreateUser(c, input); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		response := CreateUserResponse{
+			Status:  http.StatusInternalServerError,
+			Message: err.Error(),
+			ID:      -1,
+		}
+		c.JSON(int(response.Status), response)
 	} else {
-		c.JSON(http.StatusOK, gin.H{"status": "user created", "userID": user.ID})
+		response := CreateUserResponse{
+			Status:  http.StatusOK,
+			Message: "user successfully created",
+			ID:      user.ID,
+		}
+		c.JSON(int(response.Status), response)
 	}
 }
 
@@ -65,6 +86,7 @@ type GetUserRequest struct {
 }
 
 type GetUserResponse struct {
+	Status  int         `json:"status"`
 	Message string      `json:"message"`
 	User    *model.User `json:"user"`
 }
@@ -73,10 +95,11 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 	var resquest GetUserRequest
 	if err := c.ShouldBindJSON(&resquest); err != nil {
 		response := GetUserResponse{
+			Status:  http.StatusBadRequest,
 			Message: err.Error(),
 			User:    nil,
 		}
-		c.JSON(http.StatusBadRequest, response)
+		c.JSON(int(response.Status), response)
 		return
 	}
 
@@ -87,15 +110,17 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 
 	if user, err := h.userService.GetUser(c, input); err != nil {
 		response := GetUserResponse{
+			Status:  http.StatusInternalServerError,
 			Message: err.Error(),
 			User:    nil,
 		}
-		c.JSON(http.StatusInternalServerError, response)
+		c.JSON(int(response.Status), response)
 	} else {
 		response := GetUserResponse{
+			Status:  http.StatusOK,
 			Message: "user found",
 			User:    user,
 		}
-		c.JSON(http.StatusOK, response)
+		c.JSON(int(response.Status), response)
 	}
 }

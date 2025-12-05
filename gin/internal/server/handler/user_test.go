@@ -54,7 +54,7 @@ func TestUserHandler_CreateUser(t *testing.T) {
 
 	t.Run("create user successfully", func(t *testing.T) {
 		input := service.CreateUserInput{
-			Username: "testuser",
+			Name:     "testuser",
 			Email:    "test@example.com",
 			Database: "mysql",
 		}
@@ -102,7 +102,7 @@ func TestUserHandler_CreateUser(t *testing.T) {
 
 	t.Run("create user with service error", func(t *testing.T) {
 		input := service.CreateUserInput{
-			Username: "testuser",
+			Name:     "testuser",
 			Email:    "test@example.com",
 			Database: "mysql",
 		}

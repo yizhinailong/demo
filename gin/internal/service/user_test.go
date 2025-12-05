@@ -165,7 +165,7 @@ func TestUserService_CreateUser(t *testing.T) {
 	t.Run("create user successfully", func(t *testing.T) {
 		ctx := context.Background()
 		input := &CreateUserInput{
-			Username: "testuser",
+			Name:     "testuser",
 			Email:    "test@example.com",
 			Database: "mysql",
 		}
@@ -175,7 +175,7 @@ func TestUserService_CreateUser(t *testing.T) {
 		user, err := service.CreateUser(ctx, input)
 		assert.NoError(t, err)
 		assert.NotNil(t, user)
-		assert.Equal(t, input.Username, user.Name)
+		assert.Equal(t, input.Name, user.Name)
 		assert.Equal(t, input.Email, user.Email)
 		mockRepo.AssertExpectations(t)
 	})
@@ -183,7 +183,7 @@ func TestUserService_CreateUser(t *testing.T) {
 	t.Run("create user with invalid email", func(t *testing.T) {
 		ctx := context.Background()
 		input := &CreateUserInput{
-			Username: "testuser",
+			Name:     "testuser",
 			Email:    "invalid-email",
 			Database: "mysql",
 		}
@@ -196,7 +196,7 @@ func TestUserService_CreateUser(t *testing.T) {
 	t.Run("create user with short username", func(t *testing.T) {
 		ctx := context.Background()
 		input := &CreateUserInput{
-			Username: "ab",
+			Name:     "ab",
 			Email:    "test@example.com",
 			Database: "mysql",
 		}
@@ -209,7 +209,7 @@ func TestUserService_CreateUser(t *testing.T) {
 	t.Run("create user with database error", func(t *testing.T) {
 		ctx := context.Background()
 		input := &CreateUserInput{
-			Username: "testuser",
+			Name:     "testuser",
 			Email:    "test@example.com",
 			Database: "mysql",
 		}
