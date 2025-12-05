@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/yizhinailong/demo/gin/internal/config"
+	"github.com/yizhinailong/demo/gin/internal/server/middleware"
 
 	_ "github.com/yizhinailong/demo/gin/internal/server/handler"
 
@@ -15,12 +16,13 @@ import (
 func main() {
 	cfg := config.GetConfig()
 
-	engine := gin.Default()
-	router.SetupRoutes(engine)
+	r := gin.New()
+	middleware.Use(r)
+	router.SetupRoutes(r)
 
-	slog.Info("Web server listening address http://localhost:" + cfg.Server.Port)
+	// slog.Info("Web server listening address http://localhost:" + cfg.Server.Port)
 
-	if err := engine.Run(":" + cfg.Server.Port); err != nil {
+	if err := r.Run(":" + cfg.Server.Port); err != nil {
 		slog.Error("Error starting server error " + err.Error())
 	}
 }
