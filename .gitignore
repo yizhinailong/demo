@@ -8,3 +8,6 @@ cmake-build-debug/
 [Bb]uild/
 output/
 out/
+.zig-cache/
+zig-out/
+zigmod/
