@@ -1,0 +1,12 @@
+{
+  "name": "drogon-demo",
+  "version": "1.0",
+  "dependencies": [
+    {
+      "name": "drogon",
+      "features": [
+        "postgres"
+      ]
+    }
+  ]
+}
