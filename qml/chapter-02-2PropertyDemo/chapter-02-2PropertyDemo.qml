@@ -9,8 +9,11 @@ Rectangle {
         id: thisLabel
         text: "thisLabel"
         horizontalAlignment: Text.AlignHCenter
-        focus: true
+        focus: false
+        color: focus ? "red" : "black"
         KeyNavigation.tab: thatLabel
+
+        property int time: 24
 
         font {
             family: "JetBrainsMonoNL Nerd Font"
@@ -21,8 +24,9 @@ Rectangle {
 
     Text {
         id: thatLabel
-        text: "thatLabel"
-        focus: true
+        text: "thatLabel" + " " + thisLabel.time
+        focus: false
+        color: focus ? "red" : "black"
         KeyNavigation.tab: thisLabel
 
         y: thisLabel.height
@@ -31,6 +35,14 @@ Rectangle {
             family: "JetBrainsMonoNL Nerd Font"
             pointSize: 20
             bold: true
+        }
+
+        Keys.onSpacePressed: {
+            increment()
+        }
+
+        function increment() {
+            thisLabel.time += 1
         }
     }
 }
