@@ -853,7 +853,11 @@ namespace dbg {
 
     private:
         template <typename T>
-        T&& print_impl(bool opens_line, bool close_line, const expr_t* expr, const std::string* type, T&& value) {
+        T&& print_impl(bool opens_line,
+                       bool close_line,
+                       const expr_t* expr,
+                       const std::string* type,
+                       T&& value) {
             const T& ref = value;
             std::stringstream stream_value;
             const bool print_expr_and_type = pretty_print(stream_value, ref);
