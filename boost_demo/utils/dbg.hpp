@@ -542,8 +542,7 @@ namespace dbg {
     }
 
     template <typename T, typename Deleter>
-    inline bool pretty_print(std::ostream& stream,
-                             std::unique_ptr<T, Deleter>& value) {
+    inline bool pretty_print(std::ostream& stream, std::unique_ptr<T, Deleter>& value) {
         pretty_print(stream, value.get());
         return true;
     }
@@ -598,7 +597,6 @@ namespace dbg {
     template <>
     inline bool pretty_print(std::ostream& stream, const std::tuple<>& /*unused*/) {
         stream << "{}";
-
         return true;
     }
 
@@ -903,7 +901,7 @@ namespace dbg {
             return ANSI_EMPTY;
         }
 
-        const bool m_use_colorized_output;
+        bool m_use_colorized_output;
 
         std::string m_location;
 
@@ -943,15 +941,13 @@ namespace dbg {
     #define DBG_CAT_IMPL(_1, _2) _1##_2
     #define DBG_CAT(_1, _2)      DBG_CAT_IMPL(_1, _2)
 
-    #define DBG_16TH_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, ...) \
-        _16
+    #define DBG_16TH_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, ...) _16
+
     #define DBG_16TH(args) DBG_CALL(DBG_16TH_IMPL, args)
-    #define DBG_NARG(...) \
-        DBG_16TH((__VA_ARGS__, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+    #define DBG_NARG(...)  DBG_16TH((__VA_ARGS__, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
 
     // DBG_VARIADIC_CALL(fn, data, e1, e2, ...) => fn_N(data, (e1, e2, ...))
-    #define DBG_VARIADIC_CALL(fn, data, ...) \
-        DBG_CAT(fn##_, DBG_NARG(__VA_ARGS__))(data, (__VA_ARGS__))
+    #define DBG_VARIADIC_CALL(fn, data, ...) DBG_CAT(fn##_, DBG_NARG(__VA_ARGS__))(data, (__VA_ARGS__))
 
     // (e1, e2, e3, ...) => e1
     #define DBG_HEAD_IMPL(_1, ...) _1
