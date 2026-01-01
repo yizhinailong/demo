@@ -315,23 +315,21 @@ namespace dbg {
 
     namespace detail {
 
-        namespace {
-            using std::begin;
-            using std::end;
+        using std::begin;
+        using std::end;
 #if DBG_MACRO_CXX_STANDARD < 17
-            template <typename T>
-            constexpr auto size(const T& c) -> decltype(c.size()) {
-                return c.size();
-            }
+        template <typename T>
+        constexpr auto size(const T& c) -> decltype(c.size()) {
+            return c.size();
+        }
 
-            template <typename T, std::size_t N>
-            constexpr std::size_t size(const T (&)[N]) {
-                return N;
-            }
+        template <typename T, std::size_t N>
+        constexpr std::size_t size(const T (&)[N]) {
+            return N;
+        }
 #else
-            using std::size;
+        using std::size;
 #endif
-        } // namespace
 
         // Specializations for container adapters
 
@@ -447,19 +445,19 @@ namespace dbg {
     inline bool pretty_print(std::ostream& stream, const std::tuple<Ts...>& value);
 
     template <>
-    inline bool pretty_print(std::ostream& stream, const std::tuple<>&);
+    inline bool pretty_print(std::ostream& stream, const std::tuple<>& /*unused*/);
 
     template <>
-    inline bool pretty_print(std::ostream& stream, const time&);
+    inline bool pretty_print(std::ostream& stream, const time& /*unused*/);
 
     template <typename T>
     inline bool pretty_print(std::ostream& stream, const print_formatted<T>& value);
 
     template <typename T>
-    inline bool pretty_print(std::ostream& stream, const print_type<T>&);
+    inline bool pretty_print(std::ostream& stream, const print_type<T>& /*unused*/);
 
     template <typename Enum>
-    inline typename std::enable_if<std::is_enum<Enum>::value, bool>::type
+    inline std::enable_if_t<std::is_enum_v<Enum>, bool>
     pretty_print(std::ostream& stream, Enum const& value);
 
     inline bool pretty_print(std::ostream& stream, const std::string& value);
@@ -479,8 +477,7 @@ namespace dbg {
     inline bool pretty_print(std::ostream& stream, const std::optional<T>& value);
 
     template <typename... Ts>
-    inline bool pretty_print(std::ostream& stream,
-                             const std::variant<Ts...>& value);
+    inline bool pretty_print(std::ostream& stream, const std::variant<Ts...>& value);
 
 #endif
 
@@ -496,14 +493,13 @@ namespace dbg {
     pretty_print(std::ostream& stream, ContainerAdapter value);
 
     // Specializations of "pretty_print"
-
     template <typename T>
-    inline void pretty_print(std::ostream& stream, const T& value, std::true_type) {
+    inline void pretty_print(std::ostream& stream, const T& value, std::true_type /*unused*/) {
         stream << value;
     }
 
     template <typename T>
-    inline void pretty_print(std::ostream&, const T&, std::false_type) {
+    inline void pretty_print(std::ostream& /*unused*/, const T& /*unused*/, std::false_type /*unused*/) {
         static_assert(detail::has_ostream_operator<const T&>::value,
                       "Type does not support the << ostream operator");
     }
@@ -601,19 +597,19 @@ namespace dbg {
     }
 
     template <>
-    inline bool pretty_print(std::ostream& stream, const std::tuple<>&) {
+    inline bool pretty_print(std::ostream& stream, const std::tuple<>& /*unused*/) {
         stream << "{}";
 
         return true;
     }
 
     template <>
-    inline bool pretty_print(std::ostream& stream, const time&) {
-        using namespace std::chrono;
+    inline bool pretty_print(std::ostream& stream, const time& /*unused*/) {
+        using std::chrono::microseconds;
+        using std::chrono::system_clock;
 
         const auto now = system_clock::now();
-        const auto us =
-            duration_cast<microseconds>(now.time_since_epoch()).count() % 1000000;
+        const auto us = duration_cast<microseconds>(now.time_since_epoch()).count() % 1000000;
         const auto hms = system_clock::to_time_t(now);
 #if defined(_MSC_VER) && _MSC_VER >= 1600
         struct tm t;
@@ -643,8 +639,7 @@ namespace dbg {
     }
 
     template <typename T>
-    inline bool pretty_print(std::ostream& stream,
-                             const print_formatted<T>& value) {
+    inline bool pretty_print(std::ostream& stream, const print_formatted<T>& value) {
         if (value.inner < 0) {
             stream << "-";
         }
@@ -667,7 +662,7 @@ namespace dbg {
             if (value.inner >= 0) {
                 stream << decimalToBinary(value.inner);
             } else {
-                using unsigned_type = typename std::make_unsigned<T>::type;
+                using unsigned_type = std::make_unsigned_t<T>;
                 stream << decimalToBinary<unsigned_type>(
                     static_cast<unsigned_type>(-(value.inner + 1)) + 1);
             }
@@ -677,20 +672,20 @@ namespace dbg {
     }
 
     template <typename T>
-    inline bool pretty_print(std::ostream& stream, const print_type<T>&) {
+    inline bool pretty_print(std::ostream& stream, const print_type<T>& /*unused*/) {
         stream << type_name<T>();
 
         stream << " [sizeof: " << sizeof(T) << " byte, ";
 
         stream << "trivial: ";
-        if (std::is_trivial<T>::value) {
+        if (std::is_trivial_v<T>) {
             stream << "yes";
         } else {
             stream << "no";
         }
 
         stream << ", standard layout: ";
-        if (std::is_standard_layout<T>::value) {
+        if (std::is_standard_layout_v<T>) {
             stream << "yes";
         } else {
             stream << "no";
@@ -701,9 +696,9 @@ namespace dbg {
     }
 
     template <typename Enum>
-    inline typename std::enable_if<std::is_enum<Enum>::value, bool>::type
-    pretty_print(std::ostream& stream, Enum const& value) {
-        using UnderlyingType = typename std::underlying_type<Enum>::type;
+    requires(std::is_enum_v<Enum>)
+    inline bool pretty_print(std::ostream& stream, Enum const& value) {
+        using UnderlyingType = std::underlying_type_t<Enum>;
         stream << static_cast<UnderlyingType>(value);
 
         return true;
@@ -749,8 +744,7 @@ namespace dbg {
     }
 
     template <typename... Ts>
-    inline bool pretty_print(std::ostream& stream,
-                             const std::variant<Ts...>& value) {
+    inline bool pretty_print(std::ostream& stream, const std::variant<Ts...>& value) {
         stream << "{";
         std::visit([&stream](auto&& arg) { pretty_print(stream, arg); }, value);
         stream << "}";
@@ -761,8 +755,7 @@ namespace dbg {
 #endif
 
     template <typename Container>
-    inline typename std::enable_if<detail::is_container<const Container&>::value,
-                                   bool>::type
+    inline std::enable_if_t<detail::is_container<const Container&>::value, bool>
     pretty_print(std::ostream& stream, const Container& value) {
         stream << "{";
         const size_t size = detail::size(value);
@@ -787,9 +780,7 @@ namespace dbg {
     }
 
     template <typename ContainerAdapter>
-    inline typename std::enable_if<
-        detail::is_container_adapter<const ContainerAdapter&>::value,
-        bool>::type
+    inline std::enable_if_t<detail::is_container_adapter<const ContainerAdapter&>::value, bool>
     pretty_print(std::ostream& stream, ContainerAdapter value) {
         stream << "{";
         const size_t size = detail::size(value);
@@ -909,9 +900,8 @@ namespace dbg {
         const char* ansi(const char* code) const {
             if (m_use_colorized_output) {
                 return code;
-            } else {
-                return ANSI_EMPTY;
             }
+            return ANSI_EMPTY;
         }
 
         const bool m_use_colorized_output;
@@ -937,7 +927,7 @@ namespace dbg {
     }
 
     template <typename T, typename... U>
-    auto identity(T&&, U&&... u) -> last_t<U...> {
+    auto identity(T&& /*unused*/, U&&... u) -> last_t<U...> {
         return identity(std::forward<U>(u)...);
     }
 
