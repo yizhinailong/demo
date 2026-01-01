@@ -33,9 +33,9 @@ License (MIT):
     #define DBG_MACRO_WINDOWS
 #endif
 
-#ifndef DBG_MACRO_NO_WARNING
-    #pragma message("WARNING: the 'dbg.h' header is included in your code base")
-#endif // DBG_MACRO_NO_WARNING
+// #ifndef DBG_MACRO_NO_WARNING
+//     #pragma message("WARNING: the 'dbg.hpp' header is included in your code base")
+// #endif // DBG_MACRO_NO_WARNING
 
 #include <algorithm>
 #include <chrono>
@@ -75,7 +75,7 @@ namespace dbg {
 #if defined(DBG_MACRO_FORCE_COLOR)
         return true;
 #elif defined(DBG_MACRO_UNIX)
-        return isatty(fileno(stderr));
+        return isatty(fileno(stderr)) != 0;
 #else
         return true;
 #endif
@@ -113,14 +113,15 @@ namespace dbg {
 
     template <typename T>
     struct print_formatted {
-        static_assert(std::is_integral<T>::value,
-                      "Only integral types are supported.");
+        static_assert(std::is_integral_v<T>, "Only integral types are supported.");
 
         print_formatted(T value, int numeric_base)
-            : inner(value), base(numeric_base) {}
+            : inner(value),
+              base(numeric_base) {}
 
-        operator T() const { return inner; }
+        explicit operator T() const { return inner; }
 
+        [[nodiscard]]
         const char* prefix() const {
             switch (base) {
                 case 8:
@@ -154,7 +155,6 @@ namespace dbg {
     }
 
     // Implementation of 'type_name<T>()'
-
     template <typename T>
     const char* type_name_impl() {
         return DBG_MACRO_PRETTY_FUNCTION;
@@ -164,39 +164,36 @@ namespace dbg {
     struct type_tag {};
 
     template <int&... ExplicitArgumentBarrier, typename T>
-    typename std::enable_if<(std::rank<T>::value == 0), std::string>::type
-    get_type_name(type_tag<T>) {
+    requires(std::rank_v<T> == 0)
+    std::string get_type_name(type_tag<T> /*unused*/) {
         namespace pf = pretty_function;
 
         std::string type = type_name_impl<T>();
-        return type.substr(pf::PREFIX_LENGTH,
-                           type.size() - pf::PREFIX_LENGTH - pf::SUFFIX_LENGTH);
+        return type.substr(pf::PREFIX_LENGTH, type.size() - pf::PREFIX_LENGTH - pf::SUFFIX_LENGTH);
     }
 
     template <typename T>
     std::string type_name() {
-        if (std::is_volatile<T>::value) {
-            if (std::is_pointer<T>::value) {
+        if (std::is_volatile_v<T>) {
+            if (std::is_pointer_v<T>) {
                 return type_name<typename std::remove_volatile<T>::type>() + " volatile";
-            } else {
-                return "volatile " + type_name<typename std::remove_volatile<T>::type>();
             }
+            return "volatile " + type_name<typename std::remove_volatile<T>::type>();
         }
-        if (std::is_const<T>::value) {
-            if (std::is_pointer<T>::value) {
-                return type_name<typename std::remove_const<T>::type>() + " const";
-            } else {
-                return "const " + type_name<typename std::remove_const<T>::type>();
+        if (std::is_const_v<T>) {
+            if (std::is_pointer_v<T>) {
+                return type_name<std::remove_const_t<T>>() + " const";
             }
+            return "const " + type_name<std::remove_const_t<T>>();
         }
-        if (std::is_pointer<T>::value) {
-            return type_name<typename std::remove_pointer<T>::type>() + "*";
+        if (std::is_pointer_v<T>) {
+            return type_name<std::remove_pointer_t<T>>() + "*";
         }
-        if (std::is_lvalue_reference<T>::value) {
-            return type_name<typename std::remove_reference<T>::type>() + "&";
+        if (std::is_lvalue_reference_v<T>) {
+            return type_name<std::remove_reference_t<T>>() + "&";
         }
-        if (std::is_rvalue_reference<T>::value) {
-            return type_name<typename std::remove_reference<T>::type>() + "&&";
+        if (std::is_rvalue_reference_v<T>) {
+            return type_name<std::remove_reference_t<T>>() + "&&";
         }
         return get_type_name(type_tag<T>{});
     }
@@ -204,7 +201,7 @@ namespace dbg {
 // Prefer bitsize variant over standard integral types
 #define DBG_MACRO_REGISTER_TYPE_ASSOC(t_std, t_bit) \
     inline constexpr const char* get_type_name(type_tag<t_std>) { \
-        return std::is_same<t_std, t_bit>::value ? #t_bit : #t_std; \
+        return std::is_same_v<t_std, t_bit> ? #t_bit : #t_std; \
     }
 
     DBG_MACRO_REGISTER_TYPE_ASSOC(unsigned char, uint8_t)
@@ -216,41 +213,41 @@ namespace dbg {
     DBG_MACRO_REGISTER_TYPE_ASSOC(int, int32_t)
     DBG_MACRO_REGISTER_TYPE_ASSOC(long, int64_t)
 
-    inline std::string get_type_name(type_tag<std::string>) {
+    inline std::string get_type_name(type_tag<std::string> /*unused*/) {
         return "std::string";
     }
 
     template <typename T>
-    typename std::enable_if<(std::rank<T>::value == 1), std::string>::type
-    get_array_dim() {
-        return "[" + std::to_string(std::extent<T>::value) + "]";
+    requires(std::rank_v<T> == 1)
+    std::string get_array_dim() {
+        return "[" + std::to_string(std::extent_v<T>) + "]";
     }
 
     template <typename T>
-    typename std::enable_if<(std::rank<T>::value > 1), std::string>::type
-    get_array_dim() {
-        return "[" + std::to_string(std::extent<T>::value) + "]" +
-               get_array_dim<typename std::remove_extent<T>::type>();
+    requires(std::rank_v<T> > 1)
+    std::string get_array_dim() {
+        return "[" + std::to_string(std::extent_v<T>) + "]" +
+               get_array_dim<std::remove_extent_t<T>>();
     }
 
     template <typename T>
-    typename std::enable_if<(std::rank<T>::value > 0), std::string>::type
-    get_type_name(type_tag<T>) {
-        return type_name<typename std::remove_all_extents<T>::type>() + get_array_dim<T>();
+    requires(std::rank_v<T> > 0)
+    std::string get_type_name(type_tag<T> /*unused*/) {
+        return type_name<std::remove_all_extents_t<T>>() + get_array_dim<T>();
     }
 
     template <typename T, size_t N>
-    std::string get_type_name(type_tag<std::array<T, N>>) {
+    std::string get_type_name(type_tag<std::array<T, N>> /*unused*/) {
         return "std::array<" + type_name<T>() + ", " + std::to_string(N) + ">";
     }
 
     template <typename T>
-    std::string get_type_name(type_tag<std::vector<T, std::allocator<T>>>) {
+    std::string get_type_name(type_tag<std::vector<T, std::allocator<T>>> /*unused*/) {
         return "std::vector<" + type_name<T>() + ">";
     }
 
     template <typename T1, typename T2>
-    std::string get_type_name(type_tag<std::pair<T1, T2>>) {
+    std::string get_type_name(type_tag<std::pair<T1, T2>> /*unused*/) {
         return "std::pair<" + type_name<T1>() + ", " + type_name<T2>() + ">";
     }
 
@@ -273,17 +270,16 @@ namespace dbg {
     }
 
     template <typename... T>
-    std::string get_type_name(type_tag<std::tuple<T...>>) {
+    std::string get_type_name(type_tag<std::tuple<T...>> /*unused*/) {
         return "std::tuple<" + type_list_to_string<T...>() + ">";
     }
 
     template <typename T>
-    inline std::string get_type_name(type_tag<print_formatted<T>>) {
+    inline std::string get_type_name(type_tag<print_formatted<T>> /*unused*/) {
         return type_name<T>();
     }
 
     // Implementation of 'is_detected' to specialize for container-like types
-
     namespace detail_detector {
 
         struct nonesuch {
@@ -362,8 +358,7 @@ namespace dbg {
 
         template <typename T>
         struct remove_cvref {
-            typedef typename std::remove_cv<typename std::remove_reference<T>::type>::type
-                type;
+            using type = std::remove_cv_t<std::remove_reference_t<T>>;
         };
 
         template <typename T>
@@ -384,17 +379,15 @@ namespace dbg {
                 is_detected<detect_begin_t, T>::value &&
                 is_detected<detect_end_t, T>::value &&
                 is_detected<detect_size_t, T>::value &&
-                !std::is_same<std::string, remove_cvref_t<T>>::value;
+                !std::is_same_v<std::string, remove_cvref_t<T>>;
         };
 
         template <typename T>
-        using detect_underlying_container_t =
-            typename remove_cvref_t<T>::container_type;
+        using detect_underlying_container_t = typename remove_cvref_t<T>::container_type;
 
         template <typename T>
         struct is_container_adapter {
-            static constexpr bool value =
-                is_detected<detect_underlying_container_t, T>::value;
+            static constexpr bool value = is_detected<detect_underlying_container_t, T>::value;
         };
 
         template <typename T>
@@ -416,12 +409,11 @@ namespace dbg {
     }
 
     // Forward declarations of "pretty_print"
+    template <typename T>
+    inline void pretty_print(std::ostream& stream, const T& value, std::true_type /*unused*/);
 
     template <typename T>
-    inline void pretty_print(std::ostream& stream, const T& value, std::true_type);
-
-    template <typename T>
-    inline void pretty_print(std::ostream&, const T&, std::false_type);
+    inline void pretty_print(std::ostream& /*unused*/, const T& /*unused*/, std::false_type /*unused*/);
 
     template <typename T>
     inline typename std::enable_if<
