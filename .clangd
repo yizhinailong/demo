@@ -30,4 +30,5 @@ Diagnostics:
         readability-convert-member-functions-to-static,
         cppcoreguidelines-avoid-magic-numbers,
         bugprone-exception-escape,
+        cppcoreguidelines-macro-usage,
       ]
