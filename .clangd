@@ -31,4 +31,5 @@ Diagnostics:
         cppcoreguidelines-avoid-magic-numbers,
         bugprone-exception-escape,
         cppcoreguidelines-macro-usage,
+        cppcoreguidelines-avoid-c-arrays,
       ]
