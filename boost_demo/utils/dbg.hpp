@@ -287,6 +287,8 @@ namespace dbg {
             ~nonesuch() = delete;
             nonesuch(nonesuch const&) = delete;
             void operator=(nonesuch const&) = delete;
+            nonesuch(nonesuch&&) = delete;
+            void operator=(nonesuch&&) = delete;
         };
 
         template <typename...>
@@ -429,8 +431,7 @@ namespace dbg {
     inline bool pretty_print(std::ostream& stream, P* const& value);
 
     template <typename T, typename Deleter>
-    inline bool pretty_print(std::ostream& stream,
-                             std::unique_ptr<T, Deleter>& value);
+    inline bool pretty_print(std::ostream& stream, std::unique_ptr<T, Deleter>& value);
 
     template <typename T>
     inline bool pretty_print(std::ostream& stream, std::shared_ptr<T>& value);
@@ -487,10 +488,8 @@ namespace dbg {
     pretty_print(std::ostream& stream, const Container& value);
 
     template <typename ContainerAdapter>
-    inline typename std::enable_if<
-        detail::is_container_adapter<const ContainerAdapter&>::value,
-        bool>::type
-    pretty_print(std::ostream& stream, ContainerAdapter value);
+    requires(detail::is_container_adapter<const ContainerAdapter&>::value)
+    inline bool pretty_print(std::ostream& stream, ContainerAdapter value);
 
     // Specializations of "pretty_print"
     template <typename T>
@@ -505,11 +504,11 @@ namespace dbg {
     }
 
     template <typename T>
-    inline typename std::enable_if<
+    inline std::enable_if_t<
         !detail::is_container<const T&>::value &&
             !detail::is_container_adapter<const T&>::value &&
             !std::is_enum<T>::value,
-        bool>::type
+        bool>
     pretty_print(std::ostream& stream, const T& value) {
         pretty_print(stream, value, typename detail::has_ostream_operator<const T&>::type{});
         return true;
