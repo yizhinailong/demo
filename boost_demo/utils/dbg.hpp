@@ -777,8 +777,8 @@ namespace dbg {
     }
 
     template <typename ContainerAdapter>
-    inline std::enable_if_t<detail::is_container_adapter<const ContainerAdapter&>::value, bool>
-    pretty_print(std::ostream& stream, ContainerAdapter value) {
+    requires(detail::is_container_adapter<const ContainerAdapter&>::value)
+    inline bool pretty_print(std::ostream& stream, ContainerAdapter value) {
         stream << "{";
         const size_t size = detail::size(value);
         const size_t n = std::min(size_t{ 10 }, size);
@@ -848,7 +848,7 @@ namespace dbg {
                     << "The number of arguments mismatch, please check unprotected comma"
                     << ansi(ANSI_RESET) << std::endl;
             }
-            return print_impl_loop(true, exprs.begin(), types.begin(), std::forward<T>(values)...);
+            return print_impl_loop(true, exprs, types, 0, std::forward<T>(values)...);
         }
 
     private:
@@ -884,18 +884,33 @@ namespace dbg {
         }
 
         template <typename T>
-        T&& print_impl_loop(bool opens_line, const expr_t* expr, const std::string* type, T&& value) {
-            return print_impl(opens_line, true, expr, type, std::forward<T>(value));
+        T&& print_impl_loop(bool opens_line,
+                            std::initializer_list<expr_t> exprs,
+                            std::initializer_list<std::string> types,
+                            size_t index,
+                            T&& value) {
+            const auto* expr_it = exprs.begin();
+            const auto* type_it = types.begin();
+            std::advance(expr_it, index);
+            std::advance(type_it, index);
+
+            return print_impl(opens_line, true, &(*expr_it), &(*type_it), std::forward<T>(value));
         }
 
         template <typename T, typename... U>
         auto print_impl_loop(bool opens_line,
-                             const expr_t* exprs,
-                             const std::string* types,
+                             std::initializer_list<expr_t> exprs,
+                             std::initializer_list<std::string> types,
+                             size_t index,
                              T&& value,
                              U&&... rest) -> last_t<T, U...> {
-            print_impl(opens_line, false, exprs, types, std::forward<T>(value));
-            return print_impl_loop(false, exprs + 1, types + 1, std::forward<U>(rest)...);
+            const auto* expr_it = exprs.begin();
+            const auto* type_it = types.begin();
+            std::advance(expr_it, index);
+            std::advance(type_it, index);
+
+            print_impl(opens_line, false, &(*expr_it), &(*type_it), std::forward<T>(value));
+            return print_impl_loop(false, exprs, types, index + 1, std::forward<U>(rest)...);
         }
 
         const char* ansi(const char* code) const {
