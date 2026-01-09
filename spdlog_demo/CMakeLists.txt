@@ -16,14 +16,6 @@ endmacro()
 # )
 # FetchContent_MakeAvailable(spdlog)
 
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CPM.cmake")
-    message(STATUS "Downloading CPM.cmake...")
-    file(DOWNLOAD
-        https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/get_cpm.cmake
-        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CPM.cmake"
-    )
-endif()
-
 include(cmake/CPM.cmake)
 CPMAddPackage("gh:gabime/spdlog@1.17.0")
 
