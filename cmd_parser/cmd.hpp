@@ -11,7 +11,9 @@
 #include <utility>
 #include <vector>
 
-#include <cxxabi.h>
+#if defined(__GNUC__) || defined(__clang__)
+    #include <cxxabi.h>
+#endif
 
 namespace cmdline {
     namespace detail {
@@ -66,11 +68,24 @@ namespace cmdline {
         }
 
         static inline std::string demangle(const std::string& name) {
+#if defined(__GNUC__) || defined(__clang__)
             int status = 0;
             char* p = abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status);
-            std::string ret(p);
+            std::string ret(p ? p : name);
             free(p);
             return ret;
+#elif defined(_MSC_VER)
+            // MSVC 的 typeid().name() 返回的已经是可读名称，去掉前缀
+            if (name.size() > 6 && name.substr(0, 6) == "class ") {
+                return name.substr(6);
+            }
+            if (name.size() > 7 && name.substr(0, 7) == "struct ") {
+                return name.substr(7);
+            }
+            return name;
+#else
+            return name;
+#endif
         }
 
         template <class T>
