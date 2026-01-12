@@ -1,6 +1,6 @@
-#include "cmd.hpp"
-
 #include <iostream>
+
+#include "cmd.hpp"
 
 int main(int argc, char* argv[]) {
     cmdline::parser args;

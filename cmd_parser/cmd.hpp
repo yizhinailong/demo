@@ -1,16 +1,17 @@
-#ifndef __CMD_HPP__
-#define __CMD_HPP__
+#pragma once
 
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
-#include <cxxabi.h>
 #include <iostream>
 #include <map>
 #include <sstream>
 #include <string>
 #include <typeinfo>
+#include <utility>
 #include <vector>
+
+#include <cxxabi.h>
 
 namespace cmdline {
     namespace detail {
@@ -66,7 +67,7 @@ namespace cmdline {
 
         static inline std::string demangle(const std::string& name) {
             int status = 0;
-            char* p = abi::__cxa_demangle(name.c_str(), 0, 0, &status);
+            char* p = abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status);
             std::string ret(p);
             free(p);
             return ret;
@@ -93,12 +94,13 @@ namespace cmdline {
 
     class cmdline_error : public std::exception {
     public:
-        cmdline_error(const std::string& msg)
-            : m_msg(msg) {}
+        explicit cmdline_error(std::string msg)
+            : m_msg(std::move(msg)) {}
 
-        ~cmdline_error() throw() {}
+        ~cmdline_error() noexcept {}
 
-        const char* what() const throw() {
+        [[nodiscard]]
+        const char* what() const noexcept override {
             return m_msg.c_str();
         }
 
@@ -168,15 +170,15 @@ namespace cmdline {
         parser() = default;
 
         ~parser() {
-            for (auto p = m_options.begin(); p != m_options.end(); p++) {
-                delete p->second;
+            for (auto& m_option : m_options) {
+                delete m_option.second;
             }
         }
 
         void add(const std::string& name,
                  char short_name = 0,
                  const std::string& desc = "") {
-            if (m_options.count(name)) {
+            if (m_options.count(name) != 0U) {
                 throw cmdline_error("multiple definition: " + name);
             }
             m_options[name] = new option_without_value(name, short_name, desc);
@@ -386,11 +388,9 @@ namespace cmdline {
                 }
             }
 
-            for (std::map<std::string, option_base*>::iterator p = m_options.begin();
-                 p != m_options.end();
-                 p++) {
-                if (!p->second->valid()) {
-                    m_errors.push_back("need option: --" + std::string(p->first));
+            for (auto& m_option : m_options) {
+                if (!m_option.second->valid()) {
+                    m_errors.push_back("need option: --" + std::string(m_option.first));
                 }
             }
 
@@ -688,5 +688,3 @@ namespace cmdline {
         std::vector<std::string> m_errors;
     };
 } // namespace cmdline
-
-#endif // __CMD_HPP__
