@@ -532,11 +532,14 @@ namespace cmdline {
 
         class option_without_value : public option_base {
         public:
-            option_without_value(const std::string& name,
-                                 char short_name,
-                                 const std::string& desc)
-                : m_nam(name), m_snam(short_name), m_desc(desc), m_has(false) {
-            }
+            option_without_value(
+                std::string name,
+                char short_name,
+                std::string desc)
+                : m_nam(std::move(name)),
+                  m_snam(short_name),
+                  m_desc(std::move(desc)),
+                  m_has(false) {}
 
             ~option_without_value() override = default;
 
