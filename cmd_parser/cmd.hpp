@@ -596,7 +596,12 @@ namespace cmdline {
                               bool need,
                               const T& def,
                               const std::string& desc)
-                : m_nam(name), m_snam(short_name), m_need(need), m_has(false), m_def(def), m_actual(def) {
+                : m_nam(name),
+                  m_snam(short_name),
+                  m_need(need),
+                  m_has(false),
+                  m_def(def),
+                  m_actual(def) {
                 this->m_desc = full_description(desc);
             }
 
