@@ -109,6 +109,10 @@ namespace cmdline {
             : m_msg(std::move(msg)) {}
 
         ~cmdline_error() noexcept = default;
+        cmdline_error(const cmdline_error&) = default;
+        cmdline_error& operator=(const cmdline_error&) = default;
+        cmdline_error(cmdline_error&&) noexcept = default;
+        cmdline_error& operator=(cmdline_error&&) noexcept = default;
 
         [[nodiscard]]
         auto what() const noexcept -> const char* override {
