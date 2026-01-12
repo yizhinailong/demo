@@ -629,10 +629,7 @@ namespace cmdline {
             }
 
             auto valid() const -> bool override {
-                if (m_need && !m_has) {
-                    return false;
-                }
-                return true;
+                return !m_need || m_has;
             }
 
             auto must() const -> bool override {
