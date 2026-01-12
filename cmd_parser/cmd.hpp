@@ -669,7 +669,7 @@ namespace cmdline {
             bool m_need;
             std::string m_desc;
 
-            bool m_has;
+            bool m_has{};
             T m_def;
             T m_actual;
         };
@@ -684,8 +684,8 @@ namespace cmdline {
                 const T def,
                 const std::string& desc,
                 F reader)
-                : option_with_value<T>(name, short_name, need, def, desc), m_reader(reader) {
-            }
+                : option_with_value<T>(name, short_name, need, def, desc),
+                  m_reader(reader) {}
 
         private:
             auto read(const std::string& s) -> T override {
