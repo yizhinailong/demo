@@ -478,7 +478,7 @@ namespace cmdline {
         }
 
     private:
-        auto check(int argc, bool ok) -> void {
+        auto check(int argc, bool ok) const -> void {
             if ((argc == 1 && !ok) || exist("help")) {
                 std::cerr << usage();
                 exit(0);
