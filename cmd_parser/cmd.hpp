@@ -322,20 +322,18 @@ namespace cmdline {
             }
 
             std::map<char, std::string> lookup;
-            for (std::map<std::string, option_base*>::iterator p = m_options.begin();
-                 p != m_options.end();
-                 p++) {
-                if (p->first.length() == 0) {
+            for (auto& m_option : m_options) {
+                if (m_option.first.length() == 0) {
                     continue;
                 }
-                char initial = p->second->short_name();
+                char initial = m_option.second->short_name();
                 if (initial) {
                     if (lookup.count(initial) > 0) {
                         lookup[initial] = "";
                         m_errors.push_back(std::string("short option '") + initial + "' is ambiguous");
                         return false;
                     } else {
-                        lookup[initial] = p->first;
+                        lookup[initial] = m_option.first;
                     }
                 }
             }
