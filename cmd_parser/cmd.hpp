@@ -526,13 +526,19 @@ namespace cmdline {
             virtual auto has_value() const -> bool = 0;
             virtual auto set() -> bool = 0;
             virtual auto set(const std::string& value) -> bool = 0;
+            [[nodiscard]]
             virtual auto has_set() const -> bool = 0;
+            [[nodiscard]]
             virtual auto valid() const -> bool = 0;
+            [[nodiscard]]
             virtual auto must() const -> bool = 0;
-
+            [[nodiscard]]
             virtual auto name() const -> const std::string& = 0;
+            [[nodiscard]]
             virtual auto short_name() const -> char = 0;
+            [[nodiscard]]
             virtual auto description() const -> const std::string& = 0;
+            [[nodiscard]]
             virtual auto short_description() const -> std::string = 0;
         };
 
