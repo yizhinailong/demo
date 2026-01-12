@@ -549,7 +549,7 @@ namespace cmdline {
                 return true;
             }
 
-            auto set(const std::string&) -> bool override {
+            auto set(const std::string& /*value*/) -> bool override {
                 return false;
             }
 
