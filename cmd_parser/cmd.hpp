@@ -314,7 +314,7 @@ namespace cmdline {
             m_others.clear();
 
             if (argc < 1) {
-                m_errors.push_back("argument number must be longer than 0");
+                m_errors.emplace_back("argument number must be longer than 0");
                 return false;
             }
             if (m_prog_name == "") {
@@ -327,14 +327,13 @@ namespace cmdline {
                     continue;
                 }
                 char initial = m_option.second->short_name();
-                if (initial) {
+                if (initial != 0) {
                     if (lookup.count(initial) > 0) {
                         lookup[initial] = "";
                         m_errors.push_back(std::string("short option '") + initial + "' is ambiguous");
                         return false;
-                    } else {
-                        lookup[initial] = m_option.first;
                     }
+                    lookup[initial] = m_option.first;
                 }
             }
 
