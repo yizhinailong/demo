@@ -306,7 +306,7 @@ namespace cmdline {
                 argv[i] = args[i].c_str();
             }
 
-            return parse(argc, &argv[0]);
+            return parse(argc, argv.data());
         }
 
         auto parse(int argc, const char* const argv[]) -> bool {
@@ -340,7 +340,7 @@ namespace cmdline {
             for (int i = 1; i < argc; i++) {
                 if (strncmp(argv[i], "--", 2) == 0) {
                     const char* p = strchr(argv[i] + 2, '=');
-                    if (p) {
+                    if (p != nullptr) {
                         std::string name(argv[i] + 2, p);
                         std::string val(p + 1);
                         set_option(name, val);
@@ -354,10 +354,9 @@ namespace cmdline {
                             if (i + 1 >= argc) {
                                 m_errors.push_back("option needs value: --" + name);
                                 continue;
-                            } else {
-                                i++;
-                                set_option(name, argv[i]);
                             }
+                            i++;
+                            set_option(name, argv[i]);
                         } else {
                             set_option(name);
                         }
@@ -396,7 +395,7 @@ namespace cmdline {
                         set_option(lookup[last]);
                     }
                 } else {
-                    m_others.push_back(argv[i]);
+                    m_others.emplace_back(argv[i]);
                 }
             }
 
@@ -410,21 +409,21 @@ namespace cmdline {
         }
 
         auto parse_check(const std::string& arg) -> void {
-            if (!m_options.count("help")) {
+            if (m_options.count("help") == 0U) {
                 add("help", '?', "print this message");
             }
             check(0, parse(arg));
         }
 
         auto parse_check(const std::vector<std::string>& args) -> void {
-            if (!m_options.count("help")) {
+            if (m_options.count("help") == 0U) {
                 add("help", '?', "print this message");
             }
             check(args.size(), parse(args));
         }
 
         auto parse_check(int argc, char* argv[]) -> void {
-            if (!m_options.count("help")) {
+            if (m_options.count("help") == 0U) {
                 add("help", '?', "print this message");
             }
             check(argc, parse(argc, argv));
@@ -459,7 +458,7 @@ namespace cmdline {
                 max_width = std::max(max_width, m_ordered[i]->name().length());
             }
             for (size_t i = 0; i < m_ordered.size(); i++) {
-                if (m_ordered[i]->short_name()) {
+                if (m_ordered[i]->short_name() != 0) {
                     oss << "  -" << m_ordered[i]->short_name() << ", ";
                 } else {
                     oss << "      ";
