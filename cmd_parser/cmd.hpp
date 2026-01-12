@@ -515,8 +515,14 @@ namespace cmdline {
 
         class option_base {
         public:
+            option_base() = default;
             virtual ~option_base() = default;
+            option_base(const option_base&) = delete;
+            option_base& operator=(const option_base&) = delete;
+            option_base(option_base&&) = delete;
+            option_base& operator=(option_base&&) = delete;
 
+            [[nodiscard]]
             virtual auto has_value() const -> bool = 0;
             virtual auto set() -> bool = 0;
             virtual auto set(const std::string& value) -> bool = 0;
