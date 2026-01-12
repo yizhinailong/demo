@@ -7,13 +7,8 @@
 #include <map>
 #include <sstream>
 #include <string>
-#include <typeinfo>
 #include <utility>
 #include <vector>
-
-#if defined(__GNUC__) || defined(__clang__)
-    #include <cxxabi.h>
-#endif
 
 namespace cmdline {
     namespace detail {
@@ -67,33 +62,34 @@ namespace cmdline {
             return lexical_cast_t<Target, Source, std::is_same<Target, Source>::value>::cast(arg);
         }
 
-        static inline std::string demangle(const std::string& name) {
-#if defined(__GNUC__) || defined(__clang__)
-            int status = 0;
-            char* p = abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status);
-            std::string ret(p ? p : name);
-            free(p);
-            return ret;
+        template <typename T>
+        constexpr std::string_view type_name_impl() {
+#if defined(__clang__)
+            constexpr std::string_view prefix = "[T = ";
+            constexpr std::string_view suffix = "]";
+            constexpr std::string_view func = __PRETTY_FUNCTION__;
+#elif defined(__GNUC__)
+            constexpr std::string_view prefix = "with T = ";
+            constexpr std::string_view suffix = "]";
+            constexpr std::string_view func = __PRETTY_FUNCTION__;
 #elif defined(_MSC_VER)
-            // MSVC 的 typeid().name() 返回的已经是可读名称，去掉前缀
-            if (name.size() > 6 && name.substr(0, 6) == "class ") {
-                return name.substr(6);
-            }
-            if (name.size() > 7 && name.substr(0, 7) == "struct ") {
-                return name.substr(7);
-            }
-            return name;
+            constexpr std::string_view prefix = "type_name_impl<";
+            constexpr std::string_view suffix = ">(void)";
+            constexpr std::string_view func = __FUNCSIG__;
 #else
-            return name;
+            return "unknown";
 #endif
+            auto start = func.find(prefix) + prefix.size();
+            auto end = func.rfind(suffix);
+            return func.substr(start, end - start);
         }
 
-        template <class T>
+        template <typename T>
         std::string readable_typename() {
-            return demangle(typeid(T).name());
+            return std::string(type_name_impl<T>());
         }
 
-        template <class T>
+        template <typename T>
         std::string default_value(T def) {
             return detail::lexical_cast<std::string>(def);
         }
@@ -123,14 +119,14 @@ namespace cmdline {
         std::string m_msg;
     };
 
-    template <class T>
+    template <typename T>
     struct default_reader {
         T operator()(const std::string& str) {
             return detail::lexical_cast<T>(str);
         }
     };
 
-    template <class T>
+    template <typename T>
     struct range_reader {
         range_reader(const T& low, const T& high)
             : low(low), high(high) {}
@@ -147,12 +143,12 @@ namespace cmdline {
         T low, high;
     };
 
-    template <class T>
+    template <typename T>
     range_reader<T> range(const T& low, const T& high) {
         return range_reader<T>(low, high);
     }
 
-    template <class T>
+    template <typename T>
     struct oneof_reader {
         T operator()(const std::string& s) {
             T ret = default_reader<T>()(s);
@@ -274,7 +270,7 @@ namespace cmdline {
                 if (arg[i] == '\\') {
                     i++;
                     if (i >= arg.length()) {
-                        m_errors.push_back("unexpected occurrence of '\\' at end of string");
+                        m_errors.emplace_back("unexpected occurrence of '\\' at end of string");
                         return false;
                     }
                 }
@@ -588,7 +584,7 @@ namespace cmdline {
             bool m_has;
         };
 
-        template <class T>
+        template <typename T>
         class option_with_value : public option_base {
         public:
             option_with_value(const std::string& name,
@@ -673,7 +669,7 @@ namespace cmdline {
             T m_actual;
         };
 
-        template <class T, class F>
+        template <typename T, class F>
         class option_with_value_with_reader : public option_with_value<T> {
         public:
             option_with_value_with_reader(const std::string& name,
