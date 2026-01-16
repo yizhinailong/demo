@@ -18,7 +18,8 @@ int main() {
                 std::this_thread::sleep_for(std::chrono::seconds(1));
                 std::cout << "world " << i << std::endl;
                 return i * i;
-            }));
+            })
+        );
     }
 
     for (auto&& result : results) {

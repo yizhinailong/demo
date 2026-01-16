@@ -50,7 +50,8 @@ inline ThreadPool::ThreadPool(size_t threads) {
                             lock,
                             [this]() -> bool {
                                 return this->_stop || !this->_tasks.empty();
-                            });
+                            }
+                        );
                         if (this->_stop && this->_tasks.empty()) {
                             return;
                         }
@@ -60,7 +61,8 @@ inline ThreadPool::ThreadPool(size_t threads) {
 
                     task();
                 }
-            });
+            }
+        );
     }
 }
 
@@ -72,7 +74,8 @@ auto ThreadPool::enqueue(F&& f, Args&&... args) -> std::future<std::invoke_resul
     auto task = std::make_shared<std::packaged_task<return_type()>>(
         [f = std::forward<F>(f), args...]() -> return_type {
             return std::invoke(f, args...);
-        });
+        }
+    );
 
     std::future<return_type> res = task->get_future();
     {
