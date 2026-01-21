@@ -12,3 +12,4 @@ out/
 zig-out/
 zigmod/
 .qtcreator/
+.sisyphus/
