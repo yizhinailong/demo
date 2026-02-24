@@ -69,7 +69,7 @@ Window {
             color: "dodgerblue"
             border.color: "black"
             border.width: 5
-            radius: 60
+            radius: 50
 
             Text {
                 id: textId
