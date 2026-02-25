@@ -36,6 +36,7 @@ Item {
             anchors.fill: parent
             onClicked: {
                 rootId.count++
+                console.log("notifier: " + rootId.count)
                 rootId.notify(rootId.count)
             }
         }

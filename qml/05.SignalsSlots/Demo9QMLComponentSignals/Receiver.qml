@@ -8,6 +8,7 @@ Item {
 
     function receiveInfo(count) {
         displayTextId.text = count
+        console.log("Receiver: " + count)
     }
 
     Rectangle {

@@ -9,12 +9,6 @@ Window {
     Notifier {
         id: notifierId
         rectColor: "yellowgreen"
-
-        /*
-        onNotify: count => {
-           console.log("Received: " + count)
-        }
-        */
         target: recieverId
     }
 
@@ -25,6 +19,7 @@ Window {
     }
 
     //Make the connection from notifer to receiver
+
 
     /*
     Component.onCompleted: {
