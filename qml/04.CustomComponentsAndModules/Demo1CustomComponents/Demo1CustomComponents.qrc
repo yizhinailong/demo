@@ -1,0 +1,7 @@
+<RCC>
+    <qresource>
+        <file>Demo1CustomComponents.qml</file>
+        <file>Demo1CustomComponents.qmlproject</file>
+        <file>MButton.qml</file>
+    </qresource>
+</RCC>
