@@ -27,7 +27,7 @@ qt_add_executable(appDemo3qt_add_resource
 
 # Method2
 qt_add_qml_module(appDemo3qt_add_resource
-    URI appDemo3qt_add_resource
+    URI Demo3qt_add_resource
     QML_FILES
         Main.qml
     RESOURCES
