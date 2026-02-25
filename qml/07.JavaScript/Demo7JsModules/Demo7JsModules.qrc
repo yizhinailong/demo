@@ -1,0 +1,7 @@
+<RCC>
+    <qresource>
+        <file>Demo7JsModules.qml</file>
+        <file>Demo7JsModules.qmlproject</file>
+        <file>JsModules.js</file>
+    </qresource>
+</RCC>
