@@ -1,0 +1,8 @@
+<RCC>
+    <qresource>
+        <file>Demo9QMLComponentSignals.qml</file>
+        <file>Demo9QMLComponentSignals.qmlproject</file>
+        <file>Notifier.qml</file>
+        <file>Receiver.qml</file>
+    </qresource>
+</RCC>
