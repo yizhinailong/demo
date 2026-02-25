@@ -1,0 +1,8 @@
+<RCC>
+    <qresource>
+        <file>Demo5JsIndirectImport.qml</file>
+        <file>Demo5JsIndirectImport.qmlproject</file>
+        <file>utilities1.js</file>
+        <file>utilities2.js</file>
+    </qresource>
+</RCC>
