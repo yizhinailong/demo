@@ -1,0 +1,7 @@
+<RCC>
+    <qresource>
+        <file>CustomElement.qml</file>
+        <file>Demo7FocusScope.qml</file>
+        <file>Demo7FocusScope.qmlproject</file>
+    </qresource>
+</RCC>
