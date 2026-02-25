@@ -1,0 +1,7 @@
+<RCC>
+    <qresource>
+        <file>Demo2BetterTextInput.qml</file>
+        <file>Demo2BetterTextInput.qmlproject</file>
+        <file>LabeledTextInput.qml</file>
+    </qresource>
+</RCC>
