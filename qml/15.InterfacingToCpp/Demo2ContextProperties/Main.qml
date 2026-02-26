@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import Demo2ContextProperties
 
 Window {
     width: 640

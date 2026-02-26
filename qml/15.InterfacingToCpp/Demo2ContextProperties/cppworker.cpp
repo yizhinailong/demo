@@ -1,9 +1,17 @@
 #include "cppworker.hpp"
 
 #include <QDebug>
+#include <QQmlEngine>
 
 CppWorker::CppWorker(QObject* parent)
     : QObject{ parent } {
+}
+
+CppWorker* CppWorker::create(QQmlEngine* qmlEngine, QJSEngine* jsEngine) {
+    Q_UNUSED(qmlEngine)
+    Q_UNUSED(jsEngine)
+    static CppWorker instance;
+    return &instance;
 }
 
 void CppWorker::RegisterMethod() {
@@ -16,5 +24,5 @@ QString CppWorker::RegisterMethodWithReturn(QString name, int age) {
 }
 
 void CppWorker::CppSlot() {
-    qDebug() << "This is talking, CppSlot is Called";
+    qDebug() << "This is C++ talking, CppSlot is Called";
 }
