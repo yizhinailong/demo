@@ -1,0 +1,7 @@
+<RCC>
+    <qresource>
+        <file>Demo20Drawer.qml</file>
+        <file>Demo20Drawer.qmlproject</file>
+        <file>images/drawer.png</file>
+    </qresource>
+</RCC>
