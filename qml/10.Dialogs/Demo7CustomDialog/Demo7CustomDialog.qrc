@@ -1,0 +1,7 @@
+<RCC>
+    <qresource>
+        <file>Demo7CustomDialog.qml</file>
+        <file>Demo7CustomDialog.qmlproject</file>
+        <file>images/LearnQtLogo.png</file>
+    </qresource>
+</RCC>
