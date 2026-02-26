@@ -1,0 +1,9 @@
+<RCC>
+    <qresource>
+        <file>Demo10SwipeViewPageIndicator.qml</file>
+        <file>Demo10SwipeViewPageIndicator.qmlproject</file>
+        <file>images/1.png</file>
+        <file>images/2.png</file>
+        <file>images/3.png</file>
+    </qresource>
+</RCC>
