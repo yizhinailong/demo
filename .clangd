@@ -32,4 +32,5 @@ Diagnostics:
         bugprone-exception-escape,
         cppcoreguidelines-macro-usage,
         cppcoreguidelines-avoid-c-arrays,
+        cppcoreguidelines-special-member-functions,
       ]
