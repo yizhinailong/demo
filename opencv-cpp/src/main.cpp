@@ -7,115 +7,121 @@ constexpr int INPUT_SIZE = 640;
 constexpr float CONF_THRESHOLD = 0.25F;
 constexpr float NMS_THRESHOLD = 0.45F;
 
-struct Detection {
-    int class_id;
-    float confidence;
-    cv::Rect bbox;
-};
+namespace {
 
-static const std::vector<std::string> COCO_CLASSES = {
-    "person",
-    "bicycle",
-    "car",
-    "motorcycle",
-    "airplane",
-    "bus",
-    "train",
-    "truck",
-    "boat",
-    "traffic light",
-    "fire hydrant",
-    "stop sign",
-    "parking meter",
-    "bench",
-    "bird",
-    "cat",
-    "dog",
-    "horse",
-    "sheep",
-    "cow",
-    "elephant",
-    "bear",
-    "zebra",
-    "giraffe",
-    "backpack",
-    "umbrella",
-    "handbag",
-    "tie",
-    "suitcase",
-    "frisbee",
-    "skis",
-    "snowboard",
-    "sports ball",
-    "kite",
-    "baseball bat",
-    "baseball glove",
-    "skateboard",
-    "surfboard",
-    "tennis racket",
-    "bottle",
-    "wine glass",
-    "cup",
-    "fork",
-    "knife",
-    "spoon",
-    "bowl",
-    "banana",
-    "apple",
-    "sandwich",
-    "orange",
-    "broccoli",
-    "carrot",
-    "hot dog",
-    "pizza",
-    "donut",
-    "cake",
-    "chair",
-    "couch",
-    "potted plant",
-    "bed",
-    "dining table",
-    "toilet",
-    "tv",
-    "laptop",
-    "mouse",
-    "remote",
-    "keyboard",
-    "cell phone",
-    "microwave",
-    "oven",
-    "toaster",
-    "sink",
-    "refrigerator",
-    "book",
-    "clock",
-    "vase",
-    "scissors",
-    "teddy bear",
-    "hair drier",
-    "toothbrush"
-};
+    struct Detection {
+        int class_id;
+        float confidence;
+        cv::Rect bbox;
+    };
 
-static auto draw(cv::Mat& img, const std::vector<Detection>& dets) -> void {
-    std::ranges::for_each(dets, [&](const Detection& d) {
-        if (d.class_id < 0 || d.class_id >= static_cast<int>(COCO_CLASSES.size())) {
-            return;
-        }
-        cv::rectangle(img, d.bbox, { 0, 255, 0 }, 2);
-        std::string label = std::format("{}: {:.2f}", COCO_CLASSES[d.class_id], d.confidence);
-        int baseline = 0;
-        auto sz = cv::getTextSize(label, cv::FONT_HERSHEY_SIMPLEX, 0.6, 1, &baseline);
-        int top = std::max(d.bbox.y, sz.height);
-        cv::rectangle(
-            img,
-            { d.bbox.x, top - sz.height },
-            { d.bbox.x + sz.width, top + baseline },
-            { 0, 255, 0 },
-            cv::FILLED
-        );
-        cv::putText(img, label, { d.bbox.x, top }, cv::FONT_HERSHEY_SIMPLEX, 0.6, { 0, 0, 0 }, 1);
-    });
-}
+    auto coco_classes() -> const std::vector<std::string>& {
+        static const std::vector<std::string> classes = {
+            "person",
+            "bicycle",
+            "car",
+            "motorcycle",
+            "airplane",
+            "bus",
+            "train",
+            "truck",
+            "boat",
+            "traffic light",
+            "fire hydrant",
+            "stop sign",
+            "parking meter",
+            "bench",
+            "bird",
+            "cat",
+            "dog",
+            "horse",
+            "sheep",
+            "cow",
+            "elephant",
+            "bear",
+            "zebra",
+            "giraffe",
+            "backpack",
+            "umbrella",
+            "handbag",
+            "tie",
+            "suitcase",
+            "frisbee",
+            "skis",
+            "snowboard",
+            "sports ball",
+            "kite",
+            "baseball bat",
+            "baseball glove",
+            "skateboard",
+            "surfboard",
+            "tennis racket",
+            "bottle",
+            "wine glass",
+            "cup",
+            "fork",
+            "knife",
+            "spoon",
+            "bowl",
+            "banana",
+            "apple",
+            "sandwich",
+            "orange",
+            "broccoli",
+            "carrot",
+            "hot dog",
+            "pizza",
+            "donut",
+            "cake",
+            "chair",
+            "couch",
+            "potted plant",
+            "bed",
+            "dining table",
+            "toilet",
+            "tv",
+            "laptop",
+            "mouse",
+            "remote",
+            "keyboard",
+            "cell phone",
+            "microwave",
+            "oven",
+            "toaster",
+            "sink",
+            "refrigerator",
+            "book",
+            "clock",
+            "vase",
+            "scissors",
+            "teddy bear",
+            "hair drier",
+            "toothbrush"
+        };
+        return classes;
+    }
+
+    auto draw(cv::Mat& img, const std::vector<Detection>& dets) -> void {
+        std::ranges::for_each(dets, [&](const Detection& d) {
+            if (d.class_id < 0 || d.class_id >= static_cast<int>(coco_classes().size())) {
+                return;
+            }
+            cv::rectangle(img, d.bbox, { 0, 255, 0 }, 2);
+            std::string label = std::format("{}: {:.2f}", coco_classes()[d.class_id], d.confidence);
+            int baseline = 0;
+            auto sz = cv::getTextSize(label, cv::FONT_HERSHEY_SIMPLEX, 0.6, 1, &baseline);
+            int top = std::max(d.bbox.y, sz.height);
+            cv::rectangle(
+                img,
+                { d.bbox.x, top - sz.height },
+                { d.bbox.x + sz.width, top + baseline },
+                { 0, 255, 0 },
+                cv::FILLED
+            );
+            cv::putText(img, label, { d.bbox.x, top }, cv::FONT_HERSHEY_SIMPLEX, 0.6, { 0, 0, 0 }, 1);
+        });
+    }
+} // namespace
 
 auto main() -> int {
     // Load model
@@ -203,7 +209,7 @@ auto main() -> int {
     for (const auto& d : detections) {
         std::println(
             "  {} ({:.2f}): [{}, {}, {}, {}]",
-            COCO_CLASSES[d.class_id],
+            coco_classes()[d.class_id],
             d.confidence,
             d.bbox.x,
             d.bbox.y,
