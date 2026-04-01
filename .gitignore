@@ -13,3 +13,4 @@ zig-out/
 zigmod/
 .qtcreator/
 .sisyphus/
+*.onnx
