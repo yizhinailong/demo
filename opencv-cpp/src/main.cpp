@@ -4,8 +4,8 @@
 import std;
 
 constexpr int INPUT_SIZE = 640;
-constexpr float CONF_THRESHOLD = 0.25f;
-constexpr float NMS_THRESHOLD = 0.45f;
+constexpr float CONF_THRESHOLD = 0.25F;
+constexpr float NMS_THRESHOLD = 0.45F;
 
 struct Detection {
     int class_id;
@@ -96,7 +96,7 @@ static const std::vector<std::string> COCO_CLASSES = {
     "toothbrush"
 };
 
-auto draw(cv::Mat& img, const std::vector<Detection>& dets) -> void {
+static auto draw(cv::Mat& img, const std::vector<Detection>& dets) -> void {
     std::ranges::for_each(dets, [&](const Detection& d) {
         if (d.class_id < 0 || d.class_id >= static_cast<int>(COCO_CLASSES.size())) {
             return;
@@ -174,8 +174,8 @@ auto main() -> int {
         float w = out.at<float>(0, 2, i);
         float h = out.at<float>(0, 3, i);
 
-        int left = static_cast<int>((cx - w / 2) * x_scale);
-        int top = static_cast<int>((cy - h / 2) * y_scale);
+        int left = static_cast<int>((cx - (w / 2)) * x_scale);
+        int top = static_cast<int>((cy - (h / 2)) * y_scale);
         int width = static_cast<int>(w * x_scale);
         int height = static_cast<int>(h * y_scale);
 
@@ -194,8 +194,9 @@ auto main() -> int {
     cv::dnn::NMSBoxes(boxes, confs, CONF_THRESHOLD, NMS_THRESHOLD, indices);
 
     std::vector<Detection> detections;
+    detections.reserve(indices.size());
     for (int idx : indices) {
-        detections.push_back({ cls_ids[idx], confs[idx], boxes[idx] });
+        detections.push_back({ .class_id = cls_ids[idx], .confidence = confs[idx], .bbox = boxes[idx] });
     }
 
     std::println("Detected {} objects:", detections.size());
