@@ -153,9 +153,9 @@ AlignConsecutiveBitFields:
 #—————————————————————————————————————8————————————————————————————————————————————————————#
 #连续声明对齐
 AlignConsecutiveDeclarations:
-  Enabled: false
+  Enabled: true
   AcrossEmptyLines: false
-  AcrossComments: false
+  AcrossComments: true
   #该属性未启用
   AlignCompound: false
   #该属性未启用
