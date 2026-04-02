@@ -15,7 +15,7 @@ namespace {
         cv::Rect bbox;
     };
 
-    auto coco_classes() -> const std::vector<std::string>& {
+    const auto& coco_classes() {
         static const std::vector<std::string> classes = {
             "person",
             "bicycle",
@@ -101,13 +101,14 @@ namespace {
         return classes;
     }
 
-    auto draw(cv::Mat& img, const std::vector<Detection>& dets) -> void {
-        std::ranges::for_each(dets, [&](const Detection& d) {
-            if (d.class_id < 0 || d.class_id >= static_cast<int>(coco_classes().size())) {
-                return;
+    void draw(cv::Mat& img, const std::vector<Detection>& dets) {
+        const auto& classes = coco_classes();
+        for (const auto& d : dets) {
+            if (d.class_id < 0 || d.class_id >= static_cast<int>(classes.size())) {
+                continue;
             }
             cv::rectangle(img, d.bbox, { 0, 255, 0 }, 2);
-            std::string label = std::format("{}: {:.2f}", coco_classes()[d.class_id], d.confidence);
+            auto label = std::format("{}: {:.2f}", classes[d.class_id], d.confidence);
             int baseline = 0;
             auto sz = cv::getTextSize(label, cv::FONT_HERSHEY_SIMPLEX, 0.6, 1, &baseline);
             int top = std::max(d.bbox.y, sz.height);
@@ -119,11 +120,11 @@ namespace {
                 cv::FILLED
             );
             cv::putText(img, label, { d.bbox.x, top }, cv::FONT_HERSHEY_SIMPLEX, 0.6, { 0, 0, 0 }, 1);
-        });
+        }
     }
 } // namespace
 
-auto main() -> int {
+int main() {
     // Load model
     auto net = cv::dnn::readNetFromONNX("data/yolo26n.onnx");
     net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
@@ -160,9 +161,9 @@ auto main() -> int {
     std::vector<int> cls_ids;
 
     for (int i = 0; i < num_preds; ++i) {
-        // Find best class
-        float best_score = 0;
+        // Find best class using ranges
         int best_cls = 0;
+        float best_score = 0;
         for (int c = 0; c < num_classes; ++c) {
             float s = out.at<float>(0, 4 + c, i);
             if (s > best_score) {
@@ -175,20 +176,15 @@ auto main() -> int {
         }
 
         // cx, cy, w, h -> x, y, w, h (scaled to original image)
-        float cx = out.at<float>(0, 0, i);
-        float cy = out.at<float>(0, 1, i);
-        float w = out.at<float>(0, 2, i);
-        float h = out.at<float>(0, 3, i);
+        const float cx = out.at<float>(0, 0, i);
+        const float cy = out.at<float>(0, 1, i);
+        const float w = out.at<float>(0, 2, i);
+        const float h = out.at<float>(0, 3, i);
 
-        int left = static_cast<int>((cx - (w / 2)) * x_scale);
-        int top = static_cast<int>((cy - (h / 2)) * y_scale);
-        int width = static_cast<int>(w * x_scale);
-        int height = static_cast<int>(h * y_scale);
-
-        left = std::clamp(left, 0, orig_w - 1);
-        top = std::clamp(top, 0, orig_h - 1);
-        width = std::min(width, orig_w - left);
-        height = std::min(height, orig_h - top);
+        const int left = std::clamp(static_cast<int>((cx - (w / 2)) * x_scale), 0, orig_w - 1);
+        const int top = std::clamp(static_cast<int>((cy - (h / 2)) * y_scale), 0, orig_h - 1);
+        const int width = std::min(static_cast<int>(w * x_scale), orig_w - left);
+        const int height = std::min(static_cast<int>(h * y_scale), orig_h - top);
 
         boxes.emplace_back(left, top, width, height);
         confs.push_back(best_score);
