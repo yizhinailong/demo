@@ -122,97 +122,106 @@ namespace {
             cv::putText(img, label, { d.bbox.x, top }, cv::FONT_HERSHEY_SIMPLEX, 0.6, { 0, 0, 0 }, 1);
         }
     }
+
+    cv::dnn::Net load_model(const std::string& path) {
+        auto net = cv::dnn::readNetFromONNX(path);
+        net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
+        net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
+        return net;
+    }
+
+    std::vector<Detection> detect(cv::dnn::Net& net, const cv::Mat& image) {
+        const int orig_w = image.cols;
+        const int orig_h = image.rows;
+
+        cv::Mat blob = cv::dnn::blobFromImage(image, 1.0 / 255.0, { INPUT_SIZE, INPUT_SIZE }, {}, true, false);
+        net.setInput(blob);
+
+        std::vector<cv::Mat> outputs;
+        net.forward(outputs, net.getUnconnectedOutLayersNames());
+
+        // YOLOv8/v11 output: [1, 4+num_classes, num_predictions]
+        auto& out = outputs[0];
+        const int num_preds = out.size[2];
+        const int num_classes = out.size[1] - 4;
+
+        const float x_scale = static_cast<float>(orig_w) / INPUT_SIZE;
+        const float y_scale = static_cast<float>(orig_h) / INPUT_SIZE;
+
+        std::vector<cv::Rect> boxes;
+        std::vector<float> confs;
+        std::vector<int> cls_ids;
+
+        for (int i = 0; i < num_preds; ++i) {
+            int best_cls = 0;
+            float best_score = 0;
+            for (int c = 0; c < num_classes; ++c) {
+                float s = out.at<float>(0, 4 + c, i);
+                if (s > best_score) {
+                    best_score = s;
+                    best_cls = c;
+                }
+            }
+            if (best_score < CONF_THRESHOLD) {
+                continue;
+            }
+
+            const float cx = out.at<float>(0, 0, i);
+            const float cy = out.at<float>(0, 1, i);
+            const float w = out.at<float>(0, 2, i);
+            const float h = out.at<float>(0, 3, i);
+
+            const int left = std::clamp(static_cast<int>((cx - (w / 2)) * x_scale), 0, orig_w - 1);
+            const int top = std::clamp(static_cast<int>((cy - (h / 2)) * y_scale), 0, orig_h - 1);
+            const int width = std::min(static_cast<int>(w * x_scale), orig_w - left);
+            const int height = std::min(static_cast<int>(h * y_scale), orig_h - top);
+
+            boxes.emplace_back(left, top, width, height);
+            confs.push_back(best_score);
+            cls_ids.push_back(best_cls);
+        }
+
+        // NMS
+        std::vector<int> indices;
+        cv::dnn::NMSBoxes(boxes, confs, CONF_THRESHOLD, NMS_THRESHOLD, indices);
+
+        std::vector<Detection> detections;
+        detections.reserve(indices.size());
+        for (int idx : indices) {
+            detections.push_back({ .class_id = cls_ids[idx], .confidence = confs[idx], .bbox = boxes[idx] });
+        }
+        return detections;
+    }
+
+    void print_results(const std::vector<Detection>& detections) {
+        const auto& classes = coco_classes();
+        std::println("Detected {} objects:", detections.size());
+        for (const auto& d : detections) {
+            std::println(
+                "  {} ({:.2f}): [{}, {}, {}, {}]",
+                classes[d.class_id],
+                d.confidence,
+                d.bbox.x,
+                d.bbox.y,
+                d.bbox.width,
+                d.bbox.height
+            );
+        }
+    }
+
 } // namespace
 
 int main() {
-    // Load model
-    auto net = cv::dnn::readNetFromONNX("data/yolo26n.onnx");
-    net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
-    net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
+    auto net = load_model("data/yolo26n.onnx");
 
-    // Load image
     cv::Mat image = cv::imread("data/bus.jpg");
     if (image.empty()) {
         std::println("Failed to load image.");
         return -1;
     }
-    const int orig_w = image.cols;
-    const int orig_h = image.rows;
 
-    // Create blob: resize to 640x640, normalize to [0,1], BGR->RGB
-    cv::Mat blob = cv::dnn::blobFromImage(image, 1.0 / 255.0, { INPUT_SIZE, INPUT_SIZE }, {}, true, false);
-    net.setInput(blob);
-
-    // Forward
-    std::vector<cv::Mat> outputs;
-    net.forward(outputs, net.getUnconnectedOutLayersNames());
-
-    // YOLOv8/v11 output: [1, 4+num_classes, num_predictions]
-    auto& out = outputs[0];
-    const int num_channels = out.size[1];
-    const int num_preds = out.size[2];
-    const int num_classes = num_channels - 4;
-
-    const float x_scale = static_cast<float>(orig_w) / INPUT_SIZE;
-    const float y_scale = static_cast<float>(orig_h) / INPUT_SIZE;
-
-    std::vector<cv::Rect> boxes;
-    std::vector<float> confs;
-    std::vector<int> cls_ids;
-
-    for (int i = 0; i < num_preds; ++i) {
-        // Find best class using ranges
-        int best_cls = 0;
-        float best_score = 0;
-        for (int c = 0; c < num_classes; ++c) {
-            float s = out.at<float>(0, 4 + c, i);
-            if (s > best_score) {
-                best_score = s;
-                best_cls = c;
-            }
-        }
-        if (best_score < CONF_THRESHOLD) {
-            continue;
-        }
-
-        // cx, cy, w, h -> x, y, w, h (scaled to original image)
-        const float cx = out.at<float>(0, 0, i);
-        const float cy = out.at<float>(0, 1, i);
-        const float w = out.at<float>(0, 2, i);
-        const float h = out.at<float>(0, 3, i);
-
-        const int left = std::clamp(static_cast<int>((cx - (w / 2)) * x_scale), 0, orig_w - 1);
-        const int top = std::clamp(static_cast<int>((cy - (h / 2)) * y_scale), 0, orig_h - 1);
-        const int width = std::min(static_cast<int>(w * x_scale), orig_w - left);
-        const int height = std::min(static_cast<int>(h * y_scale), orig_h - top);
-
-        boxes.emplace_back(left, top, width, height);
-        confs.push_back(best_score);
-        cls_ids.push_back(best_cls);
-    }
-
-    // NMS
-    std::vector<int> indices;
-    cv::dnn::NMSBoxes(boxes, confs, CONF_THRESHOLD, NMS_THRESHOLD, indices);
-
-    std::vector<Detection> detections;
-    detections.reserve(indices.size());
-    for (int idx : indices) {
-        detections.push_back({ .class_id = cls_ids[idx], .confidence = confs[idx], .bbox = boxes[idx] });
-    }
-
-    std::println("Detected {} objects:", detections.size());
-    for (const auto& d : detections) {
-        std::println(
-            "  {} ({:.2f}): [{}, {}, {}, {}]",
-            coco_classes()[d.class_id],
-            d.confidence,
-            d.bbox.x,
-            d.bbox.y,
-            d.bbox.width,
-            d.bbox.height
-        );
-    }
+    auto detections = detect(net, image);
+    print_results(detections);
 
     draw(image, detections);
     cv::imshow("YOLO Detection", image);
