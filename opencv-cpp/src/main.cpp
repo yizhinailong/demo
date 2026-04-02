@@ -131,7 +131,7 @@ namespace {
     }
 
     // 从 ONNX 文件加载 YOLO 模型，使用 OpenCV 后端在 CPU 上运行
-    cv::dnn::Net load_model(const std::string& path) {
+    auto load_model(const std::string& path) -> cv::dnn::Net {
         auto net = cv::dnn::readNetFromONNX(path);
         net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
         net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
@@ -139,7 +139,7 @@ namespace {
     }
 
     // 执行目标检测：预处理图像、模型推理、后处理（含 NMS）
-    std::vector<Detection> detect(cv::dnn::Net& net, const cv::Mat& image) {
+    auto detect(cv::dnn::Net& net, const cv::Mat& image) -> std::vector<Detection> {
         const int orig_w = image.cols;
         const int orig_h = image.rows;
 
