@@ -211,7 +211,7 @@ namespace {
     }
 
     // 在终端打印检测结果：类别名称、置信度和边界框坐标
-    void print_results(const std::vector<Detection>& detections) {
+    auto print_results(const std::vector<Detection>& detections) -> void {
         const auto& classes = coco_classes();
         std::println("Detected {} objects:", detections.size());
         for (const auto& d : detections) {
