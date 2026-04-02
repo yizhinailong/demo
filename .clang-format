@@ -67,7 +67,7 @@ AlignArrayOfStructures: Right
 #AlignConsecutiveAssignments 对齐连续赋值
 AlignConsecutiveAssignments:
   #是否启用 true/false
-  Enabled: false
+  Enabled: true
 
   #可以跨越空白行进行对齐
   AcrossEmptyLines: true
