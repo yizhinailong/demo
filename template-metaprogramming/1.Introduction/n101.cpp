@@ -64,9 +64,9 @@ namespace n101 {
         int operator[](std::size_t const index) const;
 
     private:
-        int*        data_;
-        std::size_t size_;
-        std::size_t capacity_;
+        int*        m_data;
+        std::size_t m_size;
+        std::size_t m_capacity;
     };
 
     constexpr char     NewLine    = '\n';
