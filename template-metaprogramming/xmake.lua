@@ -13,3 +13,4 @@ function create_targets_for_cpp_files(directory)
 end
 
 create_targets_for_cpp_files("1.Introduction")
+create_targets_for_cpp_files("2.TemplateFundamentals")
