@@ -59,9 +59,9 @@ namespace n102 {
         T operator[](std::size_t const index) const;
 
     private:
-        T*          data_;
-        std::size_t size_;
-        std::size_t capacity_;
+        T*          m_data;
+        std::size_t m_size;
+        std::size_t m_capacity;
     };
 
     template <typename T>
