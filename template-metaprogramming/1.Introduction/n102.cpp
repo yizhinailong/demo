@@ -2,21 +2,21 @@ import std;
 
 namespace n102 {
     template <typename T>
-    T max(T const a, T const b) {
+    auto max(T const a, T const b) -> T {
         return a > b ? a : b;
     }
 
     struct foo {};
 
     template <typename T>
-    void swap(T* a, T* b) {
+    auto swap(T* a, T* b) -> void {
         T t = *a;
         *a  = *b;
         *b  = t;
     }
 
     template <typename T>
-    int partition(T arr[], int const low, int const high) {
+    auto partition(T arr[], int const low, int const high) -> int {
         T   pivot = arr[high];
         int i     = (low - 1);
 
@@ -33,7 +33,7 @@ namespace n102 {
     }
 
     template <typename T>
-    void quicksort(T arr[], int const low, int const high) {
+    auto quicksort(T arr[], int const low, int const high) -> void {
         if (low < high) {
             int const pi = partition(arr, low, high);
             quicksort(arr, low, pi - 1);
@@ -45,18 +45,18 @@ namespace n102 {
     struct vector {
         vector();
 
-        std::size_t size() const;
-        std::size_t capacity() const;
-        bool        empty() const;
+        auto size() const -> std::size_t;
+        auto capacity() const -> std::size_t;
+        auto empty() const -> bool;
 
-        void clear();
-        void resize(std::size_t const size);
+        auto clear() -> void;
+        auto resize(std::size_t const size) -> void;
 
-        void push_back(T value);
-        void pop_back();
+        auto push_back(T value) -> void;
+        auto pop_back() -> void;
 
-        T at(std::size_t const index) const;
-        T operator[](std::size_t const index) const;
+        auto at(std::size_t const index) const -> T;
+        auto operator[](std::size_t const index) const -> T;
 
     private:
         T*          m_data;
@@ -68,7 +68,7 @@ namespace n102 {
     constexpr T NewLine = T('\n');
 } // namespace n102
 
-int main() {
+auto main() -> int {
     {
         using namespace n102;
 

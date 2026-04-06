@@ -1,18 +1,18 @@
 import std;
 
 namespace n101 {
-    int max(int const a, int const b) {
+    auto max(int const a, int const b) -> int {
         return a > b ? a : b;
     }
 
-    double max(double const a, double const b) {
+    auto max(double const a, double const b) -> double {
         return a > b ? a : b;
     }
 
-    using swap_fn    = void (*)(void*, int const, int const);
-    using compare_fn = bool (*)(void*, int const, int const);
+    using swap_fn    = auto (*)(void*, int const, int const) -> void;
+    using compare_fn = auto (*)(void*, int const, int const) -> bool;
 
-    int partition(void* arr, int const low, int const high, compare_fn fcomp, swap_fn fswap) {
+    auto partition(void* arr, int const low, int const high, compare_fn fcomp, swap_fn fswap) -> int {
         int i = low - 1;
 
         for (int j = low; j <= high - 1; j++) {
@@ -27,7 +27,7 @@ namespace n101 {
         return i + 1;
     }
 
-    void quicksort(void* arr, int const low, int const high, compare_fn fcomp, swap_fn fswap) {
+    auto quicksort(void* arr, int const low, int const high, compare_fn fcomp, swap_fn fswap) -> void {
         if (low < high) {
             int const pi = partition(arr, low, high, fcomp, fswap);
             quicksort(arr, low, pi - 1, fcomp, fswap);
@@ -35,14 +35,14 @@ namespace n101 {
         }
     }
 
-    void swap_int(void* arr, int const i, int const j) {
+    auto swap_int(void* arr, int const i, int const j) -> void {
         int* iarr = (int*)arr;
         int  t    = iarr[i];
         iarr[i]   = iarr[j];
         iarr[j]   = t;
     }
 
-    bool less_int(void* arr, int const i, int const j) {
+    auto less_int(void* arr, int const i, int const j) -> bool {
         int* iarr = (int*)arr;
         return iarr[i] <= iarr[j];
     }
@@ -50,18 +50,18 @@ namespace n101 {
     struct int_vector {
         int_vector();
 
-        std::size_t size() const;
-        std::size_t capacity() const;
-        bool        empty() const;
+        auto size() const -> std::size_t;
+        auto capacity() const -> std::size_t;
+        auto empty() const -> bool;
 
-        void clear();
-        void resize(std::size_t const size);
+        auto clear() -> void;
+        auto resize(std::size_t const size) -> void;
 
-        void push_back(int value);
-        void pop_back();
+        auto push_back(int value) -> void;
+        auto pop_back() -> void;
 
-        int at(std::size_t const index) const;
-        int operator[](std::size_t const index) const;
+        auto at(std::size_t const index) const -> int;
+        auto operator[](std::size_t const index) const -> int;
 
     private:
         int*        m_data;
@@ -76,7 +76,7 @@ namespace n101 {
     constexpr char32_t NewLineU32 = U'\n';
 } // namespace n101
 
-int main() {
+auto main() -> int {
     {
         using namespace n101;
 
