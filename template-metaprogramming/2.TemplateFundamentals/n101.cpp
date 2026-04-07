@@ -2,7 +2,7 @@ import std;
 
 auto main() -> int {
 
-    std::println("hello temoplate fundamentals.");
+    std::println("hello template fundamentals.");
 
     return 0;
 }
