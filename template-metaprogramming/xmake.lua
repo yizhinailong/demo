@@ -21,7 +21,18 @@ create_targets_for_cpp_files("1.Introduction")
 create_targets_for_cpp_files("2.TemplateFundamentals")
 
 table.sort(all_targets)
+
 if #all_targets > 0 then
-    target(all_targets[#all_targets])
+    local last_target = all_targets[#all_targets]
+    target("all")
+        set_kind("phony")
         set_default(true)
+        for _, t in ipairs(all_targets) do
+            add_deps(t)
+        end
+        on_run(function(target)
+            import("core.project.project")
+            local t = project.target(last_target)
+            os.exec(t:targetfile())
+        end)
 end
