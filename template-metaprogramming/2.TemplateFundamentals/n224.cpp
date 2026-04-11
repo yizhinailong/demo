@@ -13,5 +13,11 @@ namespace n224 {
 } // namespace n224
 
 auto main() -> int {
+    {
+        using namespace n224;
+
+        button<int> ptr;
+        show(&ptr);
+    }
     return 0;
 }
