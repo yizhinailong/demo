@@ -6,6 +6,9 @@ namespace n218 {
 
     // template <typename T = int, typename U> // error
     // class bar {};
+
+    template <typename T = int, typename U>
+    auto func() -> void {}
 } // namespace n218
 
 auto main() -> int {
