@@ -38,6 +38,9 @@ auto main() -> int {
         collection<char, 10>{}();
         collection<int, 100>{}();
         collection<char*, 100>{}();
+
+        // collection<int, 10>{}(); // error
+        // collection<char*, 10>{}(); // error
     }
     return 0;
 }
