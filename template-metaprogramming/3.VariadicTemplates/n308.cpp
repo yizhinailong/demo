@@ -12,7 +12,7 @@ auto main() -> int {
         using namespace n308;
 
         auto sizes = get_type_sizes<int, float, double, long long>();
-        for (auto& s : sizes) {
+        for (auto const& s : sizes) {
             std::println("{}", s);
         }
     }
