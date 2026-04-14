@@ -20,6 +20,7 @@ end
 create_targets_for_cpp_files("1.Introduction")
 create_targets_for_cpp_files("2.TemplateFundamentals")
 create_targets_for_cpp_files("3.VariadicTemplates")
+create_targets_for_cpp_files("4.AdvancedTemplateConcepts")
 
 table.sort(all_targets)
 
