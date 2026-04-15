@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://json.schemastore.org/clangd
+
+CompileFlags:
+  Remove:
+    - -rdc=true
+    - -gencode*
+    - -G
+    - -Xcompiler*
+    - -FS
+    - -Zi
+    - -Fd*
+  Add:
+    - --cuda-path=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2
+    - --no-cuda-version-check
+  Compiler: C:/Users/Mayn/scoop/apps/llvm/current/bin/clang.exe
+
+Diagnostics:
+  Suppress:
+    - cuda_ovl_target
+    - ref_bad_target
+    - unused-includes
+    - -Wold-style-cast
