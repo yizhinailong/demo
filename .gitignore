@@ -14,3 +14,4 @@ zigmod/
 .qtcreator/
 .sisyphus/
 *.onnx
+.codegraph
