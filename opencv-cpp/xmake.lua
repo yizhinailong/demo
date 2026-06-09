@@ -9,7 +9,8 @@ add_requires(
         configs = {
             ffmpeg = false,
         }
-    }
+    },
+    "nlohmann_json"
 )
 
 target(
@@ -19,6 +20,6 @@ target(
 
         add_files("src/*.cpp")
 
-        add_packages("opencv")
+        add_packages("opencv", "nlohmann_json")
     end
 )

@@ -1,3 +1,4 @@
+#include <nlohmann/json.hpp>
 #include <opencv2/dnn.hpp>
 #include <opencv2/opencv.hpp>
 
@@ -16,96 +17,19 @@ namespace {
         cv::Rect bbox;
     };
 
-    // COCO 数据集的 80 个类别名称（编译期常量，零堆分配）
-    constexpr auto& coco_classes() {
-        static constexpr std::array classes = {
-            "person",
-            "bicycle",
-            "car",
-            "motorcycle",
-            "airplane",
-            "bus",
-            "train",
-            "truck",
-            "boat",
-            "traffic light",
-            "fire hydrant",
-            "stop sign",
-            "parking meter",
-            "bench",
-            "bird",
-            "cat",
-            "dog",
-            "horse",
-            "sheep",
-            "cow",
-            "elephant",
-            "bear",
-            "zebra",
-            "giraffe",
-            "backpack",
-            "umbrella",
-            "handbag",
-            "tie",
-            "suitcase",
-            "frisbee",
-            "skis",
-            "snowboard",
-            "sports ball",
-            "kite",
-            "baseball bat",
-            "baseball glove",
-            "skateboard",
-            "surfboard",
-            "tennis racket",
-            "bottle",
-            "wine glass",
-            "cup",
-            "fork",
-            "knife",
-            "spoon",
-            "bowl",
-            "banana",
-            "apple",
-            "sandwich",
-            "orange",
-            "broccoli",
-            "carrot",
-            "hot dog",
-            "pizza",
-            "donut",
-            "cake",
-            "chair",
-            "couch",
-            "potted plant",
-            "bed",
-            "dining table",
-            "toilet",
-            "tv",
-            "laptop",
-            "mouse",
-            "remote",
-            "keyboard",
-            "cell phone",
-            "microwave",
-            "oven",
-            "toaster",
-            "sink",
-            "refrigerator",
-            "book",
-            "clock",
-            "vase",
-            "scissors",
-            "teddy bear",
-            "hair drier",
-            "toothbrush"
-        };
-        return classes;
+    // 从 JSON 文件加载 COCO 类别名称
+    auto load_coco_classes(const std::string& path) -> std::vector<std::string> {
+        std::ifstream f(path);
+        if (!f.is_open()) {
+            std::println(stderr, "Failed to open class file: {}", path);
+            return {};
+        }
+        auto j = nlohmann::json::parse(f);
+        return j.get<std::vector<std::string>>();
     }
 
     // 在图像上绘制检测框和类别标签
-    void draw(cv::Mat& img, const std::vector<Detection>& dets) {
-        const auto& classes = coco_classes();
+    void draw(cv::Mat& img, const std::vector<Detection>& dets, const std::vector<std::string>& classes) {
         for (const auto& d : dets) {
             if (d.class_id < 0 || d.class_id >= static_cast<int>(classes.size())) {
                 continue;
@@ -211,8 +135,7 @@ namespace {
     }
 
     // 在终端打印检测结果：类别名称、置信度和边界框坐标
-    auto print_results(const std::vector<Detection>& detections) -> void {
-        const auto& classes = coco_classes();
+    auto print_results(const std::vector<Detection>& detections, const std::vector<std::string>& classes) -> void {
         std::println("Detected {} objects:", detections.size());
         for (const auto& d : detections) {
             std::println(
@@ -230,6 +153,12 @@ namespace {
 } // namespace
 
 int main() {
+    // 加载 COCO 类别名称
+    auto classes = load_coco_classes("data/coco_classes.json");
+    if (classes.empty()) {
+        return -1;
+    }
+
     // 加载 ONNX 模型
     auto net      = load_model("data/yolo26n.onnx");
 
@@ -242,10 +171,10 @@ int main() {
 
     // 执行目标检测并打印结果
     auto detections = detect(net, image);
-    print_results(detections);
+    print_results(detections, classes);
 
     // 在图像上绘制检测结果并显示窗口
-    draw(image, detections);
+    draw(image, detections, classes);
     cv::imshow("YOLO Detection", image);
     cv::waitKey(0);
 
