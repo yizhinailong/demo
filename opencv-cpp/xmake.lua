@@ -5,7 +5,7 @@ set_rundir("$(projectdir)")
 set_policy("build.c++.modules", true)
 
 add_requires(
-    "opencv", {
+    "opencv 4.13.0", {
         configs = {
             ffmpeg = false,
         }
