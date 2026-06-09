@@ -18,10 +18,10 @@ namespace {
     };
 
     // 从 JSON 文件加载 COCO 类别名称
-    auto load_coco_classes(const std::string& path) -> std::vector<std::string> {
+    auto load_coco_classes(const std::filesystem::path& path) -> std::vector<std::string> {
         std::ifstream f(path);
         if (!f.is_open()) {
-            std::println(stderr, "Failed to open class file: {}", path);
+            std::println(stderr, "Failed to open class file: {}", path.string());
             return {};
         }
         auto j = nlohmann::json::parse(f);
@@ -154,7 +154,7 @@ namespace {
 
 int main() {
     // 加载 COCO 类别名称
-    auto classes = load_coco_classes("data/coco_classes.json");
+    auto classes = load_coco_classes(std::filesystem::path(R"(data/coco_classes.json)"));
     if (classes.empty()) {
         return -1;
     }
