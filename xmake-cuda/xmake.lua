@@ -2,7 +2,7 @@ add_rules("mode.debug", "mode.release")
 
 target("xmake-cuda")
     set_kind("binary")
-    add_files("src/*.cu")
+    add_files("src/*.cpp", "src/*.cu")
 
     -- generate SASS code for SM architecture of current host
     add_cugencodes("native")

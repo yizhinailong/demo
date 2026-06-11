@@ -9,9 +9,12 @@ CompileFlags:
     - -FS
     - -Zi
     - -Fd*
+    - -imsvc*
   Add:
     - --cuda-path=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2
     - --no-cuda-version-check
+    - -isystem
+    - C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/include
   Compiler: C:/Users/Mayn/scoop/apps/llvm/current/bin/clang.exe
 
 Diagnostics:
