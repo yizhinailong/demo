@@ -8,7 +8,7 @@ target("xmake-cuda")
     add_cugencodes("native")
 
     -- generate PTX code for the virtual architecture to guarantee compatibility
-    add_cugencodes("compute_75")
+    -- add_cugencodes("compute_75")
 
     -- -- generate SASS code for each SM architecture
     -- add_cugencodes("sm_75", "sm_80", "sm_89", "sm_90", "sm_100")
