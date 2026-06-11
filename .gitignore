@@ -15,3 +15,7 @@ zigmod/
 .sisyphus/
 *.onnx
 .codegraph
+openspec
+.opencode
+.claude
+.codex
