@@ -15,5 +15,9 @@ CPMAddPackage(
     GIT_TAG main
 )
 
-add_executable(hello_world hello_world.cpp)
-target_link_libraries(hello_world PRIVATE STDEXEC::stdexec)
+function(add_stdexec_example name)
+    add_executable(${name} ${name}.cpp)
+    target_link_libraries(${name} PRIVATE STDEXEC::stdexec)
+endfunction()
+
+add_stdexec_example(hello_world)
