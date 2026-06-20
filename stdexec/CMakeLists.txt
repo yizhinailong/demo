@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 4.1.0)
 project(stdexec_example)
 
-include(cmake/CPM.cmake)
-
 set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
 set(STDEXEC_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(STDEXEC_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+
+include(cmake/CPM.cmake)
 
 CPMAddPackage(
     NAME stdexec
