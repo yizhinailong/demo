@@ -1,25 +1,13 @@
-# yaml-language-server: $schema=https://json.schemastore.org/clangd
+If:
+  PathMatch: .*\.cu
 
 CompileFlags:
   Remove:
+    - -Xcompiler
     - -rdc=true
-    - -gencode*
+    - -gencode
+    - arch=compute_*,code=sm_*
     - -G
-    - -Xcompiler*
-    - -FS
-    - -Zi
-    - -Fd*
-    - -imsvc*
   Add:
-    - --cuda-path=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2
-    - --no-cuda-version-check
-    - -isystem
-    - C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/include
-  Compiler: C:/Users/Mayn/scoop/apps/llvm/current/bin/clang.exe
-
-Diagnostics:
-  Suppress:
-    - cuda_ovl_target
-    - ref_bad_target
-    - unused-includes
-    - -Wold-style-cast
+    - --cuda-path=/opt/cuda
+    - --cuda-gpu-arch=sm_86
