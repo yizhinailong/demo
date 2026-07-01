@@ -8,9 +8,8 @@ local all_targets = {}
 function create_targets_for_cpp_files(directory)
     for _, file in ipairs(os.files(directory .. "/*.cpp")) do
         local name = path.basename(file)
-        local target_name = directory .. "-" .. name
         table.insert(all_targets, target_name)
-        target(target_name)
+        target(name)
             set_kind("binary")
             set_default(false)
             add_files(directory .. "/" .. name .. ".cpp")
