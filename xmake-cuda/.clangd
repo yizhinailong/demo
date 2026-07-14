@@ -1,5 +1,5 @@
 If:
-  PathMatch: .*\.cu
+  PathMatch: .*\.(cu|cuh|h|hpp)
 
 CompileFlags:
   Remove:
@@ -9,5 +9,5 @@ CompileFlags:
     - arch=compute_*,code=sm_*
     - -G
   Add:
-    - --cuda-path=/opt/cuda
+    - "--cuda-path=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.3"
     - --cuda-gpu-arch=sm_86
