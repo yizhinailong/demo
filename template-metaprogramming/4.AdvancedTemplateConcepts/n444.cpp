@@ -2,12 +2,18 @@ import std;
 
 namespace n444 {
     template <typename T>
+    struct wrapper;
+
+    template <typename T>
+    void print(wrapper<T> const&);
+
+    template <typename T>
     struct printer;
 
     template <typename T>
-    struct wrapper
-    {
-        wrapper(T const v) :value(v) {}
+    struct wrapper {
+        wrapper(T const v) : value(v) {}
+
     private:
         T value;
 
@@ -16,16 +22,13 @@ namespace n444 {
     };
 
     template <typename T>
-    void print(wrapper<T> const& w)
-    {
+    void print(wrapper<T> const& w) {
         std::cout << w.value << '\n';
     }
 
     template <typename T>
-    struct printer
-    {
-        void operator()(wrapper<T> const& w)
-        {
+    struct printer {
+        void operator()(wrapper<T> const& w) {
             std::cout << w.value << '\n';
         }
     };
