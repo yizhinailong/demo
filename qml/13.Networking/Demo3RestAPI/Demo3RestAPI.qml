@@ -10,22 +10,22 @@ Window {
     title: qsTr("Rest API")
 
     function fetchData(url, callback) {
-        var xhr = new XMLHttpRequest()
+        var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                print('HEADERS_RECEIVED')
+                print('HEADERS_RECEIVED');
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
-                print('DONE')
+                print('DONE');
                 if (xhr.status == 200) {
-                    console.log("resource found" + xhr.responseText.toString())
-                    callback(xhr.responseText.toString())
+                    console.log("resource found" + xhr.responseText.toString());
+                    callback(xhr.responseText.toString());
                 } else {
-                    callback(null)
+                    callback(null);
                 }
             }
-        }
-        xhr.open("GET", url)
-        xhr.send()
+        };
+        xhr.open("GET", url);
+        xhr.send();
     }
 
     ColumnLayout {
@@ -49,27 +49,25 @@ Window {
             Layout.fillWidth: true
             text: "Fetch"
             onClicked: function () {
-                listModelId.clear()
+                listModelId.clear();
 
                 //Call the function to download data
-                rootId.fetchData("https://jsonplaceholder.typicode.com/users",
-                                 function (response) {
+                rootId.fetchData("https://jsonplaceholder.typicode.com/users", function (response) {
+                    if (response) {
+                        console.log("Response is good");
+                        //Parse the data
+                        var object = JSON.parse(response);
 
-                                     if (response) {
-                                         console.log("Response is good")
-                                         //Parse the data
-                                         var object = JSON.parse(response)
-
-                                         //Loop over the JSON array
-                                         object.forEach(function (userdata) {
-                                             listModelId.append({
-                                                                    "userdata": userdata.name
-                                                                })
-                                         })
-                                     } else {
-                                         console.log("Something went wrong")
-                                     }
-                                 })
+                        //Loop over the JSON array
+                        object.forEach(function (userdata) {
+                            listModelId.append({
+                                "userdata": userdata.name
+                            });
+                        });
+                    } else {
+                        console.log("Something went wrong");
+                    }
+                });
             }
         }
 
