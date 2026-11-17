@@ -1,0 +1,187 @@
+[package]
+name    = "advanced_template_concepts"
+version = "0.1.0"
+
+[targets.n401]
+kind = "bin"
+main = "n401.cpp"
+
+[targets.n402]
+kind = "bin"
+main = "n402.cpp"
+
+[targets.n403]
+kind = "bin"
+main = "n403.cpp"
+
+[targets.n404]
+kind = "bin"
+main = "n404.cpp"
+
+[targets.n405]
+kind = "bin"
+main = "n405.cpp"
+
+[targets.n406]
+kind = "bin"
+main = "n406.cpp"
+
+[targets.n407]
+kind = "bin"
+main = "n407.cpp"
+
+[targets.n408]
+kind = "bin"
+main = "n408.cpp"
+
+[targets.n409]
+kind = "bin"
+main = "n409.cpp"
+
+[targets.n409b]
+kind = "bin"
+main = "n409b.cpp"
+
+[targets.n410]
+kind = "bin"
+main = "n410.cpp"
+
+[targets.n411]
+kind = "bin"
+main = "n411.cpp"
+
+[targets.n412]
+kind = "bin"
+main = "n412.cpp"
+
+[targets.n413]
+kind = "bin"
+main = "n413.cpp"
+
+[targets.n414]
+kind = "bin"
+main = "n414.cpp"
+
+[targets.n415]
+kind = "bin"
+main = "n415.cpp"
+
+[targets.n416]
+kind = "bin"
+main = "n416.cpp"
+
+[targets.n417]
+kind = "bin"
+main = "n417.cpp"
+
+[targets.n418]
+kind = "bin"
+main = "n418.cpp"
+
+[targets.n419]
+kind = "bin"
+main = "n419.cpp"
+
+[targets.n420]
+kind = "bin"
+main = "n420.cpp"
+
+[targets.n421]
+kind = "bin"
+main = "n421.cpp"
+
+[targets.n422]
+kind = "bin"
+main = "n422.cpp"
+
+[targets.n423]
+kind = "bin"
+main = "n423.cpp"
+
+[targets.n424]
+kind = "bin"
+main = "n424.cpp"
+
+[targets.n425]
+kind = "bin"
+main = "n425.cpp"
+
+[targets.n426]
+kind = "bin"
+main = "n426.cpp"
+
+[targets.n428]
+kind = "bin"
+main = "n428.cpp"
+
+[targets.n429]
+kind = "bin"
+main = "n429.cpp"
+
+[targets.n430]
+kind = "bin"
+main = "n430.cpp"
+
+[targets.n431]
+kind = "bin"
+main = "n431.cpp"
+
+[targets.n432]
+kind = "bin"
+main = "n432.cpp"
+
+[targets.n433]
+kind = "bin"
+main = "n433.cpp"
+
+[targets.n434]
+kind = "bin"
+main = "n434.cpp"
+
+[targets.n435]
+kind = "bin"
+main = "n435.cpp"
+
+[targets.n436]
+kind = "bin"
+main = "n436.cpp"
+
+[targets.n437]
+kind = "bin"
+main = "n437.cpp"
+
+[targets.n438]
+kind = "bin"
+main = "n438.cpp"
+
+[targets.n439]
+kind = "bin"
+main = "n439.cpp"
+
+[targets.n440]
+kind = "bin"
+main = "n440.cpp"
+
+[targets.n441]
+kind = "bin"
+main = "n441.cpp"
+
+[targets.n442]
+kind = "bin"
+main = "n442.cpp"
+
+[targets.n443]
+kind = "bin"
+main = "n443.cpp"
+
+[targets.n444]
+kind = "bin"
+main = "n444.cpp"
+
+[targets.n445]
+kind = "bin"
+main = "n445.cpp"
+
+[targets.n446]
+kind = "bin"
+main = "n446.cpp"

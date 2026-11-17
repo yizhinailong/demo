@@ -1,0 +1,179 @@
+[package]
+name    = "concepts_constraints"
+version = "0.1.0"
+
+[targets.n601]
+kind = "bin"
+main = "n601.cpp"
+
+[targets.n602]
+kind = "bin"
+main = "n602.cpp"
+
+[targets.n603]
+kind = "bin"
+main = "n603.cpp"
+
+[targets.n604]
+kind = "bin"
+main = "n604.cpp"
+
+[targets.n605]
+kind = "bin"
+main = "n605.cpp"
+
+[targets.n606]
+kind = "bin"
+main = "n606.cpp"
+
+[targets.n607]
+kind = "bin"
+main = "n607.cpp"
+
+[targets.n608]
+kind = "bin"
+main = "n608.cpp"
+
+[targets.n610]
+kind = "bin"
+main = "n610.cpp"
+
+[targets.n611]
+kind = "bin"
+main = "n611.cpp"
+
+[targets.n612]
+kind = "bin"
+main = "n612.cpp"
+
+[targets.n613]
+kind = "bin"
+main = "n613.cpp"
+
+[targets.n614]
+kind = "bin"
+main = "n614.cpp"
+
+[targets.n615]
+kind = "bin"
+main = "n615.cpp"
+
+[targets.n616]
+kind = "bin"
+main = "n616.cpp"
+
+[targets.n617]
+kind = "bin"
+main = "n617.cpp"
+
+[targets.n618]
+kind = "bin"
+main = "n618.cpp"
+
+[targets.n619]
+kind = "bin"
+main = "n619.cpp"
+
+[targets.n620]
+kind = "bin"
+main = "n620.cpp"
+
+[targets.n621]
+kind = "bin"
+main = "n621.cpp"
+
+[targets.n622]
+kind = "bin"
+main = "n622.cpp"
+
+[targets.n623]
+kind = "bin"
+main = "n623.cpp"
+
+[targets.n624]
+kind = "bin"
+main = "n624.cpp"
+
+[targets.n625]
+kind = "bin"
+main = "n625.cpp"
+
+[targets.n626]
+kind = "bin"
+main = "n626.cpp"
+
+[targets.n627]
+kind = "bin"
+main = "n627.cpp"
+
+[targets.n628]
+kind = "bin"
+main = "n628.cpp"
+
+[targets.n629]
+kind = "bin"
+main = "n629.cpp"
+
+[targets.n630]
+kind = "bin"
+main = "n630.cpp"
+
+[targets.n631a]
+kind = "bin"
+main = "n631a.cpp"
+
+[targets.n631b]
+kind = "bin"
+main = "n631b.cpp"
+
+[targets.n631c]
+kind = "bin"
+main = "n631c.cpp"
+
+[targets.n632a]
+kind = "bin"
+main = "n632a.cpp"
+
+[targets.n632b]
+kind = "bin"
+main = "n632b.cpp"
+
+[targets.n633a]
+kind = "bin"
+main = "n633a.cpp"
+
+[targets.n633b]
+kind = "bin"
+main = "n633b.cpp"
+
+[targets.n634]
+kind = "bin"
+main = "n634.cpp"
+
+[targets.n635a]
+kind = "bin"
+main = "n635a.cpp"
+
+[targets.n635b]
+kind = "bin"
+main = "n635b.cpp"
+
+[targets.n636a]
+kind = "bin"
+main = "n636a.cpp"
+
+[targets.n636b]
+kind = "bin"
+main = "n636b.cpp"
+
+[targets.n636c]
+kind = "bin"
+main = "n636c.cpp"
+
+[targets.n637a]
+kind = "bin"
+main = "n637a.cpp"
+
+[targets.n637b]
+kind = "bin"
+main = "n637b.cpp"

@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "1.Introduction",
+    "2.TemplateFundamentals",
+    "3.VariadicTemplates",
+    "4.AdvancedTemplateConcepts",
+    "5.TypeTraitsConditionalCompilation",
+    "6.ConceptsConstraints",
+    "7.PatternsIdioms",
+    "8.RangesAlgorithms",
+    "9.Ranges",
+]
+
+[workspace.package]
+standard = "c++26"

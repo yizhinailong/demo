@@ -1,0 +1,83 @@
+[package]
+name    = "type_traits_conditional_compilation"
+version = "0.1.0"
+
+[targets.n501]
+kind = "bin"
+main = "n501.cpp"
+
+[targets.n502]
+kind = "bin"
+main = "n502.cpp"
+
+[targets.n503]
+kind = "bin"
+main = "n503.cpp"
+
+[targets.n504]
+kind = "bin"
+main = "n504.cpp"
+
+[targets.n505]
+kind = "bin"
+main = "n505.cpp"
+
+[targets.n506]
+kind = "bin"
+main = "n506.cpp"
+
+[targets.n507]
+kind = "bin"
+main = "n507.cpp"
+
+[targets.n508]
+kind = "bin"
+main = "n508.cpp"
+
+[targets.n509]
+kind = "bin"
+main = "n509.cpp"
+
+[targets.n510]
+kind = "bin"
+main = "n510.cpp"
+
+[targets.n511]
+kind = "bin"
+main = "n511.cpp"
+
+[targets.n512]
+kind = "bin"
+main = "n512.cpp"
+
+[targets.n513]
+kind = "bin"
+main = "n513.cpp"
+
+[targets.n514]
+kind = "bin"
+main = "n514.cpp"
+
+[targets.n515]
+kind = "bin"
+main = "n515.cpp"
+
+[targets.n516]
+kind = "bin"
+main = "n516.cpp"
+
+[targets.n517]
+kind = "bin"
+main = "n517.cpp"
+
+[targets.n518]
+kind = "bin"
+main = "n518.cpp"
+
+[targets.n519]
+kind = "bin"
+main = "n519.cpp"
+
+[targets.n520]
+kind = "bin"
+main = "n520.cpp"

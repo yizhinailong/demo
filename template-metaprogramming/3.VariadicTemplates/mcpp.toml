@@ -1,0 +1,75 @@
+[package]
+name    = "variadic_templates"
+version = "0.1.0"
+
+[targets.n301]
+kind = "bin"
+main = "n301.cpp"
+
+[targets.n302]
+kind = "bin"
+main = "n302.cpp"
+
+[targets.n303]
+kind = "bin"
+main = "n303.cpp"
+
+[targets.n304]
+kind = "bin"
+main = "n304.cpp"
+
+[targets.n305]
+kind = "bin"
+main = "n305.cpp"
+
+[targets.n306]
+kind = "bin"
+main = "n306.cpp"
+
+[targets.n307]
+kind = "bin"
+main = "n307.cpp"
+
+[targets.n308]
+kind = "bin"
+main = "n308.cpp"
+
+[targets.n309]
+kind = "bin"
+main = "n309.cpp"
+
+[targets.n310]
+kind = "bin"
+main = "n310.cpp"
+
+[targets.n311]
+kind = "bin"
+main = "n311.cpp"
+
+[targets.n312]
+kind = "bin"
+main = "n312.cpp"
+
+[targets.n313]
+kind = "bin"
+main = "n313.cpp"
+
+[targets.n314]
+kind = "bin"
+main = "n314.cpp"
+
+[targets.n315]
+kind = "bin"
+main = "n315.cpp"
+
+[targets.n316]
+kind = "bin"
+main = "n316.cpp"
+
+[targets.n317]
+kind = "bin"
+main = "n317.cpp"
+
+[targets.n318]
+kind = "bin"
+main = "n318.cpp"
