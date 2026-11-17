@@ -18,10 +18,10 @@ Window {
     Button {
         text: "Invoke created object"
         onClicked: {
-            movieId.title = "Fast and Furious"
-            movieId.mainCharacter = "Vin Diesel"
+            movieId.title = "Fast and Furious";
+            movieId.mainCharacter = "Vin Diesel";
 
-            console.log("New " + movieId.title + " , " + movieId.mainCharacter)
+            console.log("New " + movieId.title + " , " + movieId.mainCharacter);
         }
     }
 }

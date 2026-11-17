@@ -19,16 +19,17 @@ qt_add_executable(appDemo8InstantiableObject
 qt_add_qml_module(appDemo8InstantiableObject
     URI Demo8InstantiableObject
     QML_FILES
-        Main.qml
-        SOURCES movie.hpp movie.cpp
+    Main.qml
+    SOURCES
+    movie.hpp
+    movie.cpp
 )
-
 
 target_link_libraries(appDemo8InstantiableObject
     PRIVATE
-        Qt6::Quick
-        Qt6::Qml
-        Qt6::QuickControls2
+    Qt6::Quick
+    Qt6::Qml
+    Qt6::QuickControls2
 )
 
 include(GNUInstallDirs)
