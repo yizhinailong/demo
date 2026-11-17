@@ -9,7 +9,7 @@ namespace n101 {
         return a > b ? a : b;
     }
 
-    using swap_fn    = auto (*)(void*, int const, int const) -> void;
+    using swap_fn = auto (*)(void*, int const, int const) -> void;
     using compare_fn = auto (*)(void*, int const, int const) -> bool;
 
     auto partition(void* arr, int const low, int const high, compare_fn fcomp, swap_fn fswap) -> int {
@@ -37,9 +37,9 @@ namespace n101 {
 
     auto swap_int(void* arr, int const i, int const j) -> void {
         int* iarr = (int*)arr;
-        int  t    = iarr[i];
-        iarr[i]   = iarr[j];
-        iarr[j]   = t;
+        int t = iarr[i];
+        iarr[i] = iarr[j];
+        iarr[j] = t;
     }
 
     auto less_int(void* arr, int const i, int const j) -> bool {
@@ -64,14 +64,14 @@ namespace n101 {
         auto operator[](std::size_t const index) const -> int;
 
     private:
-        int*        m_data;
+        int* m_data;
         std::size_t m_size;
         std::size_t m_capacity;
     };
 
-    constexpr char     NewLine    = '\n';
-    constexpr wchar_t  NewLineW   = L'\n';
-    constexpr char8_t  NewLineU8  = u8'\n';
+    constexpr char NewLine = '\n';
+    constexpr wchar_t NewLineW = L'\n';
+    constexpr char8_t NewLineU8 = u8'\n';
     constexpr char16_t NewLineU16 = u'\n';
     constexpr char32_t NewLineU32 = U'\n';
 } // namespace n101
@@ -81,7 +81,7 @@ auto main() -> int {
         using namespace n101;
 
         int arr[] = { 13, 1, 8, 3, 5, 2, 1 };
-        int n     = sizeof(arr) / sizeof(arr[0]);
+        int n = sizeof(arr) / sizeof(arr[0]);
         quicksort(arr, 0, n - 1, less_int, swap_int);
     }
 
