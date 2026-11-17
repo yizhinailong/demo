@@ -1,0 +1,18 @@
+[windows]
+set shell := ["pwsh", "-NoLogo", "-NoProfile", "-Command"]
+
+# Load the Visual Studio developer environment (cl.exe on PATH).
+vsdev := '$ErrorActionPreference = "Stop"; $env:PATH = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer;$env:PATH"; $vs = & vswhere.exe -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath; & "$vs\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64 -HostArch amd64 -SkipAutomaticLocation | Out-Null;'
+
+# Configure and build the requested configuration (debug or release).
+build config="debug":
+    @{{ vsdev }} cmake --preset windows-{{ config }} && cmake --build --preset windows-{{ config }}
+    @Copy-Item -Force build\windows-{{ config }}\compile_commands.json build\compile_commands.json
+
+# Build and run the requested configuration (debug or release).
+run config="debug": (build config)
+    @.\build\windows-{{ config }}\cuda_vector_add.exe
+
+# Remove all build outputs, keeping the .clice index cache.
+clean:
+    @$ErrorActionPreference = 'Stop'; Get-ChildItem build -Force -ErrorAction SilentlyContinue | Where-Object Name -ne '.clice' | Remove-Item -Recurse -Force
