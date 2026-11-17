@@ -15,8 +15,8 @@ Window {
 
         Rectangle {
             id: topLeftRectId
-            width: 70
-            height: width
+            implicitWidth: 70
+            implicitHeight: implicitWidth
             color: "green"
             Text {
                 text: "1"
@@ -32,8 +32,8 @@ Window {
         }
         Rectangle {
             id: topCenterRectId
-            width: 100
-            height: width
+            implicitWidth: 100
+            implicitHeight: implicitWidth
             color: "red"
             Text {
                 text: "2"
@@ -50,8 +50,8 @@ Window {
         /*
         Rectangle {
             id: topRightRectId
-            width: 100
-            height: width
+            implicitWidth: 100
+            implicitHeight: implicitWidth
             color: "blue"
             Text{text: "3"; anchors.centerIn: parent; font.pointSize: 20}
             Layout.fillWidth: true
@@ -61,8 +61,8 @@ Window {
         */
         Rectangle {
             id: centerLeftRectId
-            width: 100
-            height: width
+            implicitWidth: 100
+            implicitHeight: implicitWidth
             color: "beige"
             Text {
                 text: "4"
@@ -75,8 +75,8 @@ Window {
         }
         Rectangle {
             id: centerCenterRectId
-            width: 100
-            height: width
+            implicitWidth: 100
+            implicitHeight: implicitWidth
             color: "pink"
             Text {
                 text: "5"
@@ -89,8 +89,8 @@ Window {
 
         Rectangle {
             id: centerRightRectId
-            width: 100
-            height: width
+            implicitWidth: 100
+            implicitHeight: implicitWidth
             color: "yellow"
             Text {
                 text: "6"
@@ -106,8 +106,8 @@ Window {
         /*
         Rectangle {
             id: bottomLeftRectId
-            width: 100
-            height: width
+            implicitWidth: 100
+            implicitHeight: implicitWidth
             color: "magenta"
             Text{text: "7"; anchors.centerIn: parent; font.pointSize: 20}
             Layout.fillWidth: true
@@ -116,8 +116,8 @@ Window {
         */
         Rectangle {
             id: bottomCenterRectId
-            width: 100
-            height: width
+            implicitWidth: 100
+            implicitHeight: implicitWidth
             color: "yellowgreen"
             Text {
                 text: "8"
@@ -129,8 +129,8 @@ Window {
         }
         Rectangle {
             id: bottomRightRectId
-            width: 100
-            height: width
+            implicitWidth: 100
+            implicitHeight: implicitWidth
             color: "dodgerblue"
             Text {
                 text: "9"
