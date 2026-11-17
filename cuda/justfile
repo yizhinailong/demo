@@ -1,26 +1,26 @@
 [windows]
 set shell := ["pwsh", "-NoLogo", "-NoProfile", "-Command"]
 
-# Load the Visual Studio developer environment (cl.exe on PATH).
+# 加载 Visual Studio 开发环境（将 cl.exe 加入 PATH）。
 vsdev := '$ErrorActionPreference = "Stop"; $env:PATH = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer;$env:PATH"; $vs = & vswhere.exe -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath; & "$vs\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64 -HostArch amd64 -SkipAutomaticLocation | Out-Null;'
 
-# Configure the requested configuration (debug or release).
+# 配置指定的构建类型（debug 或 release）。
 configure config="debug":
     @{{ vsdev }} cmake --preset windows-{{ config }}
 
-# Configure the requested configuration only when it has not been generated yet.
+# 仅在尚未生成构建目录时进行配置。
 _configure-if-needed config:
     @if (-not (Test-Path build\windows-{{ config }}\build.ninja)) { {{ vsdev }} cmake --preset windows-{{ config }} }
 
-# Build the requested configuration (debug or release).
+# 构建指定的构建类型（debug 或 release）。
 build config="debug": (_configure-if-needed config)
     @{{ vsdev }} cmake --build --preset windows-{{ config }}
     @Copy-Item -Force build\windows-{{ config }}\compile_commands.json build\compile_commands.json
 
-# Build and run the requested configuration (debug or release).
+# 构建并运行指定的构建类型（debug 或 release）。
 run config="debug": (build config)
     @.\build\windows-{{ config }}\cuda_vector_add.exe
 
-# Remove all build outputs, keeping the .clice index cache.
+# 删除所有构建产物，保留 .clice 索引缓存。
 clean:
     @$ErrorActionPreference = 'Stop'; Get-ChildItem build -Force -ErrorAction SilentlyContinue | Where-Object Name -ne '.clice' | Remove-Item -Recurse -Force
