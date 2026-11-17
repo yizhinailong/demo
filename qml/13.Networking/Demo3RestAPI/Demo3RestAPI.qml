@@ -56,7 +56,7 @@ Window {
                     if (response) {
                         console.log("Response is good");
                         //Parse the data
-                        var object = JSON.parse(response);
+                        const object = JSON.parse(response);
 
                         //Loop over the JSON array
                         object.forEach(function (userdata) {
@@ -86,7 +86,7 @@ Window {
                     width: parent.width
                     height: parent.height
                     anchors.centerIn: parent
-                    text: userdata //Or modelData
+                    text: model.userdata //Or modelData
                     //text: modelData
                     font.pointSize: 13
                     wrapMode: Text.WordWrap
