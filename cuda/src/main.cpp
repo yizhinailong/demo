@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <exception>
+#include <print>
 #include <vector>
 
 #include "cuda_vector_add.hpp"
@@ -10,9 +11,9 @@ auto main() -> int {
         constexpr std::size_t ELEMENT_COUNT{ 1U << 20 };
 
         cuda_demo::DeviceInfo const device{ cuda_demo::query_device() };
-        std::printf(
-            "Device: %s (sm_%d%d)\n",
-            device.name.c_str(),
+        std::println(
+            "Device: {} (sm_{}{})",
+            device.name,
             device.compute_major,
             device.compute_minor
         );
@@ -30,21 +31,21 @@ auto main() -> int {
             cuda_demo::vector_add(a.data(), b.data(), c.data(), ELEMENT_COUNT)
         };
 
-        std::printf(
-            "n=%zu, threads=%d, blocks=%d\n",
+        std::println(
+            "n={}, threads={}, blocks={}",
             ELEMENT_COUNT,
             stats.threads_per_block,
             stats.blocks_per_grid
         );
-        std::printf("Kernel time: %.3f ms\n", stats.kernel_milliseconds);
-        std::printf("Effective bandwidth: %.1f GB/s\n", stats.effective_bandwidth_gbps);
+        std::println("Kernel time: {:.3f} ms", stats.kernel_milliseconds);
+        std::println("Effective bandwidth: {:.1f} GB/s", stats.effective_bandwidth_gbps);
 
         for (std::size_t i{ 0 }; i < ELEMENT_COUNT; ++i) {
             int const expected{ a[i] + b[i] };
             if (c[i] != expected) {
-                std::fprintf(
+                std::println(
                     stderr,
-                    "Mismatch at index %zu: expected %d, got %d\n",
+                    "Mismatch at index {}: expected {}, got {}",
                     i,
                     expected,
                     c[i]
@@ -53,10 +54,10 @@ auto main() -> int {
             }
         }
 
-        std::printf("PASS (%zu elements)\n", ELEMENT_COUNT);
+        std::println("PASS ({} elements)", ELEMENT_COUNT);
         return EXIT_SUCCESS;
     } catch (std::exception const& error) {
-        std::fprintf(stderr, "CUDA demo failed: %s\n", error.what());
+        std::println(stderr, "CUDA demo failed: {}", error.what());
         return EXIT_FAILURE;
     }
 }
