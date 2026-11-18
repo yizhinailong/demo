@@ -10,7 +10,8 @@ namespace n802 {
         InputIt2 first2,
         InputIt2 last2,
         OutputIt dest
-    ) {
+    )
+    {
         auto it1 = first1;
         auto it2 = first2;
 
@@ -23,7 +24,8 @@ namespace n802 {
     }
 } // namespace n802
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n802;
 

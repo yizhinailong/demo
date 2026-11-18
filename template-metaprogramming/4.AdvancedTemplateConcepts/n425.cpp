@@ -1,8 +1,7 @@
 import std;
 
 namespace n425 {
-    struct foo
-    {
+    struct foo {
         int data;
     };
 
@@ -29,14 +28,15 @@ namespace n425 {
     }
 } // namespace n425
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n425;
-        
+
         foo x{ 42 };
-        
-        h(x);          // g(foo&)
-        h(foo{ 42 });  // g(foo&)
+
+        h(x);         // g(foo&)
+        h(foo{ 42 }); // g(foo&)
     }
     return 0;
 }

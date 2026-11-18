@@ -3,14 +3,17 @@
 PropertyWrapper::PropertyWrapper(QObject* parent)
     : QObject{ parent },
       m_firstName("FirstName"),
-      m_lastName("LastName") {
+      m_lastName("LastName")
+{
 }
 
-QString PropertyWrapper::firstName() const {
+QString PropertyWrapper::firstName() const
+{
     return m_firstName;
 }
 
-void PropertyWrapper::setFirstName(const QString& newFirstName) {
+void PropertyWrapper::setFirstName(const QString& newFirstName)
+{
     if (m_firstName == newFirstName) {
         return;
     }
@@ -18,11 +21,13 @@ void PropertyWrapper::setFirstName(const QString& newFirstName) {
     emit firstNameChanged();
 }
 
-QString PropertyWrapper::lastName() const {
+QString PropertyWrapper::lastName() const
+{
     return m_lastName;
 }
 
-void PropertyWrapper::setLastName(const QString& newLastName) {
+void PropertyWrapper::setLastName(const QString& newLastName)
+{
     if (m_lastName == newLastName) {
         return;
     }

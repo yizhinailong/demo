@@ -1,9 +1,8 @@
 import std;
 
 namespace n502 {
-    struct widget
-    {
-        int         id;
+    struct widget {
+        int id;
         std::string name;
 
         std::ostream& write(std::ostream& os) const
@@ -13,29 +12,26 @@ namespace n502 {
         }
     };
 
-    struct gadget
-    {
-        int         id;
+    struct gadget {
+        int id;
         std::string name;
 
-        friend std::ostream& operator <<(std::ostream& os, gadget const& o);
+        friend std::ostream& operator<<(std::ostream& os, gadget const& o);
     };
 
-    std::ostream& operator <<(std::ostream& os, gadget const& o)
+    std::ostream& operator<<(std::ostream& os, gadget const& o)
     {
         os << o.id << ',' << o.name << '\n';
         return os;
     }
 
     template <typename T>
-    struct uses_write
-    {
+    struct uses_write {
         static constexpr bool value = false;
     };
 
     template <>
-    struct uses_write<widget>
-    {
+    struct uses_write<widget> {
         static constexpr bool value = true;
     };
 
@@ -43,8 +39,7 @@ namespace n502 {
     inline constexpr bool uses_write_v = uses_write<T>::value;
 
     template <bool>
-    struct serializer
-    {
+    struct serializer {
         template <typename T>
         static void serialize(std::ostream& os, T const& value)
         {
@@ -52,9 +47,8 @@ namespace n502 {
         }
     };
 
-    template<>
-    struct serializer<true>
-    {
+    template <>
+    struct serializer<true> {
         template <typename T>
         static void serialize(std::ostream& os, T const& value)
         {
@@ -70,13 +64,12 @@ namespace n502 {
 } // namespace n502
 
 namespace n505 {
-    template<bool B, typename T = void>
+    template <bool B, typename T = void>
     struct enable_if {};
 
-    template<typename T>
-    struct enable_if<true, T> 
-    { 
-        using type = T; 
+    template <typename T>
+    struct enable_if<true, T> {
+        using type = T;
     };
 
     template <typename T, typename enable_if<n502::uses_write_v<T>>::type* = nullptr>
@@ -92,11 +85,12 @@ namespace n505 {
     }
 } // namespace n505
 
-auto main() -> int {
+auto main() -> int
+{
     {
         n502::widget w{ 1, "one" };
         n502::gadget g{ 2, "two" };
-        
+
         n505::serialize(std::cout, w);
         n505::serialize(std::cout, g);
     }

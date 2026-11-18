@@ -19,14 +19,17 @@ namespace utils {
         };
 
         explicit ScopeProfiler(const char* tag)
-            : ScopeProfiler(tag, ClockType::now()) {
+            : ScopeProfiler(tag, ClockType::now())
+        {
         }
 
-        ~ScopeProfiler() {
+        ~ScopeProfiler()
+        {
             OnDestroy(ClockType::now());
         }
 
-        static std::vector<Record> const& GetRecords() {
+        static std::vector<Record> const& GetRecords()
+        {
             return m_records;
         }
 
@@ -45,16 +48,19 @@ namespace utils {
 
     ScopeProfiler::ScopeProfiler(const char* tag, ScopeProfiler::ClockType::time_point beg)
         : m_begin(beg),
-          m_tag(tag) {
+          m_tag(tag)
+    {
     }
 
-    auto ScopeProfiler::OnDestroy(ScopeProfiler::ClockType::time_point end) -> void {
+    auto ScopeProfiler::OnDestroy(ScopeProfiler::ClockType::time_point end) -> void
+    {
         auto diff = end - m_begin;
         int us = static_cast<int>(std::chrono::duration_cast<std::chrono::microseconds>(diff).count());
         m_records.push_back({ .tag = m_tag, .us = us });
     }
 
-    auto ScopeProfiler::PrintLog(std::ostream& out) -> void {
+    auto ScopeProfiler::PrintLog(std::ostream& out) -> void
+    {
         if (m_records.size() == 0) {
             return;
         }
@@ -80,7 +86,8 @@ namespace utils {
         struct StatisticCompare {
             using value_type = std::pair<std::string_view, Statistic>;
 
-            auto operator()(value_type const& lhs, value_type const& rhs) const -> bool {
+            auto operator()(value_type const& lhs, value_type const& rhs) const -> bool
+            {
                 return lhs.second.total_us > rhs.second.total_us;
             }
         };
@@ -134,6 +141,7 @@ namespace utils {
 #elif defined(_MSC_VER)
         __declspec(noinline)
 #endif
-        void doNotOptimize(T volatile const& t) {
+        void doNotOptimize(T volatile const& t)
+    {
     }
 } // namespace utils

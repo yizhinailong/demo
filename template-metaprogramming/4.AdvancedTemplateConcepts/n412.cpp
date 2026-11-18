@@ -2,7 +2,8 @@ import std;
 
 namespace n412 {
     template <typename T>
-    void process(T arg) {
+    void process(T arg)
+    {
         std::cout << "processing " << arg << '\n';
     }
 
@@ -22,7 +23,7 @@ namespace n412 {
 
     struct balance_t {
         account_t account;
-        double    amount;
+        double amount;
 
         account_t get_account() { return account; }
 
@@ -30,7 +31,8 @@ namespace n412 {
 
         bool can_withdraw(double const value) { return amount >= value; };
 
-        transaction_t withdraw(double const value) {
+        transaction_t withdraw(double const value)
+        {
             amount -= value;
             return transaction_t{ -value };
         }
@@ -39,107 +41,128 @@ namespace n412 {
     };
 
     template <typename T>
-    void process01(T) {
+    void process01(T)
+    {
         std::cout << "T" << '\n';
     }
 
     template <typename T>
-    void process02(T const) {
+    void process02(T const)
+    {
         std::cout << "T const" << '\n';
     }
 
     template <typename T>
-    void process03(T volatile) {
+    void process03(T volatile)
+    {
         std::cout << "T volatile" << '\n';
     }
 
     template <typename T>
-    void process04(T*) {
+    void process04(T*)
+    {
         std::cout << "T*" << '\n';
     }
 
     template <typename T>
-    void process04(T&) {
+    void process04(T&)
+    {
         std::cout << "T&" << '\n';
     }
 
     template <typename T>
-    void process05(T&&) {
+    void process05(T&&)
+    {
         std::cout << "T&&" << '\n';
     }
 
     template <typename T>
-    void process06(T[5]) {
+    void process06(T[5])
+    {
         std::cout << "T[5]" << '\n';
     }
 
     template <size_t n>
-    void process07(account_t[5][n]) {
+    void process07(account_t[5][n])
+    {
         std::cout << "C[5][n]" << '\n';
     }
 
     template <typename T>
-    void process08(T (*)()) {
+    void process08(T (*)())
+    {
         std::cout << "T (*)()" << '\n';
     }
 
     template <typename T>
-    void process08(account_t (*)(T)) {
+    void process08(account_t (*)(T))
+    {
         std::cout << "C (*)(T)" << '\n';
     }
 
     template <typename T, typename U>
-    void process08(T (*)(U)) {
+    void process08(T (*)(U))
+    {
         std::cout << "T (*)(U)" << '\n';
     }
 
     template <typename T>
-    void process09(T (account_t::*)()) {
+    void process09(T (account_t::*)())
+    {
         std::cout << "T (C::*)()" << '\n';
     }
 
     template <typename T, typename U>
-    void process09(T (account_t::*)(U)) {
+    void process09(T (account_t::*)(U))
+    {
         std::cout << "T (C::*)(U)" << '\n';
     }
 
     template <typename T, typename U>
-    void process09(T (U::*)()) {
+    void process09(T (U::*)())
+    {
         std::cout << "T (U::*)()" << '\n';
     }
 
     template <typename T, typename U, typename V>
-    void process09(T (U::*)(V)) {
+    void process09(T (U::*)(V))
+    {
         std::cout << "T (U::*)(V)" << '\n';
     }
 
     template <typename T>
-    void process09(account_t (T::*)()) {
+    void process09(account_t (T::*)())
+    {
         std::cout << "C (T::*)()" << '\n';
     }
 
     template <typename T, typename U>
-    void process09(transaction_t (T::*)(U)) {
+    void process09(transaction_t (T::*)(U))
+    {
         std::cout << "C (T::*)(U)" << '\n';
     }
 
     template <typename T>
-    void process09(balance_report_t (balance_t::*)(T)) {
+    void process09(balance_report_t (balance_t::*)(T))
+    {
         std::cout << "D (C::*)(T)" << '\n';
     }
 
     template <typename T>
-    void process10(T account_t::*) {
+    void process10(T account_t::*)
+    {
         std::cout << "T C::*" << '\n';
     }
 
     template <typename T>
-    void process10(account_t T::*) {
+    void process10(account_t T::*)
+    {
         std::cout << "C T::*" << '\n';
     }
 
     template <typename T, typename U>
-    void process10(T U::*) {
+    void process10(T U::*)
+    {
         std::cout << "T U::*" << '\n';
     }
 
@@ -154,32 +177,38 @@ namespace n412 {
     };
 
     template <typename T>
-    void process11(wrapper<T>) {
+    void process11(wrapper<T>)
+    {
         std::cout << "C<T>" << '\n';
     }
 
     template <size_t i>
-    void process12(int_array<i>) {
+    void process12(int_array<i>)
+    {
         std::cout << "C<i>" << '\n';
     }
 
     template <template <typename> class TT, typename T>
-    void process13(TT<T>) {
+    void process13(TT<T>)
+    {
         std::cout << "TT<T>" << '\n';
     }
 
     template <template <size_t> typename TT, size_t i>
-    void process14(TT<i>) {
+    void process14(TT<i>)
+    {
         std::cout << "TT<i>" << '\n';
     }
 
     template <template <typename> typename TT>
-    void process15(TT<account_t>) {
+    void process15(TT<account_t>)
+    {
         std::cout << "TT<C>" << '\n';
     }
 } // namespace n412
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n412;
 
@@ -208,18 +237,18 @@ auto main() -> int {
         account_t arr2[5][3];
         process07(arr2); // C[5][n]
 
-        account_t (*pf1)()    = nullptr;
+        account_t (*pf1)() = nullptr;
         account_t (*pf2)(int) = nullptr;
-        double (*pf3)(int)    = nullptr;
+        double (*pf3)(int) = nullptr;
         process08(pf1); // T (*)()
         process08(pf2); // C (*)(T)
         process08(pf3); // T (*)(U)
 
-        int (account_t::*pfm1)()                 = &account_t::get_number;
-        int (account_t::*pfm2)(std::string)      = &account_t::from_string;
-        int (balance_t::*pfm3)()                 = &balance_t::get_account_number;
-        bool (balance_t::*pfm4)(double)          = &balance_t::can_withdraw;
-        account_t (balance_t::*pfm5)()           = &balance_t::get_account;
+        int (account_t::*pfm1)() = &account_t::get_number;
+        int (account_t::*pfm2)(std::string) = &account_t::from_string;
+        int (balance_t::*pfm3)() = &balance_t::get_account_number;
+        bool (balance_t::*pfm4)(double) = &balance_t::can_withdraw;
+        account_t (balance_t::*pfm5)() = &balance_t::get_account;
         transaction_t (balance_t::*pfm6)(double) = &balance_t::withdraw;
         balance_report_t (balance_t::*pfm7)(int) = &balance_t::make_report;
 
@@ -252,7 +281,7 @@ auto main() -> int {
         using namespace n412;
         [[maybe_unused]] decltype(wrapper<double>::data) e1; // double
 
-        int                                               a = 42;
+        int a = 42;
         [[maybe_unused]] decltype(wrapper<char>::data, a) e2 = a; // int&
     }
     return 0;

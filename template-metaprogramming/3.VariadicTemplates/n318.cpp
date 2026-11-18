@@ -12,7 +12,8 @@ namespace n318 {
     };
 
     template <typename T, typename U, typename... Args>
-    void tagger() {
+    void tagger()
+    {
         [[maybe_unused]] tag<T, U, Args...> t1;
         [[maybe_unused]] tag<T, Args..., U> t2;
         [[maybe_unused]] tag<Args..., T, U> t3;
@@ -20,21 +21,25 @@ namespace n318 {
     }
 
     template <typename... Args>
-    void make_it(Args... args) {
+    void make_it(Args... args)
+    {
     }
 
     template <typename T>
-    T step_it(T value) {
+    T step_it(T value)
+    {
         return value + 1;
     }
 
     template <typename... T>
-    int sum(T... args) {
+    int sum(T... args)
+    {
         return (... + args);
     }
 
     template <typename... T>
-    void do_sums(T... args) {
+    void do_sums(T... args)
+    {
         auto s1 = sum(args...);
         auto s2 = sum(42, args...);
         auto s3 = sum(step_it(args)...);
@@ -42,7 +47,8 @@ namespace n318 {
 
     template <typename... T>
     struct sum_wrapper {
-        sum_wrapper(T... args) {
+        sum_wrapper(T... args)
+        {
             value = (... + args);
         }
 
@@ -50,7 +56,8 @@ namespace n318 {
     };
 
     template <typename... T>
-    void parenthesized(T... args) {
+    void parenthesized(T... args)
+    {
         std::array<std::common_type_t<T...>, sizeof...(T)> arr{ args... };
 
         sum_wrapper sw1(args...);   // value = 1 + 2 + 3 + 4
@@ -58,9 +65,10 @@ namespace n318 {
     }
 
     template <typename... T>
-    void brace_enclosed(T... args) {
-        int arr1[sizeof...(args) + 1] = { args..., 0 };       // 1,2,3,4,5
-        int arr2[sizeof...(args)]     = { step_it(args)... }; // 2,3,4,5
+    void brace_enclosed(T... args)
+    {
+        int arr1[sizeof...(args) + 1] = { args..., 0 };   // 1,2,3,4,5
+        int arr2[sizeof...(args)] = { step_it(args)... }; // 2,3,4,5
     }
 
     struct A {
@@ -77,14 +85,16 @@ namespace n318 {
 
     template <typename... Bases>
     struct X : public Bases... {
-        X(Bases const&... args) : Bases(args)... {
+        X(Bases const&... args) : Bases(args)...
+        {
         }
 
         using Bases::execute...;
     };
 
     template <typename... T>
-    void captures(T... args) {
+    void captures(T... args)
+    {
         auto l = [args...] {
             return sum(step_it(args)...);
         };
@@ -92,7 +102,8 @@ namespace n318 {
     }
 
     template <typename... T>
-    auto make_array(T... args) {
+    auto make_array(T... args)
+    {
         return std::array<std::common_type_t<T...>, sizeof...(T)>{ args... };
     };
 
@@ -107,7 +118,8 @@ namespace n318 {
     };
 } // namespace n318
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n318;
 

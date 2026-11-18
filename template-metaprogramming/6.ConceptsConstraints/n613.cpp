@@ -8,13 +8,12 @@ namespace n613 {
     };
 
     template <typename T, typename V>
-    struct key_value_pair
-    {
+    struct key_value_pair {
         using key_type = T;
         using value_type = V;
 
-        key_type    key;
-        value_type  value;
+        key_type key;
+        value_type value;
     };
 
     static_assert(KVP<key_value_pair<int, std::string>>);
@@ -22,8 +21,8 @@ namespace n613 {
 
     template <typename T>
     requires std::is_arithmetic_v<T>
-    struct container
-    { /* ... */ };
+    struct container { /* ... */
+    };
 
     template <typename T>
     concept containerizeable = requires {
@@ -34,6 +33,7 @@ namespace n613 {
     static_assert(!containerizeable<std::string>);
 } // namespace n613
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

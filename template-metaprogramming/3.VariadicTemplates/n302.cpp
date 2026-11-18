@@ -4,7 +4,8 @@ namespace n302 {
 #include <stdarg.h>
 
     template <typename T>
-    T min(int count, ...) {
+    T min(int count, ...)
+    {
         va_list args;
         va_start(args, count);
 
@@ -22,7 +23,8 @@ namespace n302 {
     }
 } // namespace n302
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n302;
 

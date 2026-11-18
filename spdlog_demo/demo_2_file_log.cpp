@@ -1,7 +1,8 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 
-int main() {
+int main()
+{
     auto file_logger = spdlog::basic_logger_mt("file_logger", "logs/basic.log");
     file_logger->info("This message goes to the file");
     file_logger->error("This is an error message in the file");

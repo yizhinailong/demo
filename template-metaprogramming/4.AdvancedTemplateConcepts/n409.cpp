@@ -8,7 +8,8 @@ namespace n409 {
     inline constexpr unsigned int factorial<0> = 1;
 } // namespace n409
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n409;
 

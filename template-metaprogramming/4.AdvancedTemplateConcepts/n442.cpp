@@ -12,7 +12,8 @@ namespace n442 {
 
     template <typename T>
     struct wrapper {
-        wrapper(T const v) : value(v) {
+        wrapper(T const v) : value(v)
+        {
         }
 
     private:
@@ -23,31 +24,36 @@ namespace n442 {
     };
 
     template <typename T>
-    void print(wrapper<T> const& w) {
+    void print(wrapper<T> const& w)
+    {
         // std::cout << w.value << '\n'; // error
     }
 
     template <>
-    void print(wrapper<int> const& w) {
+    void print(wrapper<int> const& w)
+    {
         std::cout << w.value << '\n';
     }
 
     template <typename T>
     struct printer {
-        void operator()(wrapper<T> const& w) {
+        void operator()(wrapper<T> const& w)
+        {
             // std::cout << w.value << '\n'; // error
         }
     };
 
     template <>
     struct printer<int> {
-        void operator()(wrapper<int> const& w) {
+        void operator()(wrapper<int> const& w)
+        {
             std::cout << w.value << '\n';
         }
     };
 } // namespace n442
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n442;
 

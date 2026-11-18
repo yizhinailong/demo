@@ -2,8 +2,7 @@ import std;
 
 namespace n611 {
     template <typename T>
-    concept container = requires(T t)
-    {
+    concept container = requires(T t) {
         typename T::value_type;
         typename T::size_type;
         typename T::allocator_type;
@@ -16,7 +15,7 @@ namespace n611 {
         t.cend();
     };
 
-    struct foo{};
+    struct foo {};
 
     static_assert(!container<foo>);
     static_assert(container<std::vector<foo>>);
@@ -25,6 +24,7 @@ namespace n611 {
     void process(C&& c) {}
 } // namespace n611
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

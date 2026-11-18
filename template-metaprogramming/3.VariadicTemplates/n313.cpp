@@ -6,11 +6,12 @@ namespace n313 {
         tuple(T t, Ts... ts)
             : value(t), rest(ts...) {}
 
-        constexpr auto size() const -> std::size_t {
+        constexpr auto size() const -> std::size_t
+        {
             return 1 + rest.size();
         }
 
-        T            value;
+        T value;
         tuple<Ts...> rest;
     };
 
@@ -19,7 +20,8 @@ namespace n313 {
         tuple(T t)
             : value(t) {}
 
-        constexpr auto size() const -> std::size_t {
+        constexpr auto size() const -> std::size_t
+        {
             return 1;
         }
 
@@ -39,7 +41,8 @@ namespace n313 {
     template <size_t N>
     struct getter {
         template <typename... Ts>
-        static auto get(tuple<Ts...>& t) -> typename nth_type<N, Ts...>::value_type& {
+        static auto get(tuple<Ts...>& t) -> typename nth_type<N, Ts...>::value_type&
+        {
             return getter<N - 1>::get(t.rest);
         }
     };
@@ -47,23 +50,26 @@ namespace n313 {
     template <>
     struct getter<0> {
         template <typename T, typename... Ts>
-        static auto get(tuple<T, Ts...>& t) -> T& {
+        static auto get(tuple<T, Ts...>& t) -> T&
+        {
             return t.value;
         }
     };
 
     template <size_t N, typename... Ts>
-    auto get(tuple<Ts...>& t) -> typename nth_type<N, Ts...>::value_type& {
+    auto get(tuple<Ts...>& t) -> typename nth_type<N, Ts...>::value_type&
+    {
         return getter<N>::get(t);
     }
 } // namespace n313
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n313;
 
-        tuple<int>               one(42);
-        tuple<int, double>       two(42, 42.0);
+        tuple<int> one(42);
+        tuple<int, double> two(42, 42.0);
         tuple<int, double, char> three(42, 42.0, 'a');
 
         std::println("{}", one.value);

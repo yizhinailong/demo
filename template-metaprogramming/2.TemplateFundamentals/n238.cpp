@@ -2,7 +2,8 @@ import std;
 
 namespace n238 {
     template <std::size_t S>
-    auto pretty_print(std::ostream& os, std::array<char, S> const arrs) -> std::ostream& {
+    auto pretty_print(std::ostream& os, std::array<char, S> const arrs) -> std::ostream&
+    {
         os << '[';
         for (auto& arr : arrs) {
             os << arr;
@@ -12,11 +13,12 @@ namespace n238 {
     }
 } // namespace n238
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n238;
 
-        std::array<char, 8>        arr_char{};
+        std::array<char, 8> arr_char{};
         constexpr std::string_view sv = "template";
         std::ranges::copy(sv, arr_char.begin());
         pretty_print(std::cout, arr_char);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+
 #include <QtQml/qqml.h>
 
 class CppWorker : public QObject {

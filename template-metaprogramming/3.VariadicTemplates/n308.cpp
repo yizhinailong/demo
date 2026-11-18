@@ -2,12 +2,14 @@ import std;
 
 namespace n308 {
     template <typename... Ts>
-    constexpr auto get_type_sizes() -> std::array<std::size_t, sizeof...(Ts)> {
+    constexpr auto get_type_sizes() -> std::array<std::size_t, sizeof...(Ts)>
+    {
         return std::array<std::size_t, sizeof...(Ts)>{ sizeof(Ts)... };
     }
 } // namespace n308
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n308;
 

@@ -9,6 +9,7 @@ namespace n619 {
     }
 } // namespace n619
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

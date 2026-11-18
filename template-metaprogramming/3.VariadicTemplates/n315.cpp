@@ -2,37 +2,44 @@ import std;
 
 namespace n315 {
     template <typename... T>
-    int suml(T... args) {
+    int suml(T... args)
+    {
         return (... + args);
     }
 
     template <typename... T>
-    int sumr(T... args) {
+    int sumr(T... args)
+    {
         return (args + ...);
     }
 
     template <typename... T>
-    void printl(T... args) {
+    void printl(T... args)
+    {
         (..., (std::cout << args)) << '\n';
     }
 
     template <typename... T>
-    void printr(T... args) {
+    void printr(T... args)
+    {
         ((std::cout << args), ...) << '\n';
     }
 
     template <typename... T>
-    void print(T... args) {
+    void print(T... args)
+    {
         (std::cout << ... << args) << '\n';
     }
 
     template <typename T, typename... Args>
-    void push_back_many(std::vector<T>& v, Args&&... args) {
+    void push_back_many(std::vector<T>& v, Args&&... args)
+    {
         (v.push_back(args), ...);
     }
 } // namespace n315
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n315;
 

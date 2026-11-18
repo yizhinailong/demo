@@ -3,14 +3,16 @@ import std;
 namespace n404 {
     template <typename T>
     struct base_parser {
-        void init() {
+        void init()
+        {
             std::cout << "init\n";
         }
     };
 
     template <typename T>
     struct parser : base_parser<T> {
-        void parse() {
+        void parse()
+        {
             this->init();
 
             std::cout << "parse\n";
@@ -19,13 +21,15 @@ namespace n404 {
 
     template <>
     struct base_parser<int> {
-        void init() {
+        void init()
+        {
             std::cout << "specialized init\n";
         }
     };
 } // namespace n404
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n404;
 

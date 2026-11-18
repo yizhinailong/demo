@@ -7,16 +7,18 @@ namespace n242 {
     };
 
     template <typename T>
-    auto sphere_volume(T const r) -> T {
+    auto sphere_volume(T const r) -> T
+    {
         return 4 * math_constants::PI<T> * r * r * r / 3;
     }
 } // namespace n242
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n242;
 
-        float  v1 = sphere_volume(42.0f);
+        float v1 = sphere_volume(42.0f);
         double v2 = sphere_volume(42.0);
 
         std::println("v1 = {}", v1);

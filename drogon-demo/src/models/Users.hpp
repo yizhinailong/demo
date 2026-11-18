@@ -80,21 +80,12 @@ namespace drogon_model {
             Users() = default;
 
             void updateByJson(const Json::Value& pJson) noexcept(false);
-            void updateByMasqueradedJson(const Json::Value& pJson,
-                                         const std::vector<std::string>& pMasqueradingVector) noexcept(false);
+            void updateByMasqueradedJson(const Json::Value& pJson, const std::vector<std::string>& pMasqueradingVector) noexcept(false);
             static bool validateJsonForCreation(const Json::Value& pJson, std::string& err);
-            static bool validateMasqueradedJsonForCreation(const Json::Value&,
-                                                           const std::vector<std::string>& pMasqueradingVector,
-                                                           std::string& err);
+            static bool validateMasqueradedJsonForCreation(const Json::Value&, const std::vector<std::string>& pMasqueradingVector, std::string& err);
             static bool validateJsonForUpdate(const Json::Value& pJson, std::string& err);
-            static bool validateMasqueradedJsonForUpdate(const Json::Value&,
-                                                         const std::vector<std::string>& pMasqueradingVector,
-                                                         std::string& err);
-            static bool validJsonOfField(size_t index,
-                                         const std::string& fieldName,
-                                         const Json::Value& pJson,
-                                         std::string& err,
-                                         bool isForCreation);
+            static bool validateMasqueradedJsonForUpdate(const Json::Value&, const std::vector<std::string>& pMasqueradingVector, std::string& err);
+            static bool validJsonOfField(size_t index, const std::string& fieldName, const Json::Value& pJson, std::string& err, bool isForCreation);
 
             /**  For column id  */
             /// Get the value of the column id, returns the default value if the column is null
@@ -181,17 +172,20 @@ namespace drogon_model {
             bool dirtyFlag_[5] = { false };
 
         public:
-            static const std::string& sqlForFindingByPrimaryKey() {
+            static const std::string& sqlForFindingByPrimaryKey()
+            {
                 static const std::string sql = "select * from " + tableName + " where id = $1";
                 return sql;
             }
 
-            static const std::string& sqlForDeletingByPrimaryKey() {
+            static const std::string& sqlForDeletingByPrimaryKey()
+            {
                 static const std::string sql = "delete from " + tableName + " where id = $1";
                 return sql;
             }
 
-            std::string sqlForInserting(bool& needSelection) const {
+            std::string sqlForInserting(bool& needSelection) const
+            {
                 std::string sql = "insert into " + tableName + " (";
                 size_t parametersCount = 0;
                 needSelection = false;

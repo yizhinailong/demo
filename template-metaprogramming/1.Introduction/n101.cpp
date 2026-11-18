@@ -1,18 +1,21 @@
 import std;
 
 namespace n101 {
-    auto max(int const a, int const b) -> int {
+    auto max(int const a, int const b) -> int
+    {
         return a > b ? a : b;
     }
 
-    auto max(double const a, double const b) -> double {
+    auto max(double const a, double const b) -> double
+    {
         return a > b ? a : b;
     }
 
     using swap_fn = auto (*)(void*, int const, int const) -> void;
     using compare_fn = auto (*)(void*, int const, int const) -> bool;
 
-    auto partition(void* arr, int const low, int const high, compare_fn fcomp, swap_fn fswap) -> int {
+    auto partition(void* arr, int const low, int const high, compare_fn fcomp, swap_fn fswap) -> int
+    {
         int i = low - 1;
 
         for (int j = low; j <= high - 1; j++) {
@@ -27,7 +30,8 @@ namespace n101 {
         return i + 1;
     }
 
-    auto quicksort(void* arr, int const low, int const high, compare_fn fcomp, swap_fn fswap) -> void {
+    auto quicksort(void* arr, int const low, int const high, compare_fn fcomp, swap_fn fswap) -> void
+    {
         if (low < high) {
             int const pi = partition(arr, low, high, fcomp, fswap);
             quicksort(arr, low, pi - 1, fcomp, fswap);
@@ -35,14 +39,16 @@ namespace n101 {
         }
     }
 
-    auto swap_int(void* arr, int const i, int const j) -> void {
+    auto swap_int(void* arr, int const i, int const j) -> void
+    {
         int* iarr = (int*)arr;
         int t = iarr[i];
         iarr[i] = iarr[j];
         iarr[j] = t;
     }
 
-    auto less_int(void* arr, int const i, int const j) -> bool {
+    auto less_int(void* arr, int const i, int const j) -> bool
+    {
         int* iarr = (int*)arr;
         return iarr[i] <= iarr[j];
     }
@@ -76,7 +82,8 @@ namespace n101 {
     constexpr char32_t NewLineU32 = U'\n';
 } // namespace n101
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n101;
 

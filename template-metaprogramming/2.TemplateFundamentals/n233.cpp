@@ -13,7 +13,8 @@ namespace n233 {
     int foo<int>::value = 10;
 } // namespace n233
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n233;
 

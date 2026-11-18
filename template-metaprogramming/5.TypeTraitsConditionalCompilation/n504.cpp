@@ -2,18 +2,17 @@ import std;
 
 namespace n504 {
     template <typename T>
-    struct foo
-    {
+    struct foo {
         using foo_type = T;
     };
 
     template <typename T>
-    struct bar
-    {
+    struct bar {
         using bar_type = T;
     };
 
     struct int_foo : foo<int> {};
+
     struct int_bar : bar<int> {};
 
     template <typename T>
@@ -29,16 +28,17 @@ namespace n504 {
     }
 } // namespace n504
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n504;
-        
+
         int_foo fi;
         int_bar bi;
         int x = 0;
         handle(fi);
         handle(bi);
-        //handle(x);
+        // handle(x);
     }
     return 0;
 }

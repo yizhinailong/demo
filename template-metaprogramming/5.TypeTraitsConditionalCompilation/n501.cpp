@@ -2,26 +2,22 @@ import std;
 
 namespace n501 {
     template <typename T>
-    struct is_floating_point
-    {
+    struct is_floating_point {
         static const bool value = false;
     };
 
     template <>
-    struct is_floating_point<float>
-    {
+    struct is_floating_point<float> {
         static const bool value = true;
     };
 
     template <>
-    struct is_floating_point<double>
-    {
+    struct is_floating_point<double> {
         static const bool value = true;
     };
 
     template <>
-    struct is_floating_point<long double>
-    {
+    struct is_floating_point<long double> {
         static const bool value = true;
     };
 
@@ -34,18 +30,19 @@ namespace n501 {
     }
 } // namespace n501
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n501;
-        
+
         static_assert(is_floating_point<float>::value);
         static_assert(is_floating_point<double>::value);
         static_assert(is_floating_point<long double>::value);
         static_assert(!is_floating_point<int>::value);
         static_assert(!is_floating_point<bool>::value);
-        
+
         process_real_number(42.0);
-        //process_real_number(42); // error: static assertion failed
+        // process_real_number(42); // error: static assertion failed
     }
     return 0;
 }

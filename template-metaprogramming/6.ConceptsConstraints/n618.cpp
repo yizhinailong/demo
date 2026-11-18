@@ -17,6 +17,7 @@ namespace n618 {
     }
 } // namespace n618
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

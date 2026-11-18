@@ -2,7 +2,8 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 
-int main() {
+int main()
+{
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/multisink.log");
 

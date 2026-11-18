@@ -8,7 +8,8 @@ namespace n405 {
 
     template <typename T>
     struct parser : base_parser<T> {
-        void parse() {
+        void parse()
+        {
             // value_type v{}; // syntax error: unexpected token 'identifier', expected ';'
             // base_parser<T>::value_type v{};
             typename base_parser<T>::value_type v{};
@@ -18,7 +19,8 @@ namespace n405 {
     };
 } // namespace n405
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n405;
 

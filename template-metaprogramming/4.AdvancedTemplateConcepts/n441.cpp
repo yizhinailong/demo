@@ -2,11 +2,11 @@ import std;
 
 namespace n441 {
     template <typename T>
-    struct wrapper
-    {
-        wrapper(T const v) :value(v)
+    struct wrapper {
+        wrapper(T const v) : value(v)
         {
         }
+
     private:
         T value;
 
@@ -24,6 +24,7 @@ namespace n441 {
     }
 } // namespace n441
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

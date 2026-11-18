@@ -1,7 +1,7 @@
 import std;
 
 namespace n621 {
-    
+
     template <typename T>
     concept A = std::is_integral_v<T>;
 
@@ -11,26 +11,32 @@ namespace n621 {
     // disjunctions
     template <typename T>
     requires A<T> || B<T>
-    void f() {}
+    void f()
+    {}
 
     template <typename T>
-    requires (A<T> || B<T>)
-    void f() {}
+    requires(A<T> || B<T>)
+    void f()
+    {}
 
     template <typename T>
     requires A<T> && (!A<T> || B<T>)
-    void f() {}
+    void f()
+    {}
 
     // logical operators
     template <typename T>
-    requires (!(A<T> || B<T>))
-    void f() {}
+    requires(!(A<T> || B<T>))
+    void f()
+    {}
 
     template <typename T>
-    requires (static_cast<bool>(A<T> || B<T>))
-    void f() {}
+    requires(static_cast<bool>(A<T> || B<T>))
+    void f()
+    {}
 } // namespace n621
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

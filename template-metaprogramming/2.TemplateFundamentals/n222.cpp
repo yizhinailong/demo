@@ -3,16 +3,19 @@ import std;
 namespace n222 {
     template <typename T>
     struct foo {
-        void f() {
+        void f()
+        {
         }
 
-        void g() {
+        void g()
+        {
             int a = 42;
         }
     };
 } // namespace n222
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n222;
 

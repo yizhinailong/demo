@@ -8,7 +8,8 @@ namespace n316 {
     constexpr auto indexes = std::make_index_sequence<5>();
 } // namespace n316
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n316;
 

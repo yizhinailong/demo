@@ -9,11 +9,11 @@ namespace n440 {
     template <typename T>
     struct printer;
 
-    struct wrapper
-    {
-        wrapper(int const v) :value(v)
+    struct wrapper {
+        wrapper(int const v) : value(v)
         {
         }
+
     private:
         int value;
 
@@ -34,8 +34,7 @@ namespace n440 {
     }
 
     template <typename T>
-    struct printer
-    {
+    struct printer {
         void operator()(wrapper const& w)
         {
             // std::cout << w.value << '\n'; // error
@@ -43,8 +42,7 @@ namespace n440 {
     };
 
     template <>
-    struct printer<int>
-    {
+    struct printer<int> {
         void operator()(wrapper const& w)
         {
             std::cout << w.value << '\n';
@@ -52,10 +50,11 @@ namespace n440 {
     };
 } // namespace n440
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n440;
-        
+
         wrapper w{ 43 };
         print<int>(w);
         print<char>(w);

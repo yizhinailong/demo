@@ -28,21 +28,23 @@ namespace n317 {
     using index_sequence_for = make_index_sequence<sizeof...(T)>;
 
     template <typename Tuple, std::size_t... Ints>
-    auto select_tuple(Tuple&& tuple, index_sequence<Ints...>) {
+    auto select_tuple(Tuple&& tuple, index_sequence<Ints...>)
+    {
         return std::make_tuple(
             std::get<Ints>(std::forward<Tuple>(tuple))...
         );
     }
 } // namespace n317
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n317;
 
         [[maybe_unused]]
         foo<double, char, int> f1;
         foo<int, char, double> f2;
-        int_foo<char, double>  f3;
+        int_foo<char, double> f3;
         static_assert(std::is_same_v<decltype(f2), decltype(f3)>);
     }
 
@@ -50,7 +52,7 @@ auto main() -> int {
         using namespace n317;
 
         std::tuple<int, char, double> t1{ 42, 'x', 42.99 };
-        auto                          t2 = select_tuple(t1, index_sequence<0, 2>{});
+        auto t2 = select_tuple(t1, index_sequence<0, 2>{});
     }
 
     return 0;

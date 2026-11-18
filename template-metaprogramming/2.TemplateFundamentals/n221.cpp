@@ -13,7 +13,8 @@ namespace n221 {
     };
 } // namespace n221
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n221;
 

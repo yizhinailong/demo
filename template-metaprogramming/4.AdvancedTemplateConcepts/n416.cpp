@@ -2,27 +2,32 @@ import std;
 
 namespace n416 {
     template <size_t Size>
-    void process1(int a[Size]) {
+    void process1(int a[Size])
+    {
         std::cout << "process(int[Size])" << '\n';
     }
 
     template <size_t Size>
-    void process2(int a[5][Size]) {
+    void process2(int a[5][Size])
+    {
         std::cout << "process(int[5][Size])" << '\n';
     }
 
     template <size_t Size>
-    void process3(int (&a)[Size]) {
+    void process3(int (&a)[Size])
+    {
         std::cout << "process(int[Size]&)" << '\n';
     }
 
     template <size_t Size>
-    void process4(int (*a)[Size]) {
+    void process4(int (*a)[Size])
+    {
         std::cout << "process(int[Size]*)" << '\n';
     }
 } // namespace n416
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n416;
 

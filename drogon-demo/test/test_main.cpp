@@ -2,11 +2,13 @@
 #include <drogon/drogon.h>
 #include <drogon/drogon_test.h>
 
-DROGON_TEST(BasicTest) {
+DROGON_TEST(BasicTest)
+{
     // Add your tests here
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
     std::promise<void> p1;
     std::future<void> f1 = p1.get_future();
 

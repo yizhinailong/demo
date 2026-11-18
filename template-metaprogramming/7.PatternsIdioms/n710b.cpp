@@ -1,8 +1,7 @@
 import std;
 
 namespace n710b {
-    struct knight
-    {
+    struct knight {
         void step_forth()
         {
             std::cout << "knight moves forward\n";
@@ -14,8 +13,7 @@ namespace n710b {
         }
     };
 
-    struct mage
-    {
+    struct mage {
         void step_forth()
         {
             std::cout << "mage moves forward\n";
@@ -28,30 +26,32 @@ namespace n710b {
     };
 
     template <typename T>
-    struct movable_unit : T
-    {
+    struct movable_unit : T {
         void advance(size_t steps)
         {
-            while (steps--)
+            while (steps--) {
                 T::step_forth();
+            }
         }
 
         void retreat(size_t steps)
         {
-            while (steps--)
+            while (steps--) {
                 T::step_back();
+            }
         }
     };
 } // namespace n710b
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n710b;
-        
+
         movable_unit<knight> k;
         k.advance(3);
         k.retreat(2);
-        
+
         movable_unit<mage> m;
         m.advance(5);
         m.retreat(3);

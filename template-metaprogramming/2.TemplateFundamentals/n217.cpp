@@ -9,6 +9,7 @@ namespace n217 {
 
 } // namespace n217
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

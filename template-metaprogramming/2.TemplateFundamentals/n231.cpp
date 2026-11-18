@@ -5,17 +5,20 @@ namespace n231 {
     struct foo {};
 
     template <typename T>
-    auto func(foo<T>) -> void {
+    auto func(foo<T>) -> void
+    {
         std::println("This is primary template");
     };
 
     template <>
-    auto func(foo<int>) -> void {
+    auto func(foo<int>) -> void
+    {
         std::println("This is int specialization template");
     }
 } // namespace n231
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n231;
 

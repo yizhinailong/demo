@@ -3,27 +3,31 @@ import std;
 namespace n212 {
     struct device {
         virtual void output() = 0;
-        virtual ~device()     = default;
+        virtual ~device() = default;
     };
 
     template <void (*action)()>
     struct hello_command : device {
-        void output() override {
+        void output() override
+        {
             (*action)();
         }
     };
 
-    auto say_hello_chinese() {
+    auto say_hello_chinese()
+    {
         std::println("你好世界。");
     }
 
-    auto say_hello_english() {
+    auto say_hello_english()
+    {
         std::println("Hello World.");
     }
 
 } // namespace n212
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n212;
 

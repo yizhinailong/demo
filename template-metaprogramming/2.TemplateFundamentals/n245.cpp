@@ -7,9 +7,10 @@ namespace n245 {
     };
 } // namespace n245
 
-auto main() -> int {
+auto main() -> int
+{
     {
-        typedef int                                      index_t;
+        typedef int index_t;
         typedef std::vector<std::pair<int, std::string>> NameValueList;
         typedef int (*fn_ptr)(int, char);
     }

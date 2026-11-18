@@ -4,7 +4,8 @@ namespace n406 {
     template <typename T>
     struct base_parser {
         template <typename U>
-        void init() {
+        void init()
+        {
             std::cout << "init\n";
         }
 
@@ -14,7 +15,8 @@ namespace n406 {
 
     template <typename T>
     struct parser : base_parser<T> {
-        void parse() {
+        void parse()
+        {
             // base_parser<T>::init<int>(); // error
 
             base_parser<T>::template init<int>();
@@ -29,7 +31,8 @@ namespace n406 {
     };
 } // namespace n406
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n406;
 

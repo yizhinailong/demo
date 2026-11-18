@@ -10,11 +10,12 @@ namespace n225 {
     T foo<T>::data = 0;
 } // namespace n225
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n225;
 
-        foo<int>    a;
+        foo<int> a;
         foo<double> b;
         foo<double> c;
 

@@ -3,7 +3,8 @@
 CppSignalSender::CppSignalSender(QObject* parent)
     : QObject{ parent },
       m_timer(new QTimer(this)),
-      m_value(0) {
+      m_value(0)
+{
 
     connect(&m_timer, &QTimer::timeout, [=]() {
         m_value++;
@@ -13,13 +14,15 @@ CppSignalSender::CppSignalSender(QObject* parent)
     m_timer.start(1000);
 }
 
-CppSignalSender* CppSignalSender::create(QQmlEngine* qmlEngine, QJSEngine* jsEngine) {
+CppSignalSender* CppSignalSender::create(QQmlEngine* qmlEngine, QJSEngine* jsEngine)
+{
     Q_UNUSED(qmlEngine)
     Q_UNUSED(jsEngine)
     static CppSignalSender instance;
     return &instance;
 }
 
-void CppSignalSender::CppSlot() {
+void CppSignalSender::CppSlot()
+{
     emit callQml("Information from C++");
 }

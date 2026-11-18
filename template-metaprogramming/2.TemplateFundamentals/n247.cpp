@@ -9,7 +9,7 @@ namespace n247 {
     struct invoice_address_t {};
 
     using customer_delivery_addresses_t = customer_addresses_t<delivery_address_t>;
-    using customer_invoice_addresses_t  = customer_addresses_t<invoice_address_t>;
+    using customer_invoice_addresses_t = customer_addresses_t<invoice_address_t>;
 } // namespace n247
 
 namespace n247 {
@@ -27,7 +27,8 @@ namespace n247 {
     using list_t = typename list<T, S>::type;
 } // namespace n247
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n247;
         static_assert(std::is_same_v<list_t<int, 1>, int>);

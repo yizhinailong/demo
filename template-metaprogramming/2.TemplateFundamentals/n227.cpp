@@ -5,7 +5,8 @@ namespace n227 {
     class foo {
         struct bar {};
 
-        auto f(bar const arg) -> T {
+        auto f(bar const arg) -> T
+        {
             return {};
         }
     };
@@ -13,6 +14,7 @@ namespace n227 {
     template int foo<int>::f(foo<int>::bar);
 } // namespace n227
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

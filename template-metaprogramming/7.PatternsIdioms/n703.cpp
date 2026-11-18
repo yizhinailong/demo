@@ -2,24 +2,21 @@ import std;
 
 namespace n703 {
     template <typename T>
-    struct game_unit
-    {
+    struct game_unit {
         void attack()
         {
             static_cast<T*>(this)->do_attack();
         }
     };
 
-    struct knight : game_unit<knight>
-    {
+    struct knight : game_unit<knight> {
         void do_attack()
         {
             std::cout << "draw sword\n";
         }
     };
 
-    struct mage : game_unit<mage>
-    {
+    struct mage : game_unit<mage> {
         void do_attack()
         {
             std::cout << "spell magic curse\n";
@@ -27,19 +24,19 @@ namespace n703 {
     };
 
     template <typename T>
-    void fight(std::vector<game_unit<T>*> const & units)
+    void fight(std::vector<game_unit<T>*> const& units)
     {
-        for (auto unit : units)
-        {
+        for (auto unit : units) {
             unit->attack();
         }
     }
 } // namespace n703
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n703;
-        
+
         knight k;
         mage m;
         fight<knight>({ &k });

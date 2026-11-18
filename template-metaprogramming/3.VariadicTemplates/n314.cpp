@@ -2,17 +2,20 @@ import std;
 
 namespace n314 {
     template <typename... T>
-    auto sum(T... t) {
+    auto sum(T... t)
+    {
         return (... + t);
     }
 
     template <typename... T>
-    auto sum_from_zero(T... t) {
+    auto sum_from_zero(T... t)
+    {
         return (0 + ... + t);
     }
 } // namespace n314
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n314;
 

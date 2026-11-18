@@ -32,12 +32,14 @@ const std::vector<typename Users::MetaData> Users::metaData_ = {
     { "updated_at", "::trantor::Date", "timestamp with time zone", 0, 0, 0, 1 }
 };
 
-const std::string& Users::getColumnName(size_t index) noexcept(false) {
+const std::string& Users::getColumnName(size_t index) noexcept(false)
+{
     assert(index < metaData_.size());
     return metaData_[index].colName_;
 }
 
-Users::Users(const Row& r, const ssize_t indexOffset) noexcept {
+Users::Users(const Row& r, const ssize_t indexOffset) noexcept
+{
     if (indexOffset < 0) {
         if (!r["id"].isNull()) {
             id_ = std::make_shared<int64_t>(r["id"].as<int64_t>());
@@ -144,7 +146,8 @@ Users::Users(const Row& r, const ssize_t indexOffset) noexcept {
     }
 }
 
-Users::Users(const Json::Value& pJson, const std::vector<std::string>& pMasqueradingVector) noexcept(false) {
+Users::Users(const Json::Value& pJson, const std::vector<std::string>& pMasqueradingVector) noexcept(false)
+{
     if (pMasqueradingVector.size() != 5) {
         LOG_ERROR << "Bad masquerading vector";
         return;
@@ -211,7 +214,8 @@ Users::Users(const Json::Value& pJson, const std::vector<std::string>& pMasquera
     }
 }
 
-Users::Users(const Json::Value& pJson) noexcept(false) {
+Users::Users(const Json::Value& pJson) noexcept(false)
+{
     if (pJson.isMember("id")) {
         dirtyFlag_[0] = true;
         if (!pJson["id"].isNull()) {
@@ -274,8 +278,8 @@ Users::Users(const Json::Value& pJson) noexcept(false) {
     }
 }
 
-void Users::updateByMasqueradedJson(const Json::Value& pJson,
-                                    const std::vector<std::string>& pMasqueradingVector) noexcept(false) {
+void Users::updateByMasqueradedJson(const Json::Value& pJson, const std::vector<std::string>& pMasqueradingVector) noexcept(false)
+{
     if (pMasqueradingVector.size() != 5) {
         LOG_ERROR << "Bad masquerading vector";
         return;
@@ -341,7 +345,8 @@ void Users::updateByMasqueradedJson(const Json::Value& pJson,
     }
 }
 
-void Users::updateByJson(const Json::Value& pJson) noexcept(false) {
+void Users::updateByJson(const Json::Value& pJson) noexcept(false)
+{
     if (pJson.isMember("id")) {
         if (!pJson["id"].isNull()) {
             id_ = std::make_shared<int64_t>((int64_t)pJson["id"].asInt64());
@@ -403,7 +408,8 @@ void Users::updateByJson(const Json::Value& pJson) noexcept(false) {
     }
 }
 
-const int64_t& Users::getValueOfId() const noexcept {
+const int64_t& Users::getValueOfId() const noexcept
+{
     static const int64_t defaultValue = int64_t();
     if (id_) {
         return *id_;
@@ -411,21 +417,25 @@ const int64_t& Users::getValueOfId() const noexcept {
     return defaultValue;
 }
 
-const std::shared_ptr<int64_t>& Users::getId() const noexcept {
+const std::shared_ptr<int64_t>& Users::getId() const noexcept
+{
     return id_;
 }
 
-void Users::setId(const int64_t& pId) noexcept {
+void Users::setId(const int64_t& pId) noexcept
+{
     id_ = std::make_shared<int64_t>(pId);
     dirtyFlag_[0] = true;
 }
 
-const typename Users::PrimaryKeyType& Users::getPrimaryKey() const {
+const typename Users::PrimaryKeyType& Users::getPrimaryKey() const
+{
     assert(id_);
     return *id_;
 }
 
-const std::string& Users::getValueOfName() const noexcept {
+const std::string& Users::getValueOfName() const noexcept
+{
     static const std::string defaultValue = std::string();
     if (name_) {
         return *name_;
@@ -433,21 +443,25 @@ const std::string& Users::getValueOfName() const noexcept {
     return defaultValue;
 }
 
-const std::shared_ptr<std::string>& Users::getName() const noexcept {
+const std::shared_ptr<std::string>& Users::getName() const noexcept
+{
     return name_;
 }
 
-void Users::setName(const std::string& pName) noexcept {
+void Users::setName(const std::string& pName) noexcept
+{
     name_ = std::make_shared<std::string>(pName);
     dirtyFlag_[1] = true;
 }
 
-void Users::setName(std::string&& pName) noexcept {
+void Users::setName(std::string&& pName) noexcept
+{
     name_ = std::make_shared<std::string>(std::move(pName));
     dirtyFlag_[1] = true;
 }
 
-const std::string& Users::getValueOfEmail() const noexcept {
+const std::string& Users::getValueOfEmail() const noexcept
+{
     static const std::string defaultValue = std::string();
     if (email_) {
         return *email_;
@@ -455,21 +469,25 @@ const std::string& Users::getValueOfEmail() const noexcept {
     return defaultValue;
 }
 
-const std::shared_ptr<std::string>& Users::getEmail() const noexcept {
+const std::shared_ptr<std::string>& Users::getEmail() const noexcept
+{
     return email_;
 }
 
-void Users::setEmail(const std::string& pEmail) noexcept {
+void Users::setEmail(const std::string& pEmail) noexcept
+{
     email_ = std::make_shared<std::string>(pEmail);
     dirtyFlag_[2] = true;
 }
 
-void Users::setEmail(std::string&& pEmail) noexcept {
+void Users::setEmail(std::string&& pEmail) noexcept
+{
     email_ = std::make_shared<std::string>(std::move(pEmail));
     dirtyFlag_[2] = true;
 }
 
-const ::trantor::Date& Users::getValueOfCreatedAt() const noexcept {
+const ::trantor::Date& Users::getValueOfCreatedAt() const noexcept
+{
     static const ::trantor::Date defaultValue = ::trantor::Date();
     if (createdAt_) {
         return *createdAt_;
@@ -477,16 +495,19 @@ const ::trantor::Date& Users::getValueOfCreatedAt() const noexcept {
     return defaultValue;
 }
 
-const std::shared_ptr<::trantor::Date>& Users::getCreatedAt() const noexcept {
+const std::shared_ptr<::trantor::Date>& Users::getCreatedAt() const noexcept
+{
     return createdAt_;
 }
 
-void Users::setCreatedAt(const ::trantor::Date& pCreatedAt) noexcept {
+void Users::setCreatedAt(const ::trantor::Date& pCreatedAt) noexcept
+{
     createdAt_ = std::make_shared<::trantor::Date>(pCreatedAt);
     dirtyFlag_[3] = true;
 }
 
-const ::trantor::Date& Users::getValueOfUpdatedAt() const noexcept {
+const ::trantor::Date& Users::getValueOfUpdatedAt() const noexcept
+{
     static const ::trantor::Date defaultValue = ::trantor::Date();
     if (updatedAt_) {
         return *updatedAt_;
@@ -494,19 +515,23 @@ const ::trantor::Date& Users::getValueOfUpdatedAt() const noexcept {
     return defaultValue;
 }
 
-const std::shared_ptr<::trantor::Date>& Users::getUpdatedAt() const noexcept {
+const std::shared_ptr<::trantor::Date>& Users::getUpdatedAt() const noexcept
+{
     return updatedAt_;
 }
 
-void Users::setUpdatedAt(const ::trantor::Date& pUpdatedAt) noexcept {
+void Users::setUpdatedAt(const ::trantor::Date& pUpdatedAt) noexcept
+{
     updatedAt_ = std::make_shared<::trantor::Date>(pUpdatedAt);
     dirtyFlag_[4] = true;
 }
 
-void Users::updateId(const uint64_t id) {
+void Users::updateId(const uint64_t id)
+{
 }
 
-const std::vector<std::string>& Users::insertColumns() noexcept {
+const std::vector<std::string>& Users::insertColumns() noexcept
+{
     static const std::vector<std::string> inCols = {
         "name",
         "email",
@@ -516,7 +541,8 @@ const std::vector<std::string>& Users::insertColumns() noexcept {
     return inCols;
 }
 
-void Users::outputArgs(drogon::orm::internal::SqlBinder& binder) const {
+void Users::outputArgs(drogon::orm::internal::SqlBinder& binder) const
+{
     if (dirtyFlag_[1]) {
         if (getName()) {
             binder << getValueOfName();
@@ -547,7 +573,8 @@ void Users::outputArgs(drogon::orm::internal::SqlBinder& binder) const {
     }
 }
 
-const std::vector<std::string> Users::updateColumns() const {
+const std::vector<std::string> Users::updateColumns() const
+{
     std::vector<std::string> ret;
     if (dirtyFlag_[1]) {
         ret.push_back(getColumnName(1));
@@ -564,7 +591,8 @@ const std::vector<std::string> Users::updateColumns() const {
     return ret;
 }
 
-void Users::updateArgs(drogon::orm::internal::SqlBinder& binder) const {
+void Users::updateArgs(drogon::orm::internal::SqlBinder& binder) const
+{
     if (dirtyFlag_[1]) {
         if (getName()) {
             binder << getValueOfName();
@@ -595,7 +623,8 @@ void Users::updateArgs(drogon::orm::internal::SqlBinder& binder) const {
     }
 }
 
-Json::Value Users::toJson() const {
+Json::Value Users::toJson() const
+{
     Json::Value ret;
     if (getId()) {
         ret["id"] = (Json::Int64)getValueOfId();
@@ -626,7 +655,9 @@ Json::Value Users::toJson() const {
 }
 
 Json::Value Users::toMasqueradedJson(
-    const std::vector<std::string>& pMasqueradingVector) const {
+    const std::vector<std::string>& pMasqueradingVector
+) const
+{
     Json::Value ret;
     if (pMasqueradingVector.size() == 5) {
         if (!pMasqueradingVector[0].empty()) {
@@ -695,7 +726,8 @@ Json::Value Users::toMasqueradedJson(
     return ret;
 }
 
-bool Users::validateJsonForCreation(const Json::Value& pJson, std::string& err) {
+bool Users::validateJsonForCreation(const Json::Value& pJson, std::string& err)
+{
     if (pJson.isMember("id")) {
         if (!validJsonOfField(0, "id", pJson["id"], err, true)) {
             return false;
@@ -730,9 +762,8 @@ bool Users::validateJsonForCreation(const Json::Value& pJson, std::string& err) 
     return true;
 }
 
-bool Users::validateMasqueradedJsonForCreation(const Json::Value& pJson,
-                                               const std::vector<std::string>& pMasqueradingVector,
-                                               std::string& err) {
+bool Users::validateMasqueradedJsonForCreation(const Json::Value& pJson, const std::vector<std::string>& pMasqueradingVector, std::string& err)
+{
     if (pMasqueradingVector.size() != 5) {
         err = "Bad masquerading vector";
         return false;
@@ -786,7 +817,8 @@ bool Users::validateMasqueradedJsonForCreation(const Json::Value& pJson,
     return true;
 }
 
-bool Users::validateJsonForUpdate(const Json::Value& pJson, std::string& err) {
+bool Users::validateJsonForUpdate(const Json::Value& pJson, std::string& err)
+{
     if (pJson.isMember("id")) {
         if (!validJsonOfField(0, "id", pJson["id"], err, false)) {
             return false;
@@ -818,9 +850,8 @@ bool Users::validateJsonForUpdate(const Json::Value& pJson, std::string& err) {
     return true;
 }
 
-bool Users::validateMasqueradedJsonForUpdate(const Json::Value& pJson,
-                                             const std::vector<std::string>& pMasqueradingVector,
-                                             std::string& err) {
+bool Users::validateMasqueradedJsonForUpdate(const Json::Value& pJson, const std::vector<std::string>& pMasqueradingVector, std::string& err)
+{
     if (pMasqueradingVector.size() != 5) {
         err = "Bad masquerading vector";
         return false;
@@ -861,11 +892,8 @@ bool Users::validateMasqueradedJsonForUpdate(const Json::Value& pJson,
     return true;
 }
 
-bool Users::validJsonOfField(size_t index,
-                             const std::string& fieldName,
-                             const Json::Value& pJson,
-                             std::string& err,
-                             bool isForCreation) {
+bool Users::validJsonOfField(size_t index, const std::string& fieldName, const Json::Value& pJson, std::string& err, bool isForCreation)
+{
     switch (index) {
         case 0:
             if (pJson.isNull()) {

@@ -5,7 +5,8 @@ namespace n213 {
     struct foo {};
 } // namespace n213
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n213;
 

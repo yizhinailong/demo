@@ -4,7 +4,8 @@ namespace n402 {
     template <typename T>
     struct handler // [1] template definition
     {
-        void handle(T value) {
+        void handle(T value)
+        {
             std::cout << "handler<T>: " << value << '\n';
         }
     };
@@ -12,7 +13,8 @@ namespace n402 {
     template <typename T>
     struct parser // [2] template definition
     {
-        void parse(T arg) {
+        void parse(T arg)
+        {
             arg.handle(42); // [3] dependent name
         }
     };
@@ -20,17 +22,19 @@ namespace n402 {
     template <>
     struct handler<int> // [4] template specialization
     {
-        void handle(int value) {
+        void handle(int value)
+        {
             std::cout << "handler<int>: " << value << '\n';
         }
     };
 } // namespace n402
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n402;
 
-        handler<int>         h; // [5] template instantiation
+        handler<int> h;         // [5] template instantiation
         parser<handler<int>> p; // [6] template instantiation
         p.parse(h);
     }

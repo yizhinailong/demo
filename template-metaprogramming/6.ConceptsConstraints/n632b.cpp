@@ -3,17 +3,15 @@ import std;
 namespace n632b {
     void handle(long v)
     {
-        if constexpr (sizeof(long) > sizeof(int))
-        {
+        if constexpr (sizeof(long) > sizeof(int)) {
             /* do something else */
-        }
-        else
-        {
+        } else {
             /* do something */
         }
     }
 } // namespace n632b
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

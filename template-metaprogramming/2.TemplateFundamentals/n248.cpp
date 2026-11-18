@@ -1,11 +1,12 @@
 import std;
 
-auto main() -> int {
+auto main() -> int
+{
     {
         int arr[] = { 1, 6, 3, 8, 4, 2, 9 };
         std::ranges::sort(arr, [](int const a, int const b) { return a > b; });
 
-        int  pivot = 5;
+        int pivot = 5;
         auto count = std::ranges::count_if(arr, [pivot](int const a) { return a > pivot; });
 
         std::cout << count << '\n';
@@ -22,16 +23,16 @@ auto main() -> int {
             return a + a;
         }; // C++20, template lambda
 
-        auto v1  = l1(42);   // OK
-        auto v2  = l1(42.0); // warning
+        auto v1 = l1(42);   // OK
+        auto v2 = l1(42.0); // warning
         // auto v3 = l1(std::string{ "42" });   // error
 
-        auto v5  = l2(42);                  // OK
-        auto v6  = l2(42.0);                // OK
-        auto v7  = l2(std::string{ "42" }); // OK
+        auto v5 = l2(42);                   // OK
+        auto v6 = l2(42.0);                 // OK
+        auto v7 = l2(std::string{ "42" });  // OK
 
-        auto v8  = l3(42);                  // OK
-        auto v9  = l3(42.0);                // OK
+        auto v8 = l3(42);                   // OK
+        auto v9 = l3(42.0);                 // OK
         auto v10 = l3(std::string{ "42" }); // OK
     }
 
@@ -49,18 +50,18 @@ auto main() -> int {
             return a + b;
         };
 
-        auto v1  = l1(42, 1);     // OK
-        auto v2  = l1(42.0, 1.0); // warning
+        auto v1 = l1(42, 1);     // OK
+        auto v2 = l1(42.0, 1.0); // warning
 
         // auto v3 = l1(std::string{ "42" }, '1'); // error
 
-        auto v4  = l2(42, 1);                                    // OK
-        auto v5  = l2(42.0, 1);                                  // OK
-        auto v6  = l2(std::string{ "42" }, '1');                 // OK
-        auto v7  = l2(std::string{ "42" }, std::string{ "1" });  // OK
+        auto v4 = l2(42, 1);                                     // OK
+        auto v5 = l2(42.0, 1);                                   // OK
+        auto v6 = l2(std::string{ "42" }, '1');                  // OK
+        auto v7 = l2(std::string{ "42" }, std::string{ "1" });   // OK
 
-        auto v8  = l3(42, 1);                                    // OK
-        auto v9  = l3(42.0, 1);                                  // OK
+        auto v8 = l3(42, 1);                                     // OK
+        auto v9 = l3(42.0, 1);                                   // OK
         auto v10 = l3(std::string{ "42" }, '1');                 // OK
         auto v11 = l3(std::string{ "42" }, std::string{ "42" }); // OK
 

@@ -11,6 +11,7 @@ namespace n208 {
     class foo3 {};
 } // namespace n208
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

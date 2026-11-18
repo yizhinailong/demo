@@ -2,13 +2,11 @@ import std;
 
 namespace n702 {
     template <typename T>
-    struct Base
-    {
+    struct Base {
         void f() { static_cast<T*>(this)->f(); }
     };
 
-    struct Derived : public Base<Derived>
-    {
+    struct Derived : public Base<Derived> {
         void f() { std::cout << "Derived::f()\n"; }
     };
 
@@ -19,10 +17,11 @@ namespace n702 {
     }
 } // namespace n702
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n702;
-        
+
         Derived d;
         process(d);
     }

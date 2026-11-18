@@ -14,14 +14,15 @@ namespace n435 {
     }
 } // namespace n435
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n435;
-        
+
         int a = 42;
-        
-        decltype(func(a)) r1 = func(a);                 // int const&
-        decltype(func_caller(a)) r2 = func_caller(a);   // int const&
+
+        decltype(func(a)) r1 = func(a);               // int const&
+        decltype(func_caller(a)) r2 = func_caller(a); // int const&
     }
     return 0;
 }

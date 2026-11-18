@@ -14,7 +14,8 @@ namespace n203 {
         explicit wrapper(T value)
             : m_value(value) {}
 
-        auto get() const -> T const& {
+        auto get() const -> T const&
+        {
             return m_value;
         }
 
@@ -22,12 +23,14 @@ namespace n203 {
         T m_value;
     };
 
-    auto use_wrapper(wrapper<int>* ptr) {
+    auto use_wrapper(wrapper<int>* ptr)
+    {
         std::println("use_wrapper: {}", ptr->get());
     }
 } // namespace n203
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n203;
 

@@ -18,7 +18,8 @@ namespace {
         cudaError_t status,
         char const* expression,
         std::source_location location = std::source_location::current()
-    ) -> void {
+    ) -> void
+    {
         if (status == cudaSuccess) {
             return;
         }
@@ -33,14 +34,16 @@ namespace {
     template <typename T>
     class DeviceBuffer {
     public:
-        explicit DeviceBuffer(std::size_t count) {
+        explicit DeviceBuffer(std::size_t count)
+        {
             check_cuda(
                 cudaMalloc(reinterpret_cast<void**>(&m_data), count * sizeof(T)),
                 "cudaMalloc"
             );
         }
 
-        ~DeviceBuffer() {
+        ~DeviceBuffer()
+        {
             if (m_data != nullptr) {
                 cudaFree(m_data);
             }
@@ -49,7 +52,8 @@ namespace {
         DeviceBuffer(DeviceBuffer const&) = delete;
         DeviceBuffer& operator=(DeviceBuffer const&) = delete;
 
-        [[nodiscard]] auto Data() const noexcept -> T* {
+        [[nodiscard]] auto Data() const noexcept -> T*
+        {
             return m_data;
         }
 
@@ -59,11 +63,13 @@ namespace {
 
     class CudaEvent {
     public:
-        CudaEvent() {
+        CudaEvent()
+        {
             check_cuda(cudaEventCreate(&m_event), "cudaEventCreate");
         }
 
-        ~CudaEvent() {
+        ~CudaEvent()
+        {
             if (m_event != nullptr) {
                 cudaEventDestroy(m_event);
             }
@@ -72,11 +78,13 @@ namespace {
         CudaEvent(CudaEvent const&) = delete;
         CudaEvent& operator=(CudaEvent const&) = delete;
 
-        auto Record() const -> void {
+        auto Record() const -> void
+        {
             check_cuda(cudaEventRecord(m_event), "cudaEventRecord");
         }
 
-        [[nodiscard]] auto Handle() const noexcept -> cudaEvent_t {
+        [[nodiscard]] auto Handle() const noexcept -> cudaEvent_t
+        {
             return m_event;
         }
 
@@ -84,7 +92,8 @@ namespace {
         cudaEvent_t m_event{ nullptr };
     };
 
-    __global__ void vector_add_kernel(int const* a, int const* b, int* c, int n) {
+    __global__ void vector_add_kernel(int const* a, int const* b, int* c, int n)
+    {
         for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < n;
              i += blockDim.x * gridDim.x) {
             c[i] = a[i] + b[i];
@@ -95,7 +104,8 @@ namespace {
 
 namespace cuda_demo {
 
-    auto query_device() -> DeviceInfo {
+    auto query_device() -> DeviceInfo
+    {
         int device{ 0 };
         check_cuda(cudaGetDevice(&device), "cudaGetDevice");
 
@@ -110,7 +120,8 @@ namespace cuda_demo {
         int const* b,
         int* c,
         std::size_t n
-    ) -> VectorAddStats {
+    ) -> VectorAddStats
+    {
         if (n == 0) {
             return VectorAddStats{};
         }

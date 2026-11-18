@@ -15,7 +15,8 @@ namespace cmdline {
         template <typename Target, typename Source, bool Same>
         class lexical_cast_t {
         public:
-            static auto cast(const Source& arg) -> Target {
+            static auto cast(const Source& arg) -> Target
+            {
                 Target ret;
                 std::stringstream ss;
                 if (!(ss << arg && ss >> ret && ss.eof())) {
@@ -29,7 +30,8 @@ namespace cmdline {
         template <typename Target, typename Source>
         class lexical_cast_t<Target, Source, true> {
         public:
-            static auto cast(const Source& arg) -> Target {
+            static auto cast(const Source& arg) -> Target
+            {
                 return arg;
             }
         };
@@ -37,7 +39,8 @@ namespace cmdline {
         template <typename Source>
         class lexical_cast_t<std::string, Source, false> {
         public:
-            static auto cast(const Source& arg) -> std::string {
+            static auto cast(const Source& arg) -> std::string
+            {
                 std::ostringstream ss;
                 ss << arg;
                 return ss.str();
@@ -47,7 +50,8 @@ namespace cmdline {
         template <typename Target>
         class lexical_cast_t<Target, std::string, false> {
         public:
-            static auto cast(const std::string& arg) -> Target {
+            static auto cast(const std::string& arg) -> Target
+            {
                 Target ret;
                 std::istringstream ss(arg);
                 if (!(ss >> ret && ss.eof())) {
@@ -58,12 +62,14 @@ namespace cmdline {
         };
 
         template <typename Target, typename Source>
-        auto lexical_cast(const Source& arg) -> Target {
+        auto lexical_cast(const Source& arg) -> Target
+        {
             return lexical_cast_t<Target, Source, std::is_same<Target, Source>::value>::cast(arg);
         }
 
         template <typename T>
-        constexpr auto type_name_impl() -> std::string_view {
+        constexpr auto type_name_impl() -> std::string_view
+        {
 #if defined(__clang__)
             constexpr std::string_view prefix = "[T = ";
             constexpr std::string_view suffix = "]";
@@ -85,17 +91,20 @@ namespace cmdline {
         }
 
         template <typename T>
-        auto readable_typename() -> std::string {
+        auto readable_typename() -> std::string
+        {
             return std::string(type_name_impl<T>());
         }
 
         template <typename T>
-        auto default_value(T def) -> std::string {
+        auto default_value(T def) -> std::string
+        {
             return detail::lexical_cast<std::string>(def);
         }
 
         template <>
-        inline auto readable_typename<std::string>() -> std::string {
+        inline auto readable_typename<std::string>() -> std::string
+        {
             return "string";
         }
 
@@ -115,7 +124,8 @@ namespace cmdline {
         cmdline_error& operator=(cmdline_error&&) noexcept = default;
 
         [[nodiscard]]
-        auto what() const noexcept -> const char* override {
+        auto what() const noexcept -> const char* override
+        {
             return m_msg.c_str();
         }
 
@@ -125,7 +135,8 @@ namespace cmdline {
 
     template <typename T>
     struct default_reader {
-        auto operator()(const std::string& str) -> T {
+        auto operator()(const std::string& str) -> T
+        {
             return detail::lexical_cast<T>(str);
         }
     };
@@ -135,7 +146,8 @@ namespace cmdline {
         range_reader(const T& low, const T& high)
             : low(low), high(high) {}
 
-        auto operator()(const std::string& s) const -> T {
+        auto operator()(const std::string& s) const -> T
+        {
             T ret = default_reader<T>()(s);
             if (!(ret >= low && ret <= high)) {
                 throw cmdline::cmdline_error("range_error");
@@ -148,13 +160,15 @@ namespace cmdline {
     };
 
     template <typename T>
-    auto range(const T& low, const T& high) -> range_reader<T> {
+    auto range(const T& low, const T& high) -> range_reader<T>
+    {
         return range_reader<T>(low, high);
     }
 
     template <typename T>
     struct oneof_reader {
-        auto operator()(const std::string& s) -> T {
+        auto operator()(const std::string& s) -> T
+        {
             T ret = default_reader<T>()(s);
             if (std::find(alt.begin(), alt.end(), ret) == alt.end()) {
                 throw cmdline_error("");
@@ -162,7 +176,8 @@ namespace cmdline {
             return ret;
         }
 
-        auto add(const T& v) -> void {
+        auto add(const T& v) -> void
+        {
             alt.push_back(v);
         }
 
@@ -171,7 +186,8 @@ namespace cmdline {
     };
 
     template <typename T, typename... Args>
-    auto oneof(T arg, Args... args) -> oneof_reader<T> {
+    auto oneof(T arg, Args... args) -> oneof_reader<T>
+    {
         oneof_reader<T> ret;
         ret.add(arg);
         (ret.add(args), ...);
@@ -184,15 +200,15 @@ namespace cmdline {
     public:
         parser() = default;
 
-        ~parser() {
+        ~parser()
+        {
             for (auto& m_option : m_options) {
                 delete m_option.second;
             }
         }
 
-        auto add(const std::string& name,
-                 char short_name = 0,
-                 const std::string& desc = "") -> void {
+        auto add(const std::string& name, char short_name = 0, const std::string& desc = "") -> void
+        {
             if (m_options.count(name) != 0U) {
                 throw cmdline_error("multiple definition: " + name);
             }
@@ -201,21 +217,14 @@ namespace cmdline {
         }
 
         template <typename T>
-        auto add(const std::string& name,
-                 char short_name = 0,
-                 const std::string& desc = "",
-                 bool need = true,
-                 const T def = T()) -> void {
+        auto add(const std::string& name, char short_name = 0, const std::string& desc = "", bool need = true, const T def = T()) -> void
+        {
             add(name, short_name, desc, need, def, default_reader<T>());
         }
 
         template <typename T, typename F>
-        auto add(const std::string& name,
-                 char short_name = 0,
-                 const std::string& desc = "",
-                 bool need = true,
-                 const T def = T(),
-                 F reader = F()) -> void {
+        auto add(const std::string& name, char short_name = 0, const std::string& desc = "", bool need = true, const T def = T(), F reader = F()) -> void
+        {
             if (m_options.count(name)) {
                 throw cmdline_error("multiple definition: " + name);
             }
@@ -223,15 +232,18 @@ namespace cmdline {
             m_ordered.push_back(m_options[name]);
         }
 
-        auto footer(const std::string& foot) -> void {
+        auto footer(const std::string& foot) -> void
+        {
             m_ftr = foot;
         }
 
-        auto set_program_name(const std::string& name) -> void {
+        auto set_program_name(const std::string& name) -> void
+        {
             m_prog_name = name;
         }
 
-        auto exist(const std::string& name) const -> bool {
+        auto exist(const std::string& name) const -> bool
+        {
             if (m_options.count(name) == 0) {
                 throw cmdline_error("there is no flag: --" + name);
             }
@@ -239,7 +251,8 @@ namespace cmdline {
         }
 
         template <typename T>
-        auto get(const std::string& name) const -> const T& {
+        auto get(const std::string& name) const -> const T&
+        {
             if (m_options.count(name) == 0) {
                 throw cmdline_error("there is no flag: --" + name);
             }
@@ -250,11 +263,13 @@ namespace cmdline {
             return p->get();
         }
 
-        auto rest() const -> const std::vector<std::string>& {
+        auto rest() const -> const std::vector<std::string>&
+        {
             return m_others;
         }
 
-        auto parse(const std::string& arg) -> bool {
+        auto parse(const std::string& arg) -> bool
+        {
             std::vector<std::string> args;
 
             std::string buf;
@@ -298,7 +313,8 @@ namespace cmdline {
             return parse(args);
         }
 
-        auto parse(const std::vector<std::string>& args) -> bool {
+        auto parse(const std::vector<std::string>& args) -> bool
+        {
             int argc = static_cast<int>(args.size());
             std::vector<const char*> argv(argc);
 
@@ -309,7 +325,8 @@ namespace cmdline {
             return parse(argc, argv.data());
         }
 
-        auto parse(int argc, const char* const argv[]) -> bool {
+        auto parse(int argc, const char* const argv[]) -> bool
+        {
             m_errors.clear();
             m_others.clear();
 
@@ -408,32 +425,37 @@ namespace cmdline {
             return m_errors.size() == 0;
         }
 
-        auto parse_check(const std::string& arg) -> void {
+        auto parse_check(const std::string& arg) -> void
+        {
             if (m_options.count("help") == 0U) {
                 add("help", '?', "print this message");
             }
             check(0, parse(arg));
         }
 
-        auto parse_check(const std::vector<std::string>& args) -> void {
+        auto parse_check(const std::vector<std::string>& args) -> void
+        {
             if (m_options.count("help") == 0U) {
                 add("help", '?', "print this message");
             }
             check(args.size(), parse(args));
         }
 
-        auto parse_check(int argc, char* argv[]) -> void {
+        auto parse_check(int argc, char* argv[]) -> void
+        {
             if (m_options.count("help") == 0U) {
                 add("help", '?', "print this message");
             }
             check(argc, parse(argc, argv));
         }
 
-        auto error() const -> std::string {
+        auto error() const -> std::string
+        {
             return m_errors.size() > 0 ? m_errors[0] : "";
         }
 
-        auto error_full() const -> std::string {
+        auto error_full() const -> std::string
+        {
             std::ostringstream oss;
             for (size_t i = 0; i < m_errors.size(); i++) {
                 oss << m_errors[i] << std::endl;
@@ -441,7 +463,8 @@ namespace cmdline {
             return oss.str();
         }
 
-        auto usage() const -> std::string {
+        auto usage() const -> std::string
+        {
             std::ostringstream oss;
             oss << "usage: " << m_prog_name << " ";
             for (size_t i = 0; i < m_ordered.size(); i++) {
@@ -474,7 +497,8 @@ namespace cmdline {
         }
 
     private:
-        auto check(int argc, bool ok) const -> void {
+        auto check(int argc, bool ok) const -> void
+        {
             if ((argc == 1 && !ok) || exist("help")) {
                 std::cerr << usage();
                 exit(0);
@@ -487,7 +511,8 @@ namespace cmdline {
             }
         }
 
-        auto set_option(const std::string& name) -> void {
+        auto set_option(const std::string& name) -> void
+        {
             if (m_options.count(name) == 0) {
                 m_errors.push_back("undefined option: --" + name);
                 return;
@@ -498,7 +523,8 @@ namespace cmdline {
             }
         }
 
-        auto set_option(const std::string& name, const std::string& value) -> void {
+        auto set_option(const std::string& name, const std::string& value) -> void
+        {
             if (m_options.count(name) == 0) {
                 m_errors.push_back("undefined option: --" + name);
                 return;
@@ -540,9 +566,7 @@ namespace cmdline {
 
         class option_without_value : public option_base {
         public:
-            option_without_value(std::string name,
-                                 char short_name,
-                                 std::string desc)
+            option_without_value(std::string name, char short_name, std::string desc)
                 : m_nam(std::move(name)),
                   m_snam(short_name),
                   m_desc(std::move(desc)),
@@ -554,44 +578,54 @@ namespace cmdline {
             option_without_value(option_without_value&&) noexcept = delete;
             option_without_value& operator=(option_without_value&&) noexcept = delete;
 
-            auto has_value() const -> bool override {
+            auto has_value() const -> bool override
+            {
                 return false;
             }
 
-            auto set() -> bool override {
+            auto set() -> bool override
+            {
                 m_has = true;
                 return true;
             }
 
-            auto set(const std::string& /*value*/) -> bool override {
+            auto set(const std::string& /*value*/) -> bool override
+            {
                 return false;
             }
 
-            auto has_set() const -> bool override {
+            auto has_set() const -> bool override
+            {
                 return m_has;
             }
 
-            auto valid() const -> bool override {
+            auto valid() const -> bool override
+            {
                 return true;
             }
 
-            auto must() const -> bool override {
+            auto must() const -> bool override
+            {
                 return false;
             }
 
-            auto name() const -> const std::string& override {
+            auto name() const -> const std::string& override
+            {
                 return m_nam;
             }
 
-            auto short_name() const -> char override {
+            auto short_name() const -> char override
+            {
                 return m_snam;
             }
 
-            auto description() const -> const std::string& override {
+            auto description() const -> const std::string& override
+            {
                 return m_desc;
             }
 
-            auto short_description() const -> std::string override {
+            auto short_description() const -> std::string override
+            {
                 return "--" + m_nam;
             }
 
@@ -605,35 +639,36 @@ namespace cmdline {
         template <typename T>
         class option_with_value : public option_base {
         public:
-            option_with_value(const std::string& name,
-                              char short_name,
-                              bool need,
-                              const T& def,
-                              const std::string& desc)
+            option_with_value(const std::string& name, char short_name, bool need, const T& def, const std::string& desc)
                 : m_nam(name),
                   m_snam(short_name),
                   m_need(need),
                   m_has(false),
                   m_def(def),
-                  m_actual(def) {
+                  m_actual(def)
+            {
                 this->m_desc = full_description(desc);
             }
 
             ~option_with_value() override = default;
 
-            auto get() const -> const T& {
+            auto get() const -> const T&
+            {
                 return m_actual;
             }
 
-            auto has_value() const -> bool override {
+            auto has_value() const -> bool override
+            {
                 return true;
             }
 
-            auto set() -> bool override {
+            auto set() -> bool override
+            {
                 return false;
             }
 
-            auto set(const std::string& value) -> bool override {
+            auto set(const std::string& value) -> bool override
+            {
                 try {
                     m_actual = read(value);
                     m_has = true;
@@ -643,38 +678,46 @@ namespace cmdline {
                 return true;
             }
 
-            auto has_set() const -> bool override {
+            auto has_set() const -> bool override
+            {
                 return m_has;
             }
 
-            auto valid() const -> bool override {
+            auto valid() const -> bool override
+            {
                 return !m_need || m_has;
             }
 
-            auto must() const -> bool override {
+            auto must() const -> bool override
+            {
                 return m_need;
             }
 
-            auto name() const -> const std::string& override {
+            auto name() const -> const std::string& override
+            {
                 return m_nam;
             }
 
-            auto short_name() const -> char override {
+            auto short_name() const -> char override
+            {
                 return m_snam;
             }
 
-            auto description() const -> const std::string& override {
+            auto description() const -> const std::string& override
+            {
                 return m_desc;
             }
 
-            auto short_description() const -> std::string override {
+            auto short_description() const -> std::string override
+            {
                 return "--" + m_nam + "=" + detail::readable_typename<T>();
             }
 
         protected:
-            auto full_description(const std::string& desc) -> std::string {
+            auto full_description(const std::string& desc) -> std::string
+            {
                 return desc + " (" + detail::readable_typename<T>() +
-                       (m_need ? "" : " [=" + detail::default_value<T>(m_def) + "]") + ")";
+                    (m_need ? "" : " [=" + detail::default_value<T>(m_def) + "]") + ")";
             }
 
             virtual auto read(const std::string& s) -> T = 0;
@@ -699,12 +742,14 @@ namespace cmdline {
                 bool need,
                 const T def,
                 const std::string& desc,
-                F reader)
+                F reader
+            )
                 : option_with_value<T>(name, short_name, need, def, desc),
                   m_reader(reader) {}
 
         private:
-            auto read(const std::string& s) -> T override {
+            auto read(const std::string& s) -> T override
+            {
                 return m_reader(s);
             }
 

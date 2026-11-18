@@ -8,7 +8,8 @@ namespace n411 {
     inline constexpr unsigned int sum<0> = 0;
 } // namespace n411
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n411;
 

@@ -14,7 +14,8 @@ template struct n226::wrapper<double>;
 
 namespace n226 {
     template <typename T>
-    auto add(T const a, T const b) -> T {
+    auto add(T const a, T const b) -> T
+    {
         return a + b;
     }
 
@@ -23,6 +24,7 @@ namespace n226 {
 
 template double n226::add(double, double);
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

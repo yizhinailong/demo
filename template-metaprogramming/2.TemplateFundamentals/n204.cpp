@@ -4,13 +4,15 @@ namespace n204 {
     template <typename T>
     class composition {
     public:
-        auto add(T const a, T const b) -> T const {
+        auto add(T const a, T const b) -> T const
+        {
             return a + b;
         }
     };
 } // namespace n204
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n204;
 

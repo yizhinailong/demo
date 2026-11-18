@@ -11,6 +11,7 @@ namespace n218 {
     auto func() -> void {}
 } // namespace n218
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

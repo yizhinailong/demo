@@ -2,14 +2,12 @@ import std;
 
 namespace n436 {
     template <typename T, typename U>
-    struct composition
-    {
+    struct composition {
         using result_type = decltype(T{} + U{});
     };
 
-    struct wrapper
-    {
-        wrapper(int const v) : value(v){}
+    struct wrapper {
+        wrapper(int const v) : value(v) {}
 
         int value;
 
@@ -25,15 +23,17 @@ namespace n436 {
     };
 } // namespace n436
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n436;
-        
+
         static_assert(
-           std::is_same_v<
-           double,
-           composition<int, double>::result_type>);
-        
+            std::is_same_v<
+                double,
+                composition<int, double>::result_type>
+        );
+
         // error, no appropriate default constructor available
         /*
         static_assert(

@@ -1,11 +1,13 @@
 import std;
 
 namespace n312 {
-    auto twice_as(int a, int b) -> bool {
+    auto twice_as(int a, int b) -> bool
+    {
         return a >= b * 2;
     }
 
-    auto sum_and_div(double a, double b, double c) -> double {
+    auto sum_and_div(double a, double b, double c) -> double
+    {
         return (a + b) / c;
     }
 
@@ -19,7 +21,8 @@ namespace n312 {
     };
 } // namespace n312
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n312;
 

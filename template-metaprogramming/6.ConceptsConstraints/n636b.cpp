@@ -7,12 +7,13 @@ namespace n636b {
     }
 } // namespace n636b
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n636b;
-        
+
         add(4, 2);
-        //add(4.2, 0); // error
+        // add(4.2, 0); // error
     }
     return 0;
 }

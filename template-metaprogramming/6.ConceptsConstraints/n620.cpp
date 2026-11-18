@@ -17,6 +17,7 @@ namespace n620 {
     }
 } // namespace n620
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

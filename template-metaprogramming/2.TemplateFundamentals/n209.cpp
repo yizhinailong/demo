@@ -4,15 +4,18 @@ namespace n209 {
     template <typename T, std::size_t S>
     class buffer {
     public:
-        auto data() const -> T const* {
+        auto data() const -> T const*
+        {
             return m_data;
         }
 
-        constexpr auto operator[](std::size_t const index) -> T& {
+        constexpr auto operator[](std::size_t const index) -> T&
+        {
             return m_data[index];
         }
 
-        constexpr auto operator[](std::size_t const index) const -> T const& {
+        constexpr auto operator[](std::size_t const index) const -> T const&
+        {
             return m_data[index];
         }
 
@@ -21,12 +24,14 @@ namespace n209 {
     };
 
     template <typename T, std::size_t S>
-    auto make_buffer() -> buffer<T, S> {
+    auto make_buffer() -> buffer<T, S>
+    {
         return {};
     }
 } // namespace n209
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n209;
 
@@ -40,7 +45,7 @@ auto main() -> int {
     {
         using namespace n209;
 
-        buffer<int, 10>    a1;
+        buffer<int, 10> a1;
         buffer<int, 5 * 2> a2;
 
         std::println(

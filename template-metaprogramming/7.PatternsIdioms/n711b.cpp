@@ -10,33 +10,34 @@ namespace n711b {
     template <std::bidirectional_iterator Iter, typename Distance>
     void advance(Iter& it, Distance n)
     {
-        if (n > 0)
-        {
-            while (n--) ++it;
-        }
-        else
-        {
-            while (n++) --it;
+        if (n > 0) {
+            while (n--) {
+                ++it;
+            }
+        } else {
+            while (n++) {
+                --it;
+            }
         }
     }
 
     template <std::input_iterator Iter, typename Distance>
     void advance(Iter& it, Distance n)
     {
-        while (n--)
-        {
+        while (n--) {
             ++it;
         }
     }
 } // namespace n711b
 
-auto main() -> int {
+auto main() -> int
+{
     {
-        std::vector<int> v{ 1,2,3,4,5 };
+        std::vector<int> v{ 1, 2, 3, 4, 5 };
         auto sv = std::begin(v);
         n711b::advance(sv, 2);
-        
-        std::list<int> l{ 1,2,3,4,5 };
+
+        std::list<int> l{ 1, 2, 3, 4, 5 };
         auto sl = std::begin(l);
         n711b::advance(sl, 2);
     }

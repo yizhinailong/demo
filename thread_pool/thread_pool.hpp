@@ -37,7 +37,8 @@ private:
 };
 
 // the constructor just launches some amount of workers
-inline ThreadPool::ThreadPool(size_t threads) {
+inline ThreadPool::ThreadPool(size_t threads)
+{
     for (size_t i = 0; i < threads; ++i) {
         _workers.emplace_back(
             [this]() {
@@ -68,7 +69,8 @@ inline ThreadPool::ThreadPool(size_t threads) {
 
 // add new work item to the pool
 template <typename F, typename... Args>
-auto ThreadPool::enqueue(F&& f, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>> {
+auto ThreadPool::enqueue(F&& f, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>>
+{
     using return_type = std::invoke_result_t<F, Args...>;
 
     auto task = std::make_shared<std::packaged_task<return_type()>>(
@@ -93,7 +95,8 @@ auto ThreadPool::enqueue(F&& f, Args&&... args) -> std::future<std::invoke_resul
 }
 
 // the destructor joins all threads
-inline ThreadPool::~ThreadPool() {
+inline ThreadPool::~ThreadPool()
+{
     {
         std::unique_lock<std::mutex> lock(_queue_mutex);
         _stop = true;

@@ -1,7 +1,8 @@
 import std;
 
 namespace n410 {
-    constexpr unsigned int factorial(unsigned int const n) {
+    constexpr unsigned int factorial(unsigned int const n)
+    {
         return n > 1 ? n * factorial(n - 1) : 1;
     }
 
@@ -19,7 +20,8 @@ namespace n410 {
     };
 } // namespace n410
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n410;
 

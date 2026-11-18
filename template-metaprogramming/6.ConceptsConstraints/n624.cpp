@@ -13,10 +13,11 @@ namespace n624 {
     }
 } // namespace n624
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n624;
-        
+
         add(1.0, 2.0);
         add(1, 2);
     }

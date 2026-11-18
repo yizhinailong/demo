@@ -22,18 +22,21 @@ namespace n444 {
     };
 
     template <typename T>
-    void print(wrapper<T> const& w) {
+    void print(wrapper<T> const& w)
+    {
         std::cout << w.value << '\n';
     }
 
     template <typename T>
     struct printer {
-        void operator()(wrapper<T> const& w) {
+        void operator()(wrapper<T> const& w)
+        {
             std::cout << w.value << '\n';
         }
     };
 } // namespace n444
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

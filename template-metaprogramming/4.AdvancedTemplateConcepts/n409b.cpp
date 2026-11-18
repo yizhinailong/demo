@@ -2,22 +2,26 @@ import std;
 
 namespace n409b {
     template <unsigned int n>
-    constexpr unsigned int factorial() {
+    constexpr unsigned int factorial()
+    {
         return n * factorial<n - 1>();
     }
 
     template <>
-    constexpr unsigned int factorial<1>() {
+    constexpr unsigned int factorial<1>()
+    {
         return 1;
     }
 
     template <>
-    constexpr unsigned int factorial<0>() {
+    constexpr unsigned int factorial<0>()
+    {
         return 1;
     }
 } // namespace n409b
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n409b;
 

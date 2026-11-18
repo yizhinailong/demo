@@ -29,6 +29,7 @@ namespace n207 {
     class wrapper8 {};
 } // namespace n207
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

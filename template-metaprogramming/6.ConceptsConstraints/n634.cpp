@@ -5,12 +5,13 @@ namespace n634 {
     constexpr T PI = T(3.1415926535897932385L);
 } // namespace n634
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n634;
-        
-        std::cout << PI<double> << '\n';  // OK
-        //std::cout << PI<int> << '\n';     // error
+
+        std::cout << PI<double> << '\n'; // OK
+        // std::cout << PI<int> << '\n';     // error
     }
     return 0;
 }

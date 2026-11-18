@@ -1,21 +1,25 @@
 #include "movie.hpp"
 
 Movie::Movie(QObject* parent)
-    : QObject{ parent } {
+    : QObject{ parent }
+{
 }
 
-Movie* Movie::create(QQmlEngine* qmlEngine, QJSEngine* jsEngine) {
+Movie* Movie::create(QQmlEngine* qmlEngine, QJSEngine* jsEngine)
+{
     Q_UNUSED(qmlEngine)
     Q_UNUSED(jsEngine)
     static Movie instance;
     return &instance;
 }
 
-QString Movie::mainCharacter() const {
+QString Movie::mainCharacter() const
+{
     return m_mainCharacter;
 }
 
-void Movie::setMainCharacter(const QString& newMainCharacter) {
+void Movie::setMainCharacter(const QString& newMainCharacter)
+{
     if (m_mainCharacter == newMainCharacter) {
         return;
     }
@@ -23,11 +27,13 @@ void Movie::setMainCharacter(const QString& newMainCharacter) {
     emit mainCharacterChanged();
 }
 
-QString Movie::title() const {
+QString Movie::title() const
+{
     return m_title;
 }
 
-void Movie::setTitle(const QString& newTitle) {
+void Movie::setTitle(const QString& newTitle)
+{
     if (m_title == newTitle) {
         return;
     }

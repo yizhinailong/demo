@@ -25,7 +25,8 @@ private:
 public:
     void set_level(LogLevel level) { current_level = level; }
 
-    void log(LogLevel level, const std::string& message) {
+    void log(LogLevel level, const std::string& message)
+    {
         if (level >= current_level) {
             std::lock_guard<std::mutex> lock(log_mutex);
             std::cout << "[" << level_to_string(level) << "] " << message << '\n';
@@ -34,22 +35,26 @@ public:
 
     // 支持格式化字符串的日志方法（兼容C++11/14/17）
     template <typename... Args>
-    void debug(const std::string& format, const Args&... args) {
+    void debug(const std::string& format, const Args&... args)
+    {
         log(LogLevel::DEBUG, format_string(format, args...));
     }
 
     template <typename... Args>
-    void info(const std::string& format, const Args&... args) {
+    void info(const std::string& format, const Args&... args)
+    {
         log(LogLevel::INFO, format_string(format, args...));
     }
 
     template <typename... Args>
-    void warning(const std::string& format, const Args&... args) {
+    void warning(const std::string& format, const Args&... args)
+    {
         log(LogLevel::WARNING, format_string(format, args...));
     }
 
     template <typename... Args>
-    void error(const std::string& format, const Args&... args) {
+    void error(const std::string& format, const Args&... args)
+    {
         log(LogLevel::ERROR, format_string(format, args...));
     }
 
@@ -57,7 +62,8 @@ private:
     // 辅助函数：格式化字符串
     template <typename... Args>
     auto format_string(const std::string& format, const Args&... args)
-        -> std::string {
+        -> std::string
+    {
         std::ostringstream oss;
         format_helper(oss, format, args...);
         return oss.str();
@@ -65,10 +71,8 @@ private:
 
     // 递归辅助函数
     template <typename T, typename... Args>
-    static void format_helper(std::ostringstream& oss,
-                              const std::string& format,
-                              const T& value,
-                              const Args&... args) {
+    static void format_helper(std::ostringstream& oss, const std::string& format, const T& value, const Args&... args)
+    {
         size_t pos = format.find("{}");
         if (pos != std::string::npos) {
             oss << format.substr(0, pos) << value;
@@ -85,11 +89,13 @@ private:
     }
 
     // 递归终止函数
-    static void format_helper(std::ostringstream& oss, const std::string& format) {
+    static void format_helper(std::ostringstream& oss, const std::string& format)
+    {
         oss << format;
     }
 
-    static auto level_to_string(LogLevel level) -> std::string {
+    static auto level_to_string(LogLevel level) -> std::string
+    {
         switch (level) {
             case LogLevel::DEBUG  : return "DEBUG";
             case LogLevel::INFO   : return "INFO";
@@ -114,18 +120,21 @@ public:
           total_eating_time(num_philosophers, std::chrono::milliseconds(0)),
           total_thinking_time(num_philosophers, std::chrono::milliseconds(0)) {}
 
-    void add_meal(int philosopher_id, std::chrono::milliseconds eating_time) {
+    void add_meal(int philosopher_id, std::chrono::milliseconds eating_time)
+    {
         std::lock_guard<std::mutex> lock(stats_mutex);
         meals_eaten[philosopher_id]++;
         total_eating_time[philosopher_id] += eating_time;
     }
 
-    void add_thinking_time(int philosopher_id, std::chrono::milliseconds thinking_time) {
+    void add_thinking_time(int philosopher_id, std::chrono::milliseconds thinking_time)
+    {
         std::lock_guard<std::mutex> lock(stats_mutex);
         total_thinking_time[philosopher_id] += thinking_time;
     }
 
-    void print_stats() {
+    void print_stats()
+    {
         std::lock_guard<std::mutex> lock(stats_mutex);
         std::cout << "\n=== Dining Statistics ===\n";
         for (int i = 0; i < meals_eaten.size(); ++i) {
@@ -147,7 +156,8 @@ struct DiningConfig {
     LogLevel log_level = LogLevel::INFO;
     bool enable_stats = true;
 
-    static auto from_args(int argc, char* argv[]) -> DiningConfig {
+    static auto from_args(int argc, char* argv[]) -> DiningConfig
+    {
         DiningConfig config;
 
         for (int i = 1; i < argc; ++i) {
@@ -199,7 +209,8 @@ struct DiningConfig {
     }
 
 private:
-    static void print_help() {
+    static void print_help()
+    {
         std::cout << "Usage: ./dining_philosophers [options]\n"
                   << "Options:\n"
                   << "  --philosophers N     Number of philosophers (default: 5)\n"
@@ -225,11 +236,7 @@ private:
     const DiningConfig& config;
 
 public:
-    Philosopher(int id,
-                int num_philosophers,
-                Logger& logger,
-                DiningStats& stats,
-                const DiningConfig& config)
+    Philosopher(int id, int num_philosophers, Logger& logger, DiningStats& stats, const DiningConfig& config)
         : id(id),
           left_fork(id),
           right_fork((id + 1) % num_philosophers),
@@ -239,7 +246,8 @@ public:
           stats(stats),
           config(config) {}
 
-    void dine(std::vector<std::mutex>& forks) {
+    void dine(std::vector<std::mutex>& forks)
+    {
         logger.debug("Philosopher " + std::to_string(id) + " starting dining session");
 
         for (int meal = 0; meal < config.num_meals; ++meal) {
@@ -287,13 +295,15 @@ public:
     explicit DiningPhilosophers(const DiningConfig& config)
         : config(config),
           stats(config.num_philosophers),
-          forks(config.num_philosophers) {
+          forks(config.num_philosophers)
+    {
 
         logger.set_level(config.log_level);
         logger.info("Initializing dining simulation with {} philosophers", config.num_philosophers);
     }
 
-    void run() {
+    void run()
+    {
         std::vector<std::thread> philosophers;
         philosophers.reserve(config.num_philosophers);
 
@@ -321,7 +331,8 @@ public:
 };
 
 // 主函数
-auto main(int argc, char* argv[]) -> int {
+auto main(int argc, char* argv[]) -> int
+{
     try {
         // 解析配置
         auto config = DiningConfig::from_args(argc, argv);

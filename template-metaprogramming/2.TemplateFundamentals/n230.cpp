@@ -8,12 +8,13 @@ namespace n230 {
     struct foo<int>; // explicit specialization declaration
 } // namespace n230
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n230;
 
         [[maybe_unused]] foo<double> a; // ok
-        [[maybe_unused]] foo<int>*   b; // ok
+        [[maybe_unused]] foo<int>* b;   // ok
         // foo<int> c; // error
     }
     return 0;

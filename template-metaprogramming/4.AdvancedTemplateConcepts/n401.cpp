@@ -12,7 +12,8 @@ namespace n401 {
     template <typename T>
     struct parser // [3] template definition
     {
-        void parse() {
+        void parse()
+        {
             handle(42); // [4] non-dependent name
         }
     };
@@ -23,7 +24,8 @@ namespace n401 {
     }
 } // namespace n401
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n401;
 

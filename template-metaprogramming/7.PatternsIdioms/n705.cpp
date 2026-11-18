@@ -2,24 +2,24 @@ import std;
 
 namespace n705 {
     template <typename T>
-    struct movable_unit
-    {
+    struct movable_unit {
         void advance(size_t steps)
         {
-            while (steps--)
+            while (steps--) {
                 static_cast<T*>(this)->step_forth();
+            }
         }
 
         void retreat(size_t steps)
         {
-            while (steps--)
+            while (steps--) {
                 static_cast<T*>(this)->step_back();
+            }
         }
     };
 
-    struct knight : movable_unit<knight>
-    {
-        void step_forth() 
+    struct knight : movable_unit<knight> {
+        void step_forth()
         {
             std::cout << "knight moves forward\n";
         }
@@ -30,8 +30,7 @@ namespace n705 {
         }
     };
 
-    struct mage : movable_unit<mage>
-    {
+    struct mage : movable_unit<mage> {
         void step_forth()
         {
             std::cout << "mage moves forward\n";
@@ -44,14 +43,15 @@ namespace n705 {
     };
 } // namespace n705
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n705;
-        
+
         knight k;
         k.advance(3);
         k.retreat(2);
-        
+
         mage m;
         m.advance(5);
         m.retreat(3);

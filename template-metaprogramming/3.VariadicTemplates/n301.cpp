@@ -3,7 +3,8 @@ import std;
 namespace n301 {
 #include <stdarg.h>
 
-    int min(int count, ...) {
+    int min(int count, ...)
+    {
         va_list args;
         va_start(args, count);
 
@@ -21,7 +22,8 @@ namespace n301 {
     }
 } // namespace n301
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n301;
 

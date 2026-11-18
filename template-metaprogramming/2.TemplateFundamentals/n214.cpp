@@ -4,7 +4,8 @@ namespace n214 {
 
     template <std::size_t N>
     struct string_literal {
-        constexpr string_literal(char const (&str)[N]) {
+        constexpr string_literal(char const (&str)[N])
+        {
             std::copy_n(str, N, m_value);
         }
 
@@ -16,7 +17,8 @@ namespace n214 {
 
 } // namespace n214
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n214;
 

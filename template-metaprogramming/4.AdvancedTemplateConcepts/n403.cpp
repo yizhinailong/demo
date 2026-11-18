@@ -3,14 +3,16 @@ import std;
 namespace n403 {
     template <typename T>
     struct base_parser {
-        void init() {
+        void init()
+        {
             std::cout << "init\n";
         }
     };
 
     template <typename T>
     struct parser : base_parser<T> {
-        void parse() {
+        void parse()
+        {
             // init();        // error: identifier not found
             this->init();
 
@@ -19,7 +21,8 @@ namespace n403 {
     };
 } // namespace n403
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n403;
 

@@ -7,12 +7,14 @@ namespace n417 {
     };
 
     template <size_t N>
-    void process(ncube<N - 1> cube) {
+    void process(ncube<N - 1> cube)
+    {
         std::cout << cube.dimensions << '\n';
     }
 } // namespace n417
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n417;
 

@@ -2,14 +2,12 @@ import std;
 
 namespace n436 {
     template <typename T, typename U>
-    struct composition
-    {
+    struct composition {
         using result_type = decltype(T{} + U{});
     };
 
-    struct wrapper
-    {
-        wrapper(int const v) : value(v){}
+    struct wrapper {
+        wrapper(int const v) : value(v) {}
 
         int value;
 
@@ -29,25 +27,27 @@ namespace n437 {
     using n436::wrapper;
 
     template <typename T, typename U>
-    struct composition
-    {
+    struct composition {
         using result_type = decltype(std::declval<T>() + std::declval<U>());
     };
 } // namespace n437
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n437;
-        
+
         static_assert(
-           std::is_same_v<
-           double,
-           composition<int, double>::result_type>);
-        
+            std::is_same_v<
+                double,
+                composition<int, double>::result_type>
+        );
+
         static_assert(
-           std::is_same_v<
-           wrapper,
-           composition<int, wrapper>::result_type>);
+            std::is_same_v<
+                wrapper,
+                composition<int, wrapper>::result_type>
+        );
     }
     return 0;
 }

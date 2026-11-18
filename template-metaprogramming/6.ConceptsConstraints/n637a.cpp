@@ -5,13 +5,14 @@ namespace n637a {
     concept addable = requires(T a, T b) { a + b; }; // requires expression
 
     template <typename T>
-        requires addable<T>  // requires clause with concept
+    requires addable<T> // requires clause with concept
     auto add(T a, T b)
     {
         return a + b;
     }
 } // namespace n637a
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

@@ -9,7 +9,8 @@
 #ifdef SQLITECPP_ENABLE_ASSERT_HANDLER
 namespace SQLite {
     /// definition of the assertion handler enabled when SQLITECPP_ENABLE_ASSERT_HANDLER is defined in the project (CMakeList.txt)
-    void assertion_failed(const char* apFile, const long apLine, const char* apFunc, const char* apExpr, const char* apMsg) {
+    void assertion_failed(const char* apFile, const long apLine, const char* apFunc, const char* apExpr, const char* apMsg)
+    {
         // Print a message to the standard error output stream, and abort the program.
         std::cerr << apFile << ":" << apLine << ":" << " error: assertion failed (" << apExpr << ") in " << apFunc << "() with message \"" << apMsg << "\"\n";
         std::abort();
@@ -18,7 +19,8 @@ namespace SQLite {
 #endif
 
 /// Get path to this example's directory (including the final separator '/' or '\')
-static inline std::string getExamplePath() {
+static inline std::string getExamplePath()
+{
     std::string filePath(__FILE__);
     return filePath.substr(0, filePath.length() - std::string("demo_2.cpp").length());
 }
@@ -42,7 +44,8 @@ public:
     virtual ~Example() = default;
 
     /// List the rows where the "weight" column is greater than the provided aParamValue
-    void ListGreaterThan(const int aParamValue) {
+    void ListGreaterThan(const int aParamValue)
+    {
         std::cout << "ListGreaterThan(" << aParamValue << ")\n";
 
         // Bind the integer value provided to the first parameter of the SQL query
@@ -63,7 +66,8 @@ private:
     SQLite::Statement mQuery; ///< Database prepared SQL query
 };
 
-int main() {
+int main()
+{
     // Using SQLITE_VERSION would require #include <sqlite3.h> which we want to avoid: use SQLite::VERSION if possible.
     //  std::cout << "SQlite3 version " << SQLITE_VERSION << std::endl;
     std::cout << "SQlite3 compile time header version " << SQLite::VERSION

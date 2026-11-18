@@ -2,7 +2,8 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 
-int main() {
+int main()
+{
 
     spdlog::init_thread_pool(8192, 1);
 

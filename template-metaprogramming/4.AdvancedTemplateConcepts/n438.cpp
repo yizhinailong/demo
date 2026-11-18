@@ -1,14 +1,14 @@
 import std;
 
 namespace n438 {
-    struct wrapper
-    {   
-        wrapper(int const v) :value(v)
+    struct wrapper {
+        wrapper(int const v) : value(v)
         {}
+
     private:
         int value;
 
-        friend void print(wrapper const & w);
+        friend void print(wrapper const& w);
     };
 
     void print(wrapper const& w)
@@ -17,10 +17,11 @@ namespace n438 {
     }
 } // namespace n438
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n438;
-        
+
         wrapper w{ 42 };
         print(w);
     }

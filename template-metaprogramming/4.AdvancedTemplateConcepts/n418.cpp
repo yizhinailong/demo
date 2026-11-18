@@ -7,7 +7,8 @@ namespace n418 {
     };
 
     template <typename T>
-    constexpr wrapper<T> make_wrapper(T&& data) {
+    constexpr wrapper<T> make_wrapper(T&& data)
+    {
         return wrapper{ data };
     }
 
@@ -15,7 +16,8 @@ namespace n418 {
     wrapper(T) -> wrapper<T>;
 
     template <typename T, typename... Ts, typename Allocator = std::allocator<T>>
-    auto make_vector(T&& first, Ts&&... args) {
+    auto make_vector(T&& first, Ts&&... args)
+    {
         return std::vector<std::decay_t<T>, Allocator>{
             std::forward<T>(first),
             std::forward<Ts>(args)...
@@ -23,13 +25,14 @@ namespace n418 {
     }
 } // namespace n418
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n418;
 
         std::pair<int, double> p{ 42, 42.0 };
-        std::vector<int>       v{ 1, 2, 3, 4, 5 };
-        wrapper<int>           w{ 42 };
+        std::vector<int> v{ 1, 2, 3, 4, 5 };
+        wrapper<int> w{ 42 };
     }
 
     {
@@ -43,9 +46,9 @@ auto main() -> int {
     {
         using namespace n418;
 
-        std::pair   p{ 42, 42.0 };
+        std::pair p{ 42, 42.0 };
         std::vector v{ 1, 2, 3, 4, 5 };
-        wrapper     w{ 42 };
+        wrapper w{ 42 };
     }
     return 0;
 }

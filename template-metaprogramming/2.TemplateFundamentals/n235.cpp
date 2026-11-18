@@ -3,34 +3,39 @@ import std;
 namespace n235 {
     template <typename T, int S>
     struct collection {
-        auto operator()() -> void {
+        auto operator()() -> void
+        {
             std::println("This is primary template.");
         }
     };
 
     template <typename T>
     struct collection<T, 10> {
-        auto operator()() -> void {
+        auto operator()() -> void
+        {
             std::println("This is partial template <T, 10>");
         }
     };
 
     template <int S>
     struct collection<int, S> {
-        auto operator()() -> void {
+        auto operator()() -> void
+        {
             std::println("This is partial template <int, S>");
         }
     };
 
     template <typename T, int S>
     struct collection<T*, S> {
-        auto operator()() -> void {
+        auto operator()() -> void
+        {
             std::println("This is partial template <T*, S>");
         }
     };
 } // namespace n235
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n235;
 

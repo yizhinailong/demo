@@ -2,7 +2,8 @@
 
 #include "ScopeProfiler.hpp"
 
-int main() {
+int main()
+{
     {
         utils::ScopeProfiler _("Test");
         std::cout << "hello world!" << std::endl;

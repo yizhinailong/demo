@@ -2,22 +2,26 @@ import std;
 
 namespace n234 {
     template <typename T, typename U>
-    auto func(T a, U b) -> void {
+    auto func(T a, U b) -> void
+    {
         std::println("This is primary template.");
     }
 
     template <>
-    auto func(int a, int b) -> void {
+    auto func(int a, int b) -> void
+    {
         std::println("This is <int, int> specilization template.");
     }
 
     template <>
-    auto func(int a, double b) -> void {
+    auto func(int a, double b) -> void
+    {
         std::println("This is <int, double> specilization template.");
     }
 } // namespace n234
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n234;
 

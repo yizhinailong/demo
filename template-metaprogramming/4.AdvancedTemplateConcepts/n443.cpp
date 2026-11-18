@@ -5,9 +5,9 @@ namespace n443 {
     struct printer;
 
     template <typename T>
-    struct wrapper
-    {
-        wrapper(T const v) :value(v) {}
+    struct wrapper {
+        wrapper(T const v) : value(v) {}
+
     private:
         T value;
 
@@ -25,8 +25,7 @@ namespace n443 {
     }
 
     template <typename T>
-    struct printer
-    {
+    struct printer {
         void operator()(wrapper<T> const& w)
         {
             std::cout << w.value << '\n';
@@ -34,14 +33,15 @@ namespace n443 {
     };
 } // namespace n443
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n443;
-        
+
         wrapper w1{ 43 };
         print(w1);
         printer<int>()(w1);
-        
+
         wrapper w2{ 'a' };
         print(w2);
         printer<char>()(w2);

@@ -2,7 +2,8 @@ import std;
 
 namespace n309 {
     template <typename T1, typename T2, typename T3, typename T4>
-    constexpr auto get_type_sizes() -> std::array<std::size_t, 4> {
+    constexpr auto get_type_sizes() -> std::array<std::size_t, 4>
+    {
         return std::array<std::size_t, 4>{
             sizeof(T1),
             sizeof(T2),
@@ -12,7 +13,8 @@ namespace n309 {
     }
 } // namespace n309
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n309;
 

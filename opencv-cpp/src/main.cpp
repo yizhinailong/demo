@@ -4,21 +4,22 @@
 
 import std;
 
-constexpr int   INPUT_SIZE     = 640;   // 模型输入图像尺寸
+constexpr int INPUT_SIZE = 640;         // 模型输入图像尺寸
 constexpr float CONF_THRESHOLD = 0.25F; // 置信度阈值：低于此值的检测结果将被过滤
-constexpr float NMS_THRESHOLD  = 0.45F; // 非极大值抑制（NMS）阈值：用于去除重叠的检测框
+constexpr float NMS_THRESHOLD = 0.45F;  // 非极大值抑制（NMS）阈值：用于去除重叠的检测框
 
 namespace {
 
     // 检测结果结构体：包含类别ID、置信度和边界框
     struct Detection {
-        int      class_id;
-        float    confidence;
+        int class_id;
+        float confidence;
         cv::Rect bbox;
     };
 
     // 从 JSON 文件加载 COCO 类别名称
-    auto load_coco_classes(const std::filesystem::path& path) -> std::vector<std::string> {
+    auto load_coco_classes(const std::filesystem::path& path) -> std::vector<std::string>
+    {
         std::ifstream f(path);
         if (!f.is_open()) {
             std::println(stderr, "Failed to open class file: {}", path.string());
@@ -29,7 +30,8 @@ namespace {
     }
 
     // 在图像上绘制检测框和类别标签
-    void draw(cv::Mat& img, const std::vector<Detection>& dets, const std::vector<std::string>& classes) {
+    void draw(cv::Mat& img, const std::vector<Detection>& dets, const std::vector<std::string>& classes)
+    {
         for (const auto& d : dets) {
             if (d.class_id < 0 || d.class_id >= static_cast<int>(classes.size())) {
                 continue;
@@ -37,10 +39,10 @@ namespace {
             // 绘制绿色边界框
             cv::rectangle(img, d.bbox, { 0, 255, 0 }, 2);
             // 生成标签文本，格式为 "类别名: 置信度"
-            auto label    = std::format("{}: {:.2f}", classes.at(d.class_id), d.confidence);
-            int  baseline = 0;
-            auto sz       = cv::getTextSize(label, cv::FONT_HERSHEY_SIMPLEX, 0.6, 1, &baseline);
-            int  top      = std::max(d.bbox.y, sz.height);
+            auto label = std::format("{}: {:.2f}", classes.at(d.class_id), d.confidence);
+            int baseline = 0;
+            auto sz = cv::getTextSize(label, cv::FONT_HERSHEY_SIMPLEX, 0.6, 1, &baseline);
+            int top = std::max(d.bbox.y, sz.height);
             // 绘制标签背景矩形（填充绿色）
             cv::rectangle(
                 img,
@@ -55,7 +57,8 @@ namespace {
     }
 
     // 从 ONNX 文件加载 YOLO 模型，使用 OpenCV 后端在 CPU 上运行
-    auto load_model(const std::string& path) -> cv::dnn::Net {
+    auto load_model(const std::string& path) -> cv::dnn::Net
+    {
         auto net = cv::dnn::readNetFromONNX(path);
         net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
         net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
@@ -63,12 +66,13 @@ namespace {
     }
 
     // 执行目标检测：预处理图像、模型推理、后处理（含 NMS）
-    auto detect(cv::dnn::Net& net, const cv::Mat& image) -> std::vector<Detection> {
+    auto detect(cv::dnn::Net& net, const cv::Mat& image) -> std::vector<Detection>
+    {
         const int orig_w = image.cols;
         const int orig_h = image.rows;
 
         // 将图像转换为模型输入格式：缩放到 INPUT_SIZE，归一化到 [0,1]，BGR 转 RGB
-        cv::Mat blob     = cv::dnn::blobFromImage(image, 1.0 / 255.0, { INPUT_SIZE, INPUT_SIZE }, {}, true, false);
+        cv::Mat blob = cv::dnn::blobFromImage(image, 1.0 / 255.0, { INPUT_SIZE, INPUT_SIZE }, {}, true, false);
         net.setInput(blob);
 
         // 执行前向推理，获取输出层结果
@@ -76,28 +80,28 @@ namespace {
         net.forward(outputs, net.getUnconnectedOutLayersNames());
 
         // YOLOv8/v11 输出格式: [1, 4+num_classes, num_predictions]
-        auto&     out         = outputs[0];
-        const int num_preds   = out.size[2];
+        auto& out = outputs[0];
+        const int num_preds = out.size[2];
         const int num_classes = out.size[1] - 4;
 
         // 计算从模型输入尺寸到原始图像尺寸的缩放比例
-        const float x_scale   = static_cast<float>(orig_w) / INPUT_SIZE;
-        const float y_scale   = static_cast<float>(orig_h) / INPUT_SIZE;
+        const float x_scale = static_cast<float>(orig_w) / INPUT_SIZE;
+        const float y_scale = static_cast<float>(orig_h) / INPUT_SIZE;
 
         std::vector<cv::Rect> boxes;
-        std::vector<float>    confs;
-        std::vector<int>      cls_ids;
+        std::vector<float> confs;
+        std::vector<int> cls_ids;
 
         // 遍历所有预测结果，筛选置信度高于阈值的检测
         for (int i = 0; i < num_preds; ++i) {
             // 找到得分最高的类别
-            int   best_cls   = 0;
+            int best_cls = 0;
             float best_score = 0;
             for (int c = 0; c < num_classes; ++c) {
                 float s = out.at<float>(0, 4 + c, i);
                 if (s > best_score) {
                     best_score = s;
-                    best_cls   = c;
+                    best_cls = c;
                 }
             }
             if (best_score < CONF_THRESHOLD) {
@@ -105,15 +109,15 @@ namespace {
             }
 
             // 提取边界框中心点坐标和宽高
-            const float cx   = out.at<float>(0, 0, i);
-            const float cy   = out.at<float>(0, 1, i);
-            const float w    = out.at<float>(0, 2, i);
-            const float h    = out.at<float>(0, 3, i);
+            const float cx = out.at<float>(0, 0, i);
+            const float cy = out.at<float>(0, 1, i);
+            const float w = out.at<float>(0, 2, i);
+            const float h = out.at<float>(0, 3, i);
 
             // 将中心坐标转换为左上角坐标，并按缩放比例映射回原始图像尺寸
-            const int left   = std::clamp(static_cast<int>((cx - (w / 2)) * x_scale), 0, orig_w - 1);
-            const int top    = std::clamp(static_cast<int>((cy - (h / 2)) * y_scale), 0, orig_h - 1);
-            const int width  = std::min(static_cast<int>(w * x_scale), orig_w - left);
+            const int left = std::clamp(static_cast<int>((cx - (w / 2)) * x_scale), 0, orig_w - 1);
+            const int top = std::clamp(static_cast<int>((cy - (h / 2)) * y_scale), 0, orig_h - 1);
+            const int width = std::min(static_cast<int>(w * x_scale), orig_w - left);
             const int height = std::min(static_cast<int>(h * y_scale), orig_h - top);
 
             boxes.emplace_back(left, top, width, height);
@@ -135,7 +139,8 @@ namespace {
     }
 
     // 在终端打印检测结果：类别名称、置信度和边界框坐标
-    auto print_results(const std::vector<Detection>& detections, const std::vector<std::string>& classes) -> void {
+    auto print_results(const std::vector<Detection>& detections, const std::vector<std::string>& classes) -> void
+    {
         std::println("Detected {} objects:", detections.size());
         for (const auto& d : detections) {
             std::println(
@@ -152,7 +157,8 @@ namespace {
 
 } // namespace
 
-int main() {
+int main()
+{
     // 加载 COCO 类别名称
     auto classes = load_coco_classes(std::filesystem::path(R"(data/coco_classes.json)"));
     if (classes.empty()) {
@@ -160,7 +166,7 @@ int main() {
     }
 
     // 加载 ONNX 模型
-    auto net      = load_model("data/yolo26n.onnx");
+    auto net = load_model("data/yolo26n.onnx");
 
     // 读取待检测的图像
     cv::Mat image = cv::imread("data/bus.jpg");

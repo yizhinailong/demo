@@ -2,7 +2,8 @@ import std;
 
 namespace n305 {
     template <typename T>
-    auto min(T a, T b) -> T {
+    auto min(T a, T b) -> T
+    {
 #if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
         std::println("{}", __PRETTY_FUNCTION__);
 #elif defined(_MSC_VER)
@@ -12,7 +13,8 @@ namespace n305 {
     }
 
     template <typename T, typename... Args>
-    T min(T a, Args... args) {
+    T min(T a, Args... args)
+    {
 #if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
         std::println("{}", __PRETTY_FUNCTION__);
 #elif defined(_MSC_VER)
@@ -22,7 +24,8 @@ namespace n305 {
     }
 } // namespace n305
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n305;
 

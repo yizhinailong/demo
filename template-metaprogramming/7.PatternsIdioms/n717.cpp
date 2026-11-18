@@ -1,30 +1,31 @@
 import std;
 
 namespace n717 {
-    template<typename T, typename C = std::vector<T>>
-    struct vector
-    {
+    template <typename T, typename C = std::vector<T>>
+    struct vector {
         vector() = default;
 
         vector(std::size_t const n) : data_(n) {}
 
         vector(std::initializer_list<T>&& l) : data_(l) {}
 
-        vector(C const & other) : data_(other) {}
+        vector(C const& other) : data_(other) {}
 
-        template<typename U, typename X>
-        vector(vector<U, X> const& other) : data_(other.size()) 
+        template <typename U, typename X>
+        vector(vector<U, X> const& other) : data_(other.size())
         {
-            for (std::size_t i = 0; i < other.size(); ++i)
+            for (std::size_t i = 0; i < other.size(); ++i) {
                 data_[i] = static_cast<T>(other[i]);
+            }
         }
 
-        template<typename U, typename X>
-        vector& operator=(vector<U, X> const & other)
+        template <typename U, typename X>
+        vector& operator=(vector<U, X> const& other)
         {
             data_.resize(other.size());
-            for (std::size_t i = 0; i < other.size(); ++i)
+            for (std::size_t i = 0; i < other.size(); ++i) {
                 data_[i] = static_cast<T>(other[i]);
+            }
 
             return *this;
         }
@@ -46,16 +47,15 @@ namespace n717 {
 
         C& data() noexcept { return data_; }
 
-        C const & data() const noexcept { return data_; }
+        C const& data() const noexcept { return data_; }
 
     private:
         C data_;
     };
 
-    template<typename L, typename R>
-    struct vector_add 
-    {
-        vector_add(L const & a, R const & b) : lhv(a), rhv(b) {}
+    template <typename L, typename R>
+    struct vector_add {
+        vector_add(L const& a, R const& b) : lhv(a), rhv(b) {}
 
         auto operator[](std::size_t const i) const
         {
@@ -68,13 +68,12 @@ namespace n717 {
         }
 
     private:
-        L const & lhv;
-        R const & rhv;
+        L const& lhv;
+        R const& rhv;
     };
 
-    template<typename L, typename R>
-    struct vector_mul
-    {
+    template <typename L, typename R>
+    struct vector_mul {
         vector_mul(L const& a, R const& b) : lhv(a), rhv(b) {}
 
         auto operator[](std::size_t const i) const
@@ -88,13 +87,12 @@ namespace n717 {
         }
 
     private:
-        L const & lhv;
-        R const & rhv;
+        L const& lhv;
+        R const& rhv;
     };
 
-    template<typename S, typename R>
-    struct vector_scalar_mul
-    {
+    template <typename S, typename R>
+    struct vector_scalar_mul {
         vector_scalar_mul(S const& s, R const& b) : scalar(s), rhv(b) {}
 
         auto operator[](std::size_t const i) const
@@ -108,27 +106,27 @@ namespace n717 {
         }
 
     private:
-        S const & scalar;
-        R const & rhv;
+        S const& scalar;
+        R const& rhv;
     };
 
-    template<typename T, typename L, typename U, typename R>
-    auto operator+(vector<T, L> const & a, vector<U, R> const & b)
+    template <typename T, typename L, typename U, typename R>
+    auto operator+(vector<T, L> const& a, vector<U, R> const& b)
     {
         using result_type = decltype(std::declval<T>() + std::declval<U>());
 
         return vector<result_type, vector_add<L, R>>(vector_add<L, R>(a.data(), b.data()));
     }
 
-    template<typename T, typename L, typename U, typename R>
-    auto operator*(vector<T, L> const & a, vector<U, R> const & b)
+    template <typename T, typename L, typename U, typename R>
+    auto operator*(vector<T, L> const& a, vector<U, R> const& b)
     {
         using result_type = decltype(std::declval<T>() + std::declval<U>());
 
         return vector<result_type, vector_mul<L, R>>(vector_mul<L, R>(a.data(), b.data()));
     }
 
-    template<typename T, typename S, typename E>
+    template <typename T, typename S, typename E>
     auto operator*(S const& a, vector<T, E> const& v)
     {
         using result_type = decltype(std::declval<T>() + std::declval<S>());
@@ -137,17 +135,18 @@ namespace n717 {
     }
 } // namespace n717
 
-auto main() -> int {
+auto main() -> int
+{
     {
-        n717::vector<int> v1{ 1,2,3 };
-        n717::vector<int> v2{ 4,5,6 };
+        n717::vector<int> v1{ 1, 2, 3 };
+        n717::vector<int> v2{ 4, 5, 6 };
         double a{ 1.5 };
-        
+
         n717::vector<double> v3 = v1 + a * v2; // {7.0, 9.5, 12.0}
-        
+
         int c;
         std::cin >> c;
-        n717::vector<double> v31 = v1 + c * v2; // {7.0, 9.5, 12.0}
+        n717::vector<double> v31 = v1 + c * v2;   // {7.0, 9.5, 12.0}
         n717::vector<int> v4 = v1 * v2 + v1 + v2; // {9, 17, 27}
     }
 
@@ -156,12 +155,13 @@ auto main() -> int {
         std::vector<int> v1{ 1, 2, 3 };
         std::vector<int> v2{ 4, 5, 6 };
         double a{ 1.5 };
-        
-        auto sv2 = v2 | rv::transform([&a](int val) {return a * val; });
-        //auto v3 = rv::zip_view(std::plus<>{}, v1, sv2);
-        
-        for (auto e : sv2)
-           std::cout << e << '\n';
+
+        auto sv2 = v2 | rv::transform([&a](int val) { return a * val; });
+        // auto v3 = rv::zip_view(std::plus<>{}, v1, sv2);
+
+        for (auto e : sv2) {
+            std::cout << e << '\n';
+        }
     }
     return 0;
 }

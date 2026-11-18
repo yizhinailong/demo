@@ -15,10 +15,11 @@ namespace n625 {
     }
 } // namespace n625
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n625;
-        
+
         add(1.0, 2.0);
         add(1, 2);
     }

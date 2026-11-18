@@ -19,8 +19,8 @@
 #include <utility>
 #include <vector>
 
-#include <windows.h>
 #include <GLFW/glfw3.h>
+#include <windows.h>
 
 namespace {
 
@@ -33,14 +33,16 @@ namespace {
 
     bool g_framebuffer_resized{ false };
 
-    auto framebuffer_resize_callback(GLFWwindow* window, int width, int height) -> void {
+    auto framebuffer_resize_callback(GLFWwindow* window, int width, int height) -> void
+    {
         (void)window;
         (void)width;
         (void)height;
         g_framebuffer_resized = true;
     }
 
-    auto check(VkResult result, char const* operation) -> void {
+    auto check(VkResult result, char const* operation) -> void
+    {
         if (result != VK_SUCCESS) {
             throw std::runtime_error(std::string{ operation } + " failed with VkResult " + std::to_string(static_cast<int>(result)));
         }
@@ -51,7 +53,8 @@ namespace {
         VkDebugUtilsMessageTypeFlagsEXT type,
         VkDebugUtilsMessengerCallbackDataEXT const* data,
         void* user_data
-    ) {
+    )
+    {
         (void)severity;
         (void)type;
         (void)user_data;
@@ -59,7 +62,8 @@ namespace {
         return VK_FALSE;
     }
 
-    auto make_debug_messenger_create_info() -> VkDebugUtilsMessengerCreateInfoEXT {
+    auto make_debug_messenger_create_info() -> VkDebugUtilsMessengerCreateInfoEXT
+    {
         VkDebugUtilsMessengerCreateInfoEXT create_info{};
         create_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
         create_info.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
@@ -68,7 +72,8 @@ namespace {
         return create_info;
     }
 
-    auto read_file(std::filesystem::path const& path) -> std::vector<char> {
+    auto read_file(std::filesystem::path const& path) -> std::vector<char>
+    {
         std::ifstream file{ path, std::ios::ate | std::ios::binary };
         if (!file.is_open()) {
             throw std::runtime_error("Failed to open shader file: " + path.string());
@@ -85,7 +90,8 @@ namespace {
         return buffer;
     }
 
-    auto executable_directory() -> std::filesystem::path {
+    auto executable_directory() -> std::filesystem::path
+    {
         std::array<wchar_t, 32768> path_buffer{};
         auto const length{ GetModuleFileNameW(nullptr, path_buffer.data(), static_cast<DWORD>(path_buffer.size())) };
         if (length == 0 || static_cast<std::size_t>(length) >= path_buffer.size()) {
@@ -112,7 +118,8 @@ namespace {
             std::optional<std::uint32_t> graphics_family;
             std::optional<std::uint32_t> present_family;
 
-            [[nodiscard]] auto isComplete() const -> bool {
+            [[nodiscard]] auto isComplete() const -> bool
+            {
                 return graphics_family.has_value() && present_family.has_value();
             }
         };
@@ -192,7 +199,8 @@ namespace {
 
     Application::Application(std::filesystem::path shader_dir) : m_shader_dir{ std::move(shader_dir) } {}
 
-    Application::~Application() {
+    Application::~Application()
+    {
         if (m_device != VK_NULL_HANDLE) {
             vkDeviceWaitIdle(m_device);
             cleanupSwapChain();
@@ -252,7 +260,8 @@ namespace {
         }
     }
 
-    auto Application::Run() -> int {
+    auto Application::Run() -> int
+    {
         createWindow();
         createInstance();
         setupDebugMessenger();
@@ -287,7 +296,8 @@ namespace {
         return 0;
     }
 
-    auto Application::createWindow() -> void {
+    auto Application::createWindow() -> void
+    {
         if (glfwInit() != GLFW_TRUE) {
             throw std::runtime_error("glfwInit failed");
         }
@@ -309,7 +319,8 @@ namespace {
         glfwSetFramebufferSizeCallback(m_window, framebuffer_resize_callback);
     }
 
-    auto Application::createInstance() -> void {
+    auto Application::createInstance() -> void
+    {
         m_validation_enabled = checkValidationLayerSupport();
 
         if (!m_validation_enabled) {
@@ -343,7 +354,8 @@ namespace {
         check(vkCreateInstance(&create_info, nullptr, &m_instance), "vkCreateInstance");
     }
 
-    auto Application::setupDebugMessenger() -> void {
+    auto Application::setupDebugMessenger() -> void
+    {
         if (!m_validation_enabled) {
             return;
         }
@@ -357,11 +369,13 @@ namespace {
         check(create_debug_messenger(m_instance, &create_info, nullptr, &m_debug_messenger), "vkCreateDebugUtilsMessengerEXT");
     }
 
-    auto Application::createSurface() -> void {
+    auto Application::createSurface() -> void
+    {
         check(glfwCreateWindowSurface(m_instance, m_window, nullptr, &m_surface), "glfwCreateWindowSurface");
     }
 
-    auto Application::pickPhysicalDevice() -> void {
+    auto Application::pickPhysicalDevice() -> void
+    {
         std::uint32_t device_count{ 0 };
         check(vkEnumeratePhysicalDevices(m_instance, &device_count, nullptr), "vkEnumeratePhysicalDevices");
         if (device_count == 0) {
@@ -387,7 +401,8 @@ namespace {
         std::cout << "Using GPU: " << properties.deviceName << '\n';
     }
 
-    auto Application::createLogicalDevice() -> void {
+    auto Application::createLogicalDevice() -> void
+    {
         auto const indices{ findQueueFamilies(m_physical_device) };
         m_graphics_queue_family = indices.graphics_family.value();
         m_present_queue_family = indices.present_family.value();
@@ -425,7 +440,8 @@ namespace {
         vkGetDeviceQueue(m_device, m_present_queue_family, 0, &m_present_queue);
     }
 
-    auto Application::createSwapChain() -> void {
+    auto Application::createSwapChain() -> void
+    {
         auto const support{ querySwapChainSupport(m_physical_device) };
         auto const surface_format{ chooseSwapSurfaceFormat(support.formats) };
         auto const present_mode{ chooseSwapPresentMode(support.present_modes) };
@@ -471,7 +487,8 @@ namespace {
         m_swap_chain_extent = extent;
     }
 
-    auto Application::createImageViews() -> void {
+    auto Application::createImageViews() -> void
+    {
         m_swap_chain_image_views.resize(m_swap_chain_images.size());
 
         for (std::size_t index{ 0 }; index < m_swap_chain_images.size(); ++index) {
@@ -494,7 +511,8 @@ namespace {
         }
     }
 
-    auto Application::createRenderPass() -> void {
+    auto Application::createRenderPass() -> void
+    {
         VkAttachmentDescription color_attachment{};
         color_attachment.format = m_swap_chain_image_format;
         color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
@@ -533,7 +551,8 @@ namespace {
         check(vkCreateRenderPass(m_device, &create_info, nullptr, &m_render_pass), "vkCreateRenderPass");
     }
 
-    auto Application::createGraphicsPipeline() -> void {
+    auto Application::createGraphicsPipeline() -> void
+    {
         auto const vert_code{ loadShader("triangle.vert.spv") };
         auto const frag_code{ loadShader("triangle.frag.spv") };
         VkShaderModule const vert_module{ createShaderModule(vert_code) };
@@ -622,7 +641,8 @@ namespace {
         vkDestroyShaderModule(m_device, vert_module, nullptr);
     }
 
-    auto Application::createFramebuffers() -> void {
+    auto Application::createFramebuffers() -> void
+    {
         m_swap_chain_framebuffers.resize(m_swap_chain_image_views.size());
 
         for (std::size_t index{ 0 }; index < m_swap_chain_image_views.size(); ++index) {
@@ -641,7 +661,8 @@ namespace {
         }
     }
 
-    auto Application::createCommandPool() -> void {
+    auto Application::createCommandPool() -> void
+    {
         VkCommandPoolCreateInfo create_info{};
         create_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
         create_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
@@ -650,7 +671,8 @@ namespace {
         check(vkCreateCommandPool(m_device, &create_info, nullptr, &m_command_pool), "vkCreateCommandPool");
     }
 
-    auto Application::createCommandBuffers() -> void {
+    auto Application::createCommandBuffers() -> void
+    {
         m_command_buffers.resize(MAX_FRAMES_IN_FLIGHT);
 
         VkCommandBufferAllocateInfo allocate_info{};
@@ -662,7 +684,8 @@ namespace {
         check(vkAllocateCommandBuffers(m_device, &allocate_info, m_command_buffers.data()), "vkAllocateCommandBuffers");
     }
 
-    auto Application::createRenderFinishedSemaphores() -> void {
+    auto Application::createRenderFinishedSemaphores() -> void
+    {
         m_render_finished_semaphores.resize(m_swap_chain_images.size());
 
         VkSemaphoreCreateInfo create_info{};
@@ -673,7 +696,8 @@ namespace {
         }
     }
 
-    auto Application::createSyncObjects() -> void {
+    auto Application::createSyncObjects() -> void
+    {
         m_image_available_semaphores.resize(MAX_FRAMES_IN_FLIGHT);
         m_in_flight_fences.resize(MAX_FRAMES_IN_FLIGHT);
 
@@ -690,7 +714,8 @@ namespace {
         }
     }
 
-    auto Application::drawFrame() -> void {
+    auto Application::drawFrame() -> void
+    {
         check(vkWaitForFences(m_device, 1, &m_in_flight_fences[m_current_frame], VK_TRUE, UINT64_MAX), "vkWaitForFences");
 
         std::uint32_t image_index{ 0 };
@@ -744,7 +769,8 @@ namespace {
         m_current_frame = (m_current_frame + 1) % MAX_FRAMES_IN_FLIGHT;
     }
 
-    auto Application::recreateSwapChain() -> void {
+    auto Application::recreateSwapChain() -> void
+    {
         int width{ 0 };
         int height{ 0 };
         glfwGetFramebufferSize(m_window, &width, &height);
@@ -766,7 +792,8 @@ namespace {
         createFramebuffers();
     }
 
-    auto Application::cleanupSwapChain() -> void {
+    auto Application::cleanupSwapChain() -> void
+    {
         for (auto const semaphore : m_render_finished_semaphores) {
             if (semaphore != VK_NULL_HANDLE) {
                 vkDestroySemaphore(m_device, semaphore, nullptr);
@@ -794,11 +821,13 @@ namespace {
         }
     }
 
-    auto Application::loadShader(char const* file_name) const -> std::vector<char> {
+    auto Application::loadShader(char const* file_name) const -> std::vector<char>
+    {
         return read_file(m_shader_dir / file_name);
     }
 
-    auto Application::checkValidationLayerSupport() const -> bool {
+    auto Application::checkValidationLayerSupport() const -> bool
+    {
         std::uint32_t layer_count{ 0 };
         check(vkEnumerateInstanceLayerProperties(&layer_count, nullptr), "vkEnumerateInstanceLayerProperties");
 
@@ -822,7 +851,8 @@ namespace {
         return true;
     }
 
-    auto Application::getRequiredExtensions() const -> std::vector<char const*> {
+    auto Application::getRequiredExtensions() const -> std::vector<char const*>
+    {
         std::uint32_t extension_count{ 0 };
         auto const* glfw_extensions{ glfwGetRequiredInstanceExtensions(&extension_count) };
         if (glfw_extensions == nullptr) {
@@ -836,7 +866,8 @@ namespace {
         return extensions;
     }
 
-    auto Application::findQueueFamilies(VkPhysicalDevice device) const -> QueueFamilyIndices {
+    auto Application::findQueueFamilies(VkPhysicalDevice device) const -> QueueFamilyIndices
+    {
         QueueFamilyIndices indices;
 
         std::uint32_t family_count{ 0 };
@@ -863,7 +894,8 @@ namespace {
         return indices;
     }
 
-    auto Application::querySwapChainSupport(VkPhysicalDevice device) const -> SwapChainSupportDetails {
+    auto Application::querySwapChainSupport(VkPhysicalDevice device) const -> SwapChainSupportDetails
+    {
         SwapChainSupportDetails details;
 
         check(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, m_surface, &details.capabilities), "vkGetPhysicalDeviceSurfaceCapabilitiesKHR");
@@ -885,7 +917,8 @@ namespace {
         return details;
     }
 
-    auto Application::checkDeviceExtensionSupport(VkPhysicalDevice device) const -> bool {
+    auto Application::checkDeviceExtensionSupport(VkPhysicalDevice device) const -> bool
+    {
         std::uint32_t extension_count{ 0 };
         check(vkEnumerateDeviceExtensionProperties(device, nullptr, &extension_count, nullptr), "vkEnumerateDeviceExtensionProperties");
 
@@ -909,7 +942,8 @@ namespace {
         return true;
     }
 
-    auto Application::isDeviceSuitable(VkPhysicalDevice device) const -> bool {
+    auto Application::isDeviceSuitable(VkPhysicalDevice device) const -> bool
+    {
         auto const indices{ findQueueFamilies(device) };
         if (!indices.isComplete() || !checkDeviceExtensionSupport(device)) {
             return false;
@@ -919,7 +953,8 @@ namespace {
         return !support.formats.empty() && !support.present_modes.empty();
     }
 
-    auto Application::chooseSwapSurfaceFormat(std::vector<VkSurfaceFormatKHR> const& formats) const -> VkSurfaceFormatKHR {
+    auto Application::chooseSwapSurfaceFormat(std::vector<VkSurfaceFormatKHR> const& formats) const -> VkSurfaceFormatKHR
+    {
         for (auto const& format : formats) {
             if (format.format == VK_FORMAT_B8G8R8A8_SRGB && format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
                 return format;
@@ -929,7 +964,8 @@ namespace {
         return formats.front();
     }
 
-    auto Application::chooseSwapPresentMode(std::vector<VkPresentModeKHR> const& present_modes) const -> VkPresentModeKHR {
+    auto Application::chooseSwapPresentMode(std::vector<VkPresentModeKHR> const& present_modes) const -> VkPresentModeKHR
+    {
         for (auto const mode : present_modes) {
             if (mode == VK_PRESENT_MODE_MAILBOX_KHR) {
                 return mode;
@@ -939,7 +975,8 @@ namespace {
         return VK_PRESENT_MODE_FIFO_KHR;
     }
 
-    auto Application::chooseSwapExtent(VkSurfaceCapabilitiesKHR const& capabilities) const -> VkExtent2D {
+    auto Application::chooseSwapExtent(VkSurfaceCapabilitiesKHR const& capabilities) const -> VkExtent2D
+    {
         if (capabilities.currentExtent.width != std::numeric_limits<std::uint32_t>::max()) {
             return capabilities.currentExtent;
         }
@@ -957,7 +994,8 @@ namespace {
         return actual_extent;
     }
 
-    auto Application::createShaderModule(std::vector<char> const& code) const -> VkShaderModule {
+    auto Application::createShaderModule(std::vector<char> const& code) const -> VkShaderModule
+    {
         VkShaderModuleCreateInfo create_info{};
         create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         create_info.codeSize = code.size();
@@ -968,7 +1006,8 @@ namespace {
         return module;
     }
 
-    auto Application::recordCommandBuffer(VkCommandBuffer command_buffer, std::uint32_t image_index) const -> void {
+    auto Application::recordCommandBuffer(VkCommandBuffer command_buffer, std::uint32_t image_index) const -> void
+    {
         VkCommandBufferBeginInfo begin_info{};
         begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
         check(vkBeginCommandBuffer(command_buffer, &begin_info), "vkBeginCommandBuffer");
@@ -1013,7 +1052,8 @@ namespace {
 
 } // namespace
 
-auto main() -> int {
+auto main() -> int
+{
     try {
         Application application{ executable_directory() / "shaders" };
         return application.Run();

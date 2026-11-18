@@ -7,11 +7,13 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-static void glfw_error_callback(int error, const char* description) {
+static void glfw_error_callback(int error, const char* description)
+{
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
-int main() {
+int main()
+{
     // Setup GLFW
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit()) {
@@ -46,7 +48,7 @@ int main() {
     // Setup ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io     = ImGui::GetIO();
+    ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 

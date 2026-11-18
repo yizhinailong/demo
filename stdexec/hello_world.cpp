@@ -7,11 +7,12 @@
 
 #include "exec/static_thread_pool.hpp"
 
-auto main() -> int {
+auto main() -> int
+{
     exec::static_thread_pool ctx{ 8 };
-    stdexec::scheduler auto  sch  = ctx.get_scheduler();
+    stdexec::scheduler auto sch = ctx.get_scheduler();
 
-    stdexec::sender auto begin    = stdexec::schedule(sch);
+    stdexec::sender auto begin = stdexec::schedule(sch);
     stdexec::sender auto hi_again = stdexec::then(
         begin,
         [] {
@@ -21,7 +22,7 @@ auto main() -> int {
     );
 
     stdexec::sender auto add_42 = stdexec::then(hi_again, [](int arg) { return arg + 42; });
-    auto [i]                    = stdexec::sync_wait(std::move(add_42)).value();
+    auto [i] = stdexec::sync_wait(std::move(add_42)).value();
     std::println("Result: {}", i);
 
     // Sync_wait provides a run_loop scheduler

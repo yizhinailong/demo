@@ -2,7 +2,8 @@
 
 #include "cmd.hpp"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
     cmdline::parser args;
     args.add<std::string>("host", 'h', "host name", true, "");
     args.add<int>("port", 'p', "port number", false, 80, cmdline::range(1, 65535));
@@ -12,7 +13,8 @@ int main(int argc, char* argv[]) {
         "protocol type",
         false,
         "http",
-        cmdline::oneof<std::string>("http", "https", "ssh", "ftp"));
+        cmdline::oneof<std::string>("http", "https", "ssh", "ftp")
+    );
     args.add("gzip", '\0', "gzip when transfer");
     args.parse_check(argc, argv);
 

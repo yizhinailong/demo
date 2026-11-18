@@ -11,6 +11,7 @@ namespace n236 {
     // struct foo<A, A + 1> {};
 } // namespace n236
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

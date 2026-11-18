@@ -3,7 +3,7 @@ import std;
 namespace n210 {
     struct device {
         virtual void output() = 0;
-        virtual ~device()     = default;
+        virtual ~device() = default;
     };
 
     template <typename Command, void (Command::*action)()>
@@ -12,7 +12,8 @@ namespace n210 {
         smart_device(Command* cmd)
             : m_cmd(cmd) {}
 
-        void output() override {
+        void output() override
+        {
             (m_cmd->*action)();
         }
 
@@ -21,17 +22,20 @@ namespace n210 {
     };
 
     struct hello_command {
-        auto say_hello_english() -> void {
+        auto say_hello_english() -> void
+        {
             std::println("Hello World.");
         }
 
-        auto say_hello_chinese() {
+        auto say_hello_chinese()
+        {
             std::println("你好世界。");
         }
     };
 } // namespace n210
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n210;
 

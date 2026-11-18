@@ -1,11 +1,11 @@
 import std;
 
 namespace n439 {
-    struct wrapper
-    {
-        wrapper(int const v) :value(v)
+    struct wrapper {
+        wrapper(int const v) : value(v)
         {
         }
+
     private:
         int value;
 
@@ -14,7 +14,7 @@ namespace n439 {
 
         template <typename T>
         friend struct printer;
-    };   
+    };
 
     template <typename T>
     void print(wrapper const& w)
@@ -23,8 +23,7 @@ namespace n439 {
     }
 
     template <typename T>
-    struct printer
-    {
+    struct printer {
         void operator()(wrapper const& w)
         {
             std::cout << w.value << '\n';
@@ -32,10 +31,11 @@ namespace n439 {
     };
 } // namespace n439
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n439;
-        
+
         wrapper w{ 42 };
         print<int>(w);
         print<char>(w);

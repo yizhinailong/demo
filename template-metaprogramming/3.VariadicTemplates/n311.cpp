@@ -2,12 +2,14 @@ import std;
 
 namespace n311 {
     template <typename... Ts, typename... Us>
-    constexpr auto multipacks(Ts... args1, Us... args2) -> void {
+    constexpr auto multipacks(Ts... args1, Us... args2) -> void
+    {
         static_assert(sizeof...(args1) == sizeof...(args2), "Packs must be of equal sizes.");
     }
 } // namespace n311
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n311;
 

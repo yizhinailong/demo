@@ -2,7 +2,8 @@ import std;
 
 namespace n306 {
     template <typename T, typename... Args>
-    auto sum(T a, Args... args) -> T {
+    auto sum(T a, Args... args) -> T
+    {
         if constexpr (sizeof...(args) == 0) {
             return a;
         } else {
@@ -11,7 +12,8 @@ namespace n306 {
     }
 } // namespace n306
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n306;
 

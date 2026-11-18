@@ -7,7 +7,8 @@ struct Person {
     unsigned birth_year;
 };
 
-int main() {
+int main()
+{
     Person val{
         .name = "Edgar Allan Poe",
         .birth_year = 1809

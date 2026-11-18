@@ -13,25 +13,25 @@ namespace n519 {
         sizeof...(Ts) < 2 ||
         has_common_type<void, Ts...>::value;
 
-    template<typename... Ts,
-                typename = std::enable_if_t<has_common_type_v<Ts...>>>
-    void process(Ts&&... ts) 
+    template <typename... Ts, typename = std::enable_if_t<has_common_type_v<Ts...>>>
+    void process(Ts&&... ts)
     {
-        //static_assert(has_common_type_v<Ts...>, 
-//                    "Arguments must have a common type.");
+        // static_assert(has_common_type_v<Ts...>,
+        //                    "Arguments must have a common type.");
 
         std::cout << typeid(std::common_type_t<Ts...>).name() << '\n';
     }
 } // namespace n519
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n519;
-        
-        process(1);              // int
-        process(1, 2, 3);        // int
-        process(1, 2.0, '3');    // double
-        //process(1, 2.0, "3");    // error
+
+        process(1);           // int
+        process(1, 2, 3);     // int
+        process(1, 2.0, '3'); // double
+        // process(1, 2.0, "3");    // error
     }
     return 0;
 }

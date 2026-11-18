@@ -1,19 +1,17 @@
 import std;
 
 namespace n714 {
-    template <typename ... Ts>
+    template <typename... Ts>
     struct typelist {};
 
     struct empty_type {};
 
-    namespace detail
-    {
+    namespace detail {
         template <typename TL>
         struct length;
 
         template <template <typename...> typename TL, typename... Ts>
-        struct length<TL<Ts...>>
-        {
+        struct length<TL<Ts...>> {
             using type = std::integral_constant<std::size_t, sizeof...(Ts)>;
         };
 
@@ -21,14 +19,12 @@ namespace n714 {
         struct front_type;
 
         template <template <typename...> typename TL, typename T, typename... Ts>
-        struct front_type<TL<T, Ts...>>
-        {
+        struct front_type<TL<T, Ts...>> {
             using type = T;
         };
 
         template <template <typename...> typename TL>
-        struct front_type<TL<>>
-        {
+        struct front_type<TL<>> {
             using type = empty_type;
         };
 
@@ -36,20 +32,17 @@ namespace n714 {
         struct back_type;
 
         template <template <typename...> typename TL, typename T, typename... Ts>
-        struct back_type<TL<T, Ts...>>
-        {
+        struct back_type<TL<T, Ts...>> {
             using type = back_type<TL<Ts...>>::type;
         };
 
         template <template <typename...> typename TL, typename T>
-        struct back_type<TL<T>>
-        {
+        struct back_type<TL<T>> {
             using type = T;
         };
 
         template <template <typename...> typename TL>
-        struct back_type<TL<>>
-        {
+        struct back_type<TL<>> {
             using type = empty_type;
         };
 
@@ -57,8 +50,7 @@ namespace n714 {
         struct push_back_type;
 
         template <template <typename...> typename TL, typename T, typename... Ts>
-        struct push_back_type<TL<Ts...>, T>
-        {
+        struct push_back_type<TL<Ts...>, T> {
             using type = TL<Ts..., T>;
         };
 
@@ -66,8 +58,7 @@ namespace n714 {
         struct push_front_type;
 
         template <template <typename...> typename TL, typename T, typename... Ts>
-        struct push_front_type<TL<Ts...>, T>
-        {
+        struct push_front_type<TL<Ts...>, T> {
             using type = TL<T, Ts...>;
         };
 
@@ -75,41 +66,35 @@ namespace n714 {
         struct pop_front_type;
 
         template <template <typename...> typename TL, typename T, typename... Ts>
-        struct pop_front_type<TL<T, Ts...>>
-        {
+        struct pop_front_type<TL<T, Ts...>> {
             using type = TL<Ts...>;
         };
 
         template <template <typename...> typename TL>
-        struct pop_front_type<TL<>>
-        {
+        struct pop_front_type<TL<>> {
             using type = TL<>;
         };
 
         template <std::ptrdiff_t N, typename R, typename TL>
         struct pop_back_type;
-        
+
         template <std::ptrdiff_t N, typename... Ts, typename U, typename... Us>
-        struct pop_back_type<N, typelist<Ts...>, typelist<U, Us...>> 
-        { 
+        struct pop_back_type<N, typelist<Ts...>, typelist<U, Us...>> {
             using type = typename pop_back_type<N - 1, typelist<Ts..., U>, typelist<Us...>>::type;
         };
 
         template <typename... Ts, typename... Us>
-        struct pop_back_type<0, typelist<Ts...>, typelist<Us...>>
-        { 
+        struct pop_back_type<0, typelist<Ts...>, typelist<Us...>> {
             using type = typelist<Ts...>;
         };
 
         template <typename... Ts, typename U, typename... Us>
-        struct pop_back_type<0, typelist<Ts...>, typelist<U, Us...>>
-        { 
+        struct pop_back_type<0, typelist<Ts...>, typelist<U, Us...>> {
             using type = typelist<Ts...>;
         };
 
         template <>
-        struct pop_back_type<-1, typelist<>, typelist<>>
-        {
+        struct pop_back_type<-1, typelist<>, typelist<>> {
             using type = typelist<>;
         };
 
@@ -117,17 +102,15 @@ namespace n714 {
         struct at_type;
 
         template <std::size_t I, std::size_t N, template <typename...> typename TL, typename T, typename... Ts>
-        struct at_type<I, N, TL<T, Ts...>>
-        {
+        struct at_type<I, N, TL<T, Ts...>> {
             using type = std::conditional_t<I == N, T, typename at_type<I, N + 1, TL<Ts...>>::type>;
         };
 
         template <std::size_t I, std::size_t N>
-        struct at_type<I, N, typelist<>>
-        {
+        struct at_type<I, N, typelist<>> {
             using type = empty_type;
         };
-    }
+    } // namespace detail
 
     template <typename TL>
     using length_t = typename detail::length<TL>::type;
@@ -176,7 +159,7 @@ namespace n714 {
     static_assert(std::is_same_v<pop_front_t<typelist<double, char>>, typelist<char>>);
 
     template <typename TL>
-    using pop_back_t = typename detail::pop_back_type<static_cast<std::ptrdiff_t>(length_v<TL>)-1, typelist<>, TL>::type;
+    using pop_back_t = typename detail::pop_back_type<static_cast<std::ptrdiff_t>(length_v<TL>) - 1, typelist<>, TL>::type;
 
     static_assert(std::is_same_v<pop_back_t<typelist<>>, typelist<>>);
     static_assert(std::is_same_v<pop_back_t<typelist<double>>, typelist<>>);
@@ -199,6 +182,7 @@ namespace n714 {
     static_assert(std::is_same_v<at_t<2, typelist<int, char>>, empty_type>);
 } // namespace n714
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

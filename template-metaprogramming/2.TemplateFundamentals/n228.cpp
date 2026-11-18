@@ -25,7 +25,8 @@ namespace n228 {
     inline constexpr bool is_floating_point_v = is_floating_point<T>::value;
 } // namespace n228
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n228;
 

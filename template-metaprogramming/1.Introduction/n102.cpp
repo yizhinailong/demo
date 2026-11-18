@@ -2,23 +2,26 @@ import std;
 
 namespace n102 {
     template <typename T>
-    auto max(T const a, T const b) -> T {
+    auto max(T const a, T const b) -> T
+    {
         return a > b ? a : b;
     }
 
     struct foo {};
 
     template <typename T>
-    auto swap(T* a, T* b) -> void {
+    auto swap(T* a, T* b) -> void
+    {
         T t = *a;
-        *a  = *b;
-        *b  = t;
+        *a = *b;
+        *b = t;
     }
 
     template <typename T>
-    auto partition(T arr[], int const low, int const high) -> int {
-        T   pivot = arr[high];
-        int i     = (low - 1);
+    auto partition(T arr[], int const low, int const high) -> int
+    {
+        T pivot = arr[high];
+        int i = (low - 1);
 
         for (int j = low; j <= high - 1; j++) {
             if (arr[j] < pivot) {
@@ -33,7 +36,8 @@ namespace n102 {
     }
 
     template <typename T>
-    auto quicksort(T arr[], int const low, int const high) -> void {
+    auto quicksort(T arr[], int const low, int const high) -> void
+    {
         if (low < high) {
             int const pi = partition(arr, low, high);
             quicksort(arr, low, pi - 1);
@@ -59,7 +63,7 @@ namespace n102 {
         auto operator[](std::size_t const index) const -> T;
 
     private:
-        T*          m_data;
+        T* m_data;
         std::size_t m_size;
         std::size_t m_capacity;
     };
@@ -68,7 +72,8 @@ namespace n102 {
     constexpr T NewLine = T('\n');
 } // namespace n102
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n102;
 
@@ -87,15 +92,15 @@ auto main() -> int {
         using namespace n102;
 
         int arr[] = { 13, 1, 8, 3, 5, 2, 1 };
-        int n     = sizeof(arr) / sizeof(arr[0]);
+        int n = sizeof(arr) / sizeof(arr[0]);
         quicksort(arr, 0, n - 1);
     }
 
     {
         using namespace n102;
 
-        std::wstring test  = L"demo";
-        test              += NewLine<wchar_t>;
+        std::wstring test = L"demo";
+        test += NewLine<wchar_t>;
         std::wcout << test;
     }
 

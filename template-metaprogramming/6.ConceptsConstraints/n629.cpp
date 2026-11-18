@@ -11,17 +11,18 @@ namespace n629 {
     }
 
     template <Integral T>
-    requires (sizeof(T) == 4)
+    requires(sizeof(T) == 4)
     T add(T a, T b)
     {
         return a + b;
     }
 } // namespace n629
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n629;
-        
+
         add((short)1, (short)2);
         add(1, 2);
     }

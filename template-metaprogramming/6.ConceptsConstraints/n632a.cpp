@@ -2,13 +2,15 @@ import std;
 
 namespace n632a {
     void handle(int v)
-    { /* do something else */ }
+    { /* do something else */
+    }
 
-    //void handle(long v)
-    //   requires (sizeof(long) > sizeof(int))
+    // void handle(long v)
+    //    requires (sizeof(long) > sizeof(int))
     //{ /* do something else */ }
 } // namespace n632a
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

@@ -9,6 +9,7 @@ namespace n220 {
 
 } // namespace n220
 
-auto main() -> int {
+auto main() -> int
+{
     return 0;
 }

@@ -13,7 +13,8 @@ namespace n216 {
         explicit fancy_warpper(T const value)
             : m_value(value) {}
 
-        auto get() const -> T const& {
+        auto get() const -> T const&
+        {
             return m_value;
         }
 
@@ -32,7 +33,8 @@ namespace n216 {
     };
 } // namespace n216
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n216;
 

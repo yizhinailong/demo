@@ -14,7 +14,8 @@ namespace n219 {
     };
 } // namespace n219
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n219;
 

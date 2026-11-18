@@ -2,7 +2,8 @@ import std;
 
 namespace n310 {
     template <typename... Ts, typename... Us>
-    constexpr auto multipacks(Ts... args1, Us... args2) -> void {
+    constexpr auto multipacks(Ts... args1, Us... args2) -> void
+    {
         std::println(
             "sizeof...(args1) = {}, sizeof...(args2) = {}",
             sizeof...(args1),
@@ -11,7 +12,8 @@ namespace n310 {
     }
 } // namespace n310
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n310;
 

@@ -6,7 +6,8 @@
 
 using bimap = boost::bimap<std::string_view, int>;
 
-int main() {
+int main()
+{
 
     bimap animales{};
 

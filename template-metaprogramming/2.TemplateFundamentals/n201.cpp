@@ -3,7 +3,8 @@ import std;
 namespace n201 {
 
     template <typename T>
-    auto add(T const a, T const b) -> T {
+    auto add(T const a, T const b) -> T
+    {
         return a + b;
     }
 
@@ -12,7 +13,8 @@ namespace n201 {
         explicit foo(int value)
             : m_value(value) {}
 
-        explicit operator int() const {
+        explicit operator int() const
+        {
             return m_value;
         }
 
@@ -20,12 +22,14 @@ namespace n201 {
         int m_value;
     };
 
-    auto operator+(foo const a, foo const b) -> foo {
+    auto operator+(foo const a, foo const b) -> foo
+    {
         return foo(int(a) + int(b));
     }
 
     template <typename Input, typename Predicate>
-    auto count_if(Input start, Input end, Predicate p) {
+    auto count_if(Input start, Input end, Predicate p)
+    {
         int total{ 0 };
         for (Input i = start; i != end; ++i) {
             if (p(*i)) {
@@ -37,7 +41,8 @@ namespace n201 {
 
 } // namespace n201
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n201;
 

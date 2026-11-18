@@ -1,6 +1,7 @@
 #include <spdlog/spdlog.h>
 
-int main() {
+int main()
+{
     spdlog::info("Hello, {}!", "world");
     spdlog::error("An error occurred: {}", "file not found");
     spdlog::warn("This is a warning with number: {}", 42);

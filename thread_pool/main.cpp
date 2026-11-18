@@ -4,7 +4,8 @@
 
 #include "thread_pool.hpp"
 
-int main() {
+int main()
+{
     ThreadPool pool(4);
     std::vector<std::future<int>> results;
 

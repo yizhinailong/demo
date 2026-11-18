@@ -12,7 +12,8 @@ namespace n408 {
     };
 } // namespace n408
 
-auto main() -> int {
+auto main() -> int
+{
     {
         using namespace n408;
 
