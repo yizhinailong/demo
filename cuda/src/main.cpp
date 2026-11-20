@@ -6,7 +6,7 @@
 
 #include "cuda_vector_add.hpp"
 
-auto main() -> int
+int main()
 {
     try {
         constexpr std::size_t ELEMENT_COUNT{ 1U << 20 };

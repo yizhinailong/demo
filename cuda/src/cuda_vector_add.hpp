@@ -18,13 +18,8 @@ namespace cuda_demo {
         int blocks_per_grid{ 0 };
     };
 
-    [[nodiscard]] auto query_device() -> DeviceInfo;
+    [[nodiscard]] DeviceInfo query_device();
 
-    [[nodiscard]] auto vector_add(
-        int const* a,
-        int const* b,
-        int* c,
-        std::size_t n
-    ) -> VectorAddStats;
+    [[nodiscard]] VectorAddStats vector_add(int const* a, int const* b, int* c, std::size_t n);
 
 } // namespace cuda_demo

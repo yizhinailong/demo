@@ -14,11 +14,11 @@ namespace {
     constexpr int THREADS_PER_BLOCK{ 256 };
     constexpr int MAX_BLOCKS{ 4096 };
 
-    auto check_cuda(
+    void check_cuda(
         cudaError_t status,
         char const* expression,
         std::source_location location = std::source_location::current()
-    ) -> void
+    )
     {
         if (status == cudaSuccess) {
             return;
@@ -52,7 +52,7 @@ namespace {
         DeviceBuffer(DeviceBuffer const&) = delete;
         DeviceBuffer& operator=(DeviceBuffer const&) = delete;
 
-        [[nodiscard]] auto Data() const noexcept -> T*
+        [[nodiscard]] T* Data() const noexcept
         {
             return m_data;
         }
@@ -78,12 +78,12 @@ namespace {
         CudaEvent(CudaEvent const&) = delete;
         CudaEvent& operator=(CudaEvent const&) = delete;
 
-        auto Record() const -> void
+        void Record() const
         {
             check_cuda(cudaEventRecord(m_event), "cudaEventRecord");
         }
 
-        [[nodiscard]] auto Handle() const noexcept -> cudaEvent_t
+        [[nodiscard]] cudaEvent_t Handle() const noexcept
         {
             return m_event;
         }
@@ -94,8 +94,7 @@ namespace {
 
     __global__ void vector_add_kernel(int const* a, int const* b, int* c, int n)
     {
-        for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < n;
-             i += blockDim.x * gridDim.x) {
+        for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < n; i += blockDim.x * gridDim.x) {
             c[i] = a[i] + b[i];
         }
     }
@@ -104,7 +103,7 @@ namespace {
 
 namespace cuda_demo {
 
-    auto query_device() -> DeviceInfo
+    [[nodiscard]] DeviceInfo query_device()
     {
         int device{ 0 };
         check_cuda(cudaGetDevice(&device), "cudaGetDevice");
@@ -115,12 +114,7 @@ namespace cuda_demo {
         return DeviceInfo{ std::string{ properties.name }, properties.major, properties.minor };
     }
 
-    auto vector_add(
-        int const* a,
-        int const* b,
-        int* c,
-        std::size_t n
-    ) -> VectorAddStats
+    [[nodiscard]] VectorAddStats vector_add(int const* a, int const* b, int* c, std::size_t n)
     {
         if (n == 0) {
             return VectorAddStats{};
