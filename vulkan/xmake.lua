@@ -1,5 +1,6 @@
 add_rules("mode.debug", "mode.release")
 add_rules("plugin.compile_commands.autoupdate", {outputdir = "build"})
+set_policy("build.c++.modules", true)
 
 -- 添加 Vulkan 核心依赖
 add_requires("vulkan-headers", "vulkan-loader")
@@ -10,9 +11,9 @@ add_requires("slang")
 
 target("test")
     set_kind("binary")
-    add_files("src/*.cpp")
+    add_files("src/*.cpp", "src/*.cppm")
     add_packages("vulkan-headers", "vulkan-loader", "glfw", "slang")
-    set_languages("c++17")
+    set_languages("c++23")
 
     before_build(function (target)
         import("lib.detect.find_program")
