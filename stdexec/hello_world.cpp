@@ -18,8 +18,7 @@ auto main() -> int
         [] {
             std::println("Hello world! Have an int.");
             return 13;
-        }
-    );
+        });
 
     stdexec::sender auto add_42 = stdexec::then(hi_again, [](int arg) { return arg + 42; });
     auto [i] = stdexec::sync_wait(std::move(add_42)).value();
@@ -37,7 +36,6 @@ auto main() -> int
     stdexec::sync_wait(std::move(y));
 
     stdexec::sync_wait(
-        stdexec::when_all(stdexec::just(42), stdexec::get_scheduler(), stdexec::get_stop_token())
-    );
+        stdexec::when_all(stdexec::just(42), stdexec::get_scheduler(), stdexec::get_stop_token()));
     return 0;
 }

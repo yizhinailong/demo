@@ -7,8 +7,7 @@ namespace n310 {
         std::println(
             "sizeof...(args1) = {}, sizeof...(args2) = {}",
             sizeof...(args1),
-            sizeof...(args2)
-        );
+            sizeof...(args2));
     }
 } // namespace n310
 

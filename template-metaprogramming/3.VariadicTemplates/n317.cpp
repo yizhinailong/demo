@@ -31,8 +31,7 @@ namespace n317 {
     auto select_tuple(Tuple&& tuple, index_sequence<Ints...>)
     {
         return std::make_tuple(
-            std::get<Ints>(std::forward<Tuple>(tuple))...
-        );
+            std::get<Ints>(std::forward<Tuple>(tuple))...);
     }
 } // namespace n317
 

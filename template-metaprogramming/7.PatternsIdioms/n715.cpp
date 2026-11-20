@@ -242,8 +242,7 @@ namespace n715 {
     static_assert(
         std::is_same_v<
             transformer<int, double>::output_types,
-            typelist<int const, double const>>
-    );
+            typelist<int const, double const>>);
 } // namespace n715
 
 auto main() -> int

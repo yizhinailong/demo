@@ -11,8 +11,7 @@ int main(int argc, char* argv[])
         &QQmlApplicationEngine::objectCreationFailed,
         &app,
         []() { QCoreApplication::exit(-1); },
-        Qt::QueuedConnection
-    );
+        Qt::QueuedConnection);
     engine.loadFromModule("Demo5QPROPERTYMapping", "Main");
 
     return app.exec();

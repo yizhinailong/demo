@@ -9,8 +9,7 @@ namespace n802 {
         InputIt1 last1,
         InputIt2 first2,
         InputIt2 last2,
-        OutputIt dest
-    )
+        OutputIt dest)
     {
         auto it1 = first1;
         auto it2 = first2;

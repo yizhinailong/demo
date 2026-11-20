@@ -10,8 +10,7 @@ namespace n244 {
     template <typename T>
     auto show_parts(
         std::basic_ostream<T>& s,
-        std::basic_string_view<T> const& str
-    ) -> std::basic_ostream<T>&
+        std::basic_string_view<T> const& str) -> std::basic_ostream<T>&
     {
         using size_type = typename std::basic_string_view<T>::size_type;
         size_type start = 0;

@@ -50,12 +50,10 @@ auto main() -> int
 
         std::println(
             "std::is_same_v<buffer<int, 10>, buffer<int, 5 * 2>> = {}",
-            std::is_same_v<buffer<int, 10>, buffer<int, 5 * 2>>
-        );
+            std::is_same_v<buffer<int, 10>, buffer<int, 5 * 2>>);
         std::print(
             "std::is_same_v<decltype(a1), decltype(a2)> = {}",
-            std::is_same_v<decltype(a1), decltype(a2)>
-        );
+            std::is_same_v<decltype(a1), decltype(a2)>);
 
         static_assert(std::is_same_v<decltype(a1), decltype(a2)>);
 

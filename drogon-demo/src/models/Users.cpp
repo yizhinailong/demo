@@ -655,8 +655,7 @@ Json::Value Users::toJson() const
 }
 
 Json::Value Users::toMasqueradedJson(
-    const std::vector<std::string>& pMasqueradingVector
-) const
+    const std::vector<std::string>& pMasqueradingVector) const
 {
     Json::Value ret;
     if (pMasqueradingVector.size() == 5) {

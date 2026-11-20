@@ -742,8 +742,7 @@ namespace cmdline {
                 bool need,
                 const T def,
                 const std::string& desc,
-                F reader
-            )
+                F reader)
                 : option_with_value<T>(name, short_name, need, def, desc),
                   m_reader(reader) {}
 

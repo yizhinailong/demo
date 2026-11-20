@@ -18,8 +18,7 @@ namespace {
     void check_cuda(
         cudaError_t status,
         char const* expression,
-        std::source_location location = std::source_location::current()
-    )
+        std::source_location location = std::source_location::current())
     {
         if (status == cudaSuccess) {
             return;
@@ -31,9 +30,7 @@ namespace {
                 location.file_name(),
                 location.line(),
                 expression,
-                cudaGetErrorString(status)
-            )
-        );
+                cudaGetErrorString(status)));
     }
 
     template <typename T>
@@ -43,8 +40,7 @@ namespace {
         {
             check_cuda(
                 cudaMalloc(reinterpret_cast<void**>(&m_data), count * sizeof(T)),
-                "cudaMalloc"
-            );
+                "cudaMalloc");
         }
 
         ~DeviceBuffer()
@@ -134,12 +130,10 @@ namespace cuda_demo {
 
         check_cuda(
             cudaMemcpy(device_a.Data(), a, n * sizeof(int), cudaMemcpyHostToDevice),
-            "cudaMemcpy"
-        );
+            "cudaMemcpy");
         check_cuda(
             cudaMemcpy(device_b.Data(), b, n * sizeof(int), cudaMemcpyHostToDevice),
-            "cudaMemcpy"
-        );
+            "cudaMemcpy");
 
         int const threads{ THREADS_PER_BLOCK };
         int const blocks{
@@ -151,8 +145,7 @@ namespace cuda_demo {
             device_a.Data(),
             device_b.Data(),
             device_c.Data(),
-            element_count
-        );
+            element_count);
         check_cuda(cudaGetLastError(), "cudaGetLastError");
         check_cuda(cudaDeviceSynchronize(), "cudaDeviceSynchronize");
 
@@ -164,8 +157,7 @@ namespace cuda_demo {
             device_a.Data(),
             device_b.Data(),
             device_c.Data(),
-            element_count
-        );
+            element_count);
         check_cuda(cudaGetLastError(), "cudaGetLastError");
         stop.Record();
         check_cuda(cudaEventSynchronize(stop.Handle()), "cudaEventSynchronize");
@@ -173,13 +165,11 @@ namespace cuda_demo {
         float kernel_milliseconds{ 0.0F };
         check_cuda(
             cudaEventElapsedTime(&kernel_milliseconds, start.Handle(), stop.Handle()),
-            "cudaEventElapsedTime"
-        );
+            "cudaEventElapsedTime");
 
         check_cuda(
             cudaMemcpy(c, device_c.Data(), n * sizeof(int), cudaMemcpyDeviceToHost),
-            "cudaMemcpy"
-        );
+            "cudaMemcpy");
 
         double const elapsed_milliseconds{ static_cast<double>(kernel_milliseconds) };
         double const bandwidth_gbps{

@@ -40,14 +40,12 @@ auto main() -> int
         static_assert(
             std::is_same_v<
                 double,
-                composition<int, double>::result_type>
-        );
+                composition<int, double>::result_type>);
 
         static_assert(
             std::is_same_v<
                 wrapper,
-                composition<int, wrapper>::result_type>
-        );
+                composition<int, wrapper>::result_type>);
     }
     return 0;
 }

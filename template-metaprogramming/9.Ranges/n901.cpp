@@ -60,8 +60,7 @@ auto main() -> int
 
         for (int i : std::ranges::filter_view(
                  std::ranges::iota_view(1, 101),
-                 is_abundant
-             )) {
+                 is_abundant)) {
             std::cout << i << '\n';
         }
     }
@@ -193,11 +192,8 @@ auto main() -> int
                 rv::reverse(
                     rv::drop(
                         rv::filter(v, [](int const n) { return n % 2 == 0; }),
-                        2
-                    )
-                ),
-                [](int const n) { return n * n; }
-            );
+                        2)),
+                [](int const n) { return n * n; });
 
         std::ranges::for_each(r, [](int const n) { std::cout << n << '\n'; });
     }
@@ -398,8 +394,7 @@ auto main() -> int
         std::vector<double> prices;
         std::ranges::for_each(
             std::ranges::istream_view<double>(stream),
-            [&prices](double const price) { prices.push_back(price); }
-        );
+            [&prices](double const price) { prices.push_back(price); });
         auto total = std::accumulate(prices.begin(), prices.end(), 0.0);
         std::cout << std::format("total: {}\n", total);
     }
@@ -447,8 +442,7 @@ auto main() -> int
         std::ranges::copy_if(
             items,
             std::back_inserter(copies),
-            [](Item const& i) { return i.name[0] == 'p'; }
-        );
+            [](Item const& i) { return i.name[0] == 'p'; });
 
         copies.clear();
 
@@ -456,8 +450,7 @@ auto main() -> int
             items,
             std::back_inserter(copies),
             [](std::string const& name) { return name[0] == 'p'; },
-            &Item::name
-        );
+            &Item::name);
 
         copies.clear();
 
@@ -465,8 +458,7 @@ auto main() -> int
         std::ranges::copy_if(
             items | rv::transform(&Item::name),
             std::back_inserter(names),
-            [](std::string const& name) { return name[0] == 'p'; }
-        );
+            [](std::string const& name) { return name[0] == 'p'; });
     }
     return 0;
 }

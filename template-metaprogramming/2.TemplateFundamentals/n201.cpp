@@ -66,8 +66,7 @@ auto main() -> int
         int odds = count_if(
             std::begin(arr),
             std::end(arr),
-            [](const int n) { return n % 2 == 1; }
-        );
+            [](const int n) { return n % 2 == 1; });
         std::println("odds = {}", odds);
     }
 

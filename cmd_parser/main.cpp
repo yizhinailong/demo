@@ -13,8 +13,7 @@ int main(int argc, char* argv[])
         "protocol type",
         false,
         "http",
-        cmdline::oneof<std::string>("http", "https", "ssh", "ftp")
-    );
+        cmdline::oneof<std::string>("http", "https", "ssh", "ftp"));
     args.add("gzip", '\0', "gzip when transfer");
     args.parse_check(argc, argv);
 

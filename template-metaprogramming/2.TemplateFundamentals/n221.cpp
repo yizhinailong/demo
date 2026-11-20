@@ -20,8 +20,7 @@ auto main() -> int
 
         std::println(
             "std::is_same_v<int, bar<foo<int>>::value_type> = {}",
-            std::is_same_v<int, bar<foo<int>>::value_type>
-        );
+            std::is_same_v<int, bar<foo<int>>::value_type>);
     }
     return 0;
 }

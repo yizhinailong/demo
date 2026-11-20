@@ -698,8 +698,7 @@ namespace dbg {
             } else {
                 using unsigned_type = std::make_unsigned_t<T>;
                 stream << decimalToBinary<unsigned_type>(
-                    static_cast<unsigned_type>(-(value.inner + 1)) + 1
-                );
+                    static_cast<unsigned_type>(-(value.inner + 1)) + 1);
             }
         }
 

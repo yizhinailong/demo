@@ -31,8 +31,7 @@ auto main() -> int
         static_assert(
             std::is_same_v<
                 double,
-                composition<int, double>::result_type>
-        );
+                composition<int, double>::result_type>);
 
         // error, no appropriate default constructor available
         /*

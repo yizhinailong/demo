@@ -16,8 +16,7 @@ int main()
             "Device: {} (sm_{}{})",
             device.name,
             device.compute_major,
-            device.compute_minor
-        );
+            device.compute_minor);
 
         std::vector<int> a(ELEMENT_COUNT);
         std::vector<int> b(ELEMENT_COUNT);
@@ -36,8 +35,7 @@ int main()
             "n={}, threads={}, blocks={}",
             ELEMENT_COUNT,
             stats.threads_per_block,
-            stats.blocks_per_grid
-        );
+            stats.blocks_per_grid);
         std::println("Kernel time: {:.3f} ms", stats.kernel_milliseconds);
         std::println("Effective bandwidth: {:.1f} GB/s", stats.effective_bandwidth_gbps);
 
@@ -49,8 +47,7 @@ int main()
                     "Mismatch at index {}: expected {}, got {}",
                     i,
                     expected,
-                    c[i]
-                );
+                    c[i]);
                 return EXIT_FAILURE;
             }
         }

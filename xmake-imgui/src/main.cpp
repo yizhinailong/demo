@@ -31,8 +31,7 @@ int main()
         720,
         "ImGui Hello World",
         nullptr,
-        nullptr
-    );
+        nullptr);
     if (!window) {
         glfwTerminate();
         return 1;

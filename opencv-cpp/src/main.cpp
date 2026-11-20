@@ -49,8 +49,7 @@ namespace {
                 { d.bbox.x, top - sz.height },
                 { d.bbox.x + sz.width, top + baseline },
                 { 0, 255, 0 },
-                cv::FILLED
-            );
+                cv::FILLED);
             // 在背景上绘制黑色标签文字
             cv::putText(img, label, { d.bbox.x, top }, cv::FONT_HERSHEY_SIMPLEX, 0.6, { 0, 0, 0 }, 1);
         }
@@ -150,8 +149,7 @@ namespace {
                 d.bbox.x,
                 d.bbox.y,
                 d.bbox.width,
-                d.bbox.height
-            );
+                d.bbox.height);
         }
     }
 
