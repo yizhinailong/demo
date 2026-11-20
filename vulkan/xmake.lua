@@ -16,16 +16,13 @@ target("test")
     set_languages("c++23")
 
     before_build(function (target)
-        import("lib.detect.find_program")
+        local slangc = path.join(target:pkg("slang"):installdir(), "bin",
+            is_host("windows") and "slangc.exe" or "slangc")
+        assert(os.isfile(slangc), "slangc was not found in the slang package")
 
         local shader_dir = path.join(target:targetdir(), "shaders")
         os.mkdir(shader_dir)
 
-        local slangc = find_program("slangc", {
-            paths = target:pkg("slang"):installdir("bin"),
-            check = "-v",
-        })
-        assert(slangc, "slangc was not found in the slang package")
         local source = path.join(os.projectdir(), "shaders", "triangle.slang")
 
         for _, stage in ipairs({
