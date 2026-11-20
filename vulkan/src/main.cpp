@@ -562,13 +562,13 @@ namespace {
         vert_stage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         vert_stage.stage = VK_SHADER_STAGE_VERTEX_BIT;
         vert_stage.module = vert_module;
-        vert_stage.pName = "main";
+        vert_stage.pName = "vertMain";
 
         VkPipelineShaderStageCreateInfo frag_stage{};
         frag_stage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         frag_stage.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
         frag_stage.module = frag_module;
-        frag_stage.pName = "main";
+        frag_stage.pName = "fragMain";
 
         std::array<VkPipelineShaderStageCreateInfo, 2> shader_stages{ vert_stage, frag_stage };
 
