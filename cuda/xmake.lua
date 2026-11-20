@@ -3,9 +3,7 @@ add_rules("plugin.compile_commands.autoupdate", { outputdir = "build" })
 
 set_rundir("$(projectdir)")
 
--- keep the MSVC runtime of the CUDA host compiler consistent with the C++ target
-local msvc_runtime = is_mode("debug") and "MDd" or "MD"
-set_runtimes(msvc_runtime)
+set_runtimes(is_mode("debug") and "MDd" or "MD")
 if is_plat("windows") then
 	set_warnings("all", "extra")
 end
