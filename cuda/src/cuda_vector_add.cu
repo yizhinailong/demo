@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cstddef>
+#include <format>
 #include <limits>
 #include <source_location>
 #include <stdexcept>
@@ -25,9 +26,13 @@ namespace {
         }
 
         throw std::runtime_error(
-            std::string{ location.file_name() } + ':' +
-            std::to_string(static_cast<unsigned long>(location.line())) + ' ' + expression +
-            " failed: " + cudaGetErrorString(status)
+            std::format(
+                "{}:{} {} failed: {}",
+                location.file_name(),
+                location.line(),
+                expression,
+                cudaGetErrorString(status)
+            )
         );
     }
 
